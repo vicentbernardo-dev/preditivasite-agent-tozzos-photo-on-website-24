@@ -1,0 +1,6 @@
+{
+  "name": "Preditiva - Aceleradora de E-commerce",
+  "description": "Site institucional da Preditiva: aceleradora de e-commerce, consultoria estratégica e especialistas dedicados em SEO, CRM, CRO, Dados e Performance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
