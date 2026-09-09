@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Rocket, Target, Users, ArrowRight, Sparkles } from 'lucide-react';
 import { SERVICES } from '../data/mockData';
 import { ServiceCard } from '../types';
+import { ServiceCta } from './ServiceCta';
 
 interface SolutionsSectionProps {
   onSelectService: (service: ServiceCard) => void;
@@ -108,8 +109,9 @@ export const SolutionsSection: React.FC<SolutionsSectionProps> = ({ onSelectServ
                 </div>
 
                 {/* Card CTA Button */}
-                <button
-                  onClick={() => onSelectService(service)}
+                <ServiceCta
+                  service={service}
+                  onSelectService={onSelectService}
                   className={`w-full py-4 rounded-md font-familjen font-semibold text-base transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
                     service.accentColor === 'neon'
                       ? 'bg-[#0DF205] text-[#000604] hover:bg-[#0be004] shadow-[0_0_20px_rgba(13,242,5,0.4)]'
@@ -120,7 +122,7 @@ export const SolutionsSection: React.FC<SolutionsSectionProps> = ({ onSelectServ
                 >
                   <span>{service.ctaText}</span>
                   <ArrowRight className="w-4 h-4" />
-                </button>
+                </ServiceCta>
               </motion.div>
             );
           })}

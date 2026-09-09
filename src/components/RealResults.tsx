@@ -1,21 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowRight, TrendingUp, Sparkles, CheckCircle, ExternalLink } from 'lucide-react';
 import { CASE_STUDIES, CLIENT_LOGOS } from '../data/mockData';
 import { CaseStudy } from '../types';
-import { PageRoute } from './Navbar';
+import { CASE_PATHS, PATHS } from '../routes';
 
 interface RealResultsProps {
   onSelectCase: (caseStudy: CaseStudy) => void;
-  onOpenAuditModal: () => void;
-  onNavigatePage?: (page: PageRoute) => void;
 }
 
-export const RealResults: React.FC<RealResultsProps> = ({ 
-  onSelectCase, 
-  onOpenAuditModal,
-  onNavigatePage 
-}) => {
+export const RealResults: React.FC<RealResultsProps> = ({ onSelectCase }) => {
   return (
     <section id="cases" className="relative py-24 lg:py-32 bg-[#000604] text-white overflow-hidden">
       
@@ -90,29 +85,23 @@ export const RealResults: React.FC<RealResultsProps> = ({
 
               {/* Bottom CTA Button */}
               <div className="p-6 pt-0">
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) {
-                      if (caseItem.id === 'miami-ad-school') {
-                        onNavigatePage('case-miami');
-                        return;
-                      }
-                      if (caseItem.id === 'gtex') {
-                        onNavigatePage('case-gtex');
-                        return;
-                      }
-                      if (caseItem.id === 'master-cidadania') {
-                        onNavigatePage('case-master');
-                        return;
-                      }
-                    }
-                    onSelectCase(caseItem);
-                  }}
-                  className="w-full py-3.5 px-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-familjen font-bold text-base sm:text-lg rounded-[5px] transition-all duration-200 flex items-center justify-center gap-2 group-hover:shadow-[0_0_20px_rgba(13,242,5,0.4)] cursor-pointer"
-                >
-                  <span>VER CASE COMPLETO</span>
-                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                </button>
+                {CASE_PATHS[caseItem.id] ? (
+                  <Link
+                    to={CASE_PATHS[caseItem.id]}
+                    className="w-full py-3.5 px-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-familjen font-bold text-base sm:text-lg rounded-[5px] transition-all duration-200 flex items-center justify-center gap-2 group-hover:shadow-[0_0_20px_rgba(13,242,5,0.4)] cursor-pointer"
+                  >
+                    <span>VER CASE COMPLETO</span>
+                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                ) : (
+                  <button
+                    onClick={() => onSelectCase(caseItem)}
+                    className="w-full py-3.5 px-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-familjen font-bold text-base sm:text-lg rounded-[5px] transition-all duration-200 flex items-center justify-center gap-2 group-hover:shadow-[0_0_20px_rgba(13,242,5,0.4)] cursor-pointer"
+                  >
+                    <span>VER CASE COMPLETO</span>
+                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  </button>
+                )}
               </div>
             </motion.div>
           ))}
@@ -137,19 +126,13 @@ export const RealResults: React.FC<RealResultsProps> = ({
           </div>
 
           {/* Secondary Action Button */}
-          <button
-            onClick={() => {
-              if (onNavigatePage) {
-                onNavigatePage('cases');
-              } else {
-                onOpenAuditModal();
-              }
-            }}
+          <Link
+            to={PATHS.cases}
             className="px-8 py-3.5 rounded-[5px] bg-[#000604]/80 hover:bg-[#111815] border border-[#0DF205] text-[#0DF205] hover:text-white font-familjen font-bold text-base sm:text-lg transition-all duration-200 shadow-[0_0_20px_rgba(13,242,5,0.2)] flex items-center gap-2 cursor-pointer"
           >
             <span>VER TODOS OS CASES</span>
             <ArrowRight className="w-5 h-5" />
-          </button>
+          </Link>
         </div>
 
       </div>

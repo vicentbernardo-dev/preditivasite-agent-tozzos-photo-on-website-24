@@ -1,47 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
 import { Menu, X, ChevronDown, Sparkles, Phone, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-
-export type PageRoute = 
-  | 'home' 
-  | 'metodologia' 
-  | 'frentes-aceleradora' 
-  | 'frentes-consultoria' 
-  | 'frentes-especialistas'
-  | 'especialidade-seo'
-  | 'especialidade-midia'
-  | 'especialidade-crm'
-  | 'especialidade-dados'
-  | 'especialidade-dev'
-  | 'especialidade-growth'
-  | 'cases'
-  | 'case-miami'
-  | 'case-gtex'
-  | 'case-master'
-  | 'blog'
-  | 'blog-post'
-  | 'partners'
-  | 'ferramentas'
-  | 'ferramentas-vision'
-  | 'ferramentas-alfredo';
+import { PATHS } from '../routes';
 
 interface NavbarProps {
-  currentPage?: PageRoute;
-  onNavigatePage?: (page: PageRoute) => void;
   onOpenAuditModal: () => void;
   onNavigateSection: (sectionId: string) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-  currentPage = 'metodologia',
-  onNavigatePage,
   onOpenAuditModal,
   onNavigateSection,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,41 +31,18 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLinkClick = (target: string) => {
+  // Highlight state now comes from the URL instead of a page state.
+  const isCurrent = (path: string) => pathname === path;
+  const isInSection = (prefix: string) => pathname.startsWith(prefix);
+
+  const closeMenus = () => {
     setActiveDropdown(null);
     setMobileMenuOpen(false);
-    
-    const pageRoutes: PageRoute[] = [
-      'home',
-      'metodologia',
-      'frentes-aceleradora',
-      'frentes-consultoria',
-      'frentes-especialistas',
-      'especialidade-seo',
-      'especialidade-midia',
-      'especialidade-crm',
-      'especialidade-dados',
-      'especialidade-dev',
-      'especialidade-growth',
-      'cases',
-      'case-miami',
-      'case-gtex',
-      'case-master',
-      'blog',
-      'blog-post',
-      'partners',
-      'ferramentas',
-      'ferramentas-vision',
-      'ferramentas-alfredo',
-    ];
+  };
 
-    if (pageRoutes.includes(target as PageRoute)) {
-      if (onNavigatePage) onNavigatePage(target as PageRoute);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-
-    onNavigateSection(target);
+  const handleSectionClick = (sectionId: string) => {
+    closeMenus();
+    onNavigateSection(sectionId);
   };
 
   return (
@@ -103,41 +56,40 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              handleLinkClick('home');
-            }}
+          <Link
+            to={PATHS.home}
+            onClick={closeMenus}
             className="group flex items-center focus:outline-none"
             aria-label="Preditiva Home"
           >
             <Logo size="md" />
-          </a>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2 font-familjen text-[15px] xl:text-[16px]">
-            <button
-              onClick={() => handleLinkClick('home')}
+            <Link
+              to={PATHS.home}
+              onClick={closeMenus}
               className={`px-3 py-2 transition-colors cursor-pointer ${
-                currentPage === 'home'
+                isCurrent(PATHS.home)
                   ? 'text-[#0DF205] font-bold'
                   : 'text-white/90 font-normal hover:text-[#0DF205]'
               }`}
             >
               Home
-            </button>
+            </Link>
 
-            <button
-              onClick={() => handleLinkClick('metodologia')}
+            <Link
+              to={PATHS.metodologia}
+              onClick={closeMenus}
               className={`px-3 py-2 transition-colors cursor-pointer ${
-                currentPage === 'metodologia'
+                isCurrent(PATHS.metodologia)
                   ? 'text-[#0DF205] font-bold'
                   : 'text-white/90 font-normal hover:text-[#0DF205]'
               }`}
             >
               Metodologia
-            </button>
+            </Link>
 
             {/* Dropdown: Frentes */}
             <div
@@ -145,17 +97,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={() => setActiveDropdown('frentes')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button
-                onClick={() => handleLinkClick('frentes-consultoria')}
+              <Link
+                to={PATHS.frentesConsultoria}
+                onClick={closeMenus}
                 className={`flex items-center gap-1 px-3 py-2 tracking-wide transition-colors cursor-pointer ${
-                  currentPage?.startsWith('frentes-')
+                  isInSection('/frentes')
                     ? 'text-[#0DF205] font-bold'
                     : 'text-white/90 font-normal hover:text-[#0DF205]'
                 }`}
               >
                 <span>Frentes</span>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'frentes' ? 'rotate-180 text-[#0DF205]' : ''}`} />
-              </button>
+              </Link>
 
               <AnimatePresence>
                 {activeDropdown === 'frentes' && (
@@ -166,54 +119,45 @@ export const Navbar: React.FC<NavbarProps> = ({
                     transition={{ duration: 0.15 }}
                     className="absolute top-full left-0 w-64 mt-1 bg-[#111815] border border-white/10 rounded-xl p-2 shadow-2xl backdrop-blur-xl z-50"
                   >
-                    <a
-                      href="#frentes-aceleradora"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLinkClick('frentes-aceleradora');
-                      }}
+                    <Link
+                      to={PATHS.frentesAceleradora}
+                      onClick={closeMenus}
                       className={`block p-2.5 rounded-lg hover:bg-white/5 group transition-colors ${
-                        currentPage === 'frentes-aceleradora' ? 'bg-white/10 border border-[#0DF205]/30' : ''
+                        isCurrent(PATHS.frentesAceleradora) ? 'bg-white/10 border border-[#0DF205]/30' : ''
                       }`}
                     >
                       <div className="text-white font-medium group-hover:text-[#0DF205] text-sm flex items-center justify-between">
-                        <span className={currentPage === 'frentes-aceleradora' ? 'text-[#0DF205]' : ''}>Aceleradora de E-commerce</span>
+                        <span className={isCurrent(PATHS.frentesAceleradora) ? 'text-[#0DF205]' : ''}>Aceleradora de E-commerce</span>
                         <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                       <p className="text-xs text-white/60 mt-0.5">Operação completa de ponta a ponta</p>
-                    </a>
-                    <a
-                      href="#frentes-consultoria"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLinkClick('frentes-consultoria');
-                      }}
+                    </Link>
+                    <Link
+                      to={PATHS.frentesConsultoria}
+                      onClick={closeMenus}
                       className={`block p-2.5 rounded-lg hover:bg-white/5 group transition-colors ${
-                        currentPage === 'frentes-consultoria' ? 'bg-white/10 border border-[#0DF205]/30' : ''
+                        isCurrent(PATHS.frentesConsultoria) ? 'bg-white/10 border border-[#0DF205]/30' : ''
                       }`}
                     >
                       <div className="text-white font-medium group-hover:text-[#0DF205] text-sm flex items-center justify-between">
-                        <span className={currentPage === 'frentes-consultoria' ? 'text-[#0DF205]' : ''}>Consultoria Estratégica</span>
+                        <span className={isCurrent(PATHS.frentesConsultoria) ? 'text-[#0DF205]' : ''}>Consultoria Estratégica</span>
                         <span className="text-[10px] bg-[#0DF205]/20 text-[#0DF205] px-1.5 py-0.5 rounded font-bold">HOT</span>
                       </div>
                       <p className="text-xs text-white/60 mt-0.5">Direção técnica e governança de dados</p>
-                    </a>
-                    <a
-                      href="#frentes-especialistas"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLinkClick('frentes-especialistas');
-                      }}
+                    </Link>
+                    <Link
+                      to={PATHS.frentesEspecialistas}
+                      onClick={closeMenus}
                       className={`block p-2.5 rounded-lg hover:bg-white/5 group transition-colors ${
-                        currentPage === 'frentes-especialistas' ? 'bg-white/10 border border-[#0DF205]/30' : ''
+                        isCurrent(PATHS.frentesEspecialistas) ? 'bg-white/10 border border-[#0DF205]/30' : ''
                       }`}
                     >
                       <div className="text-white font-medium group-hover:text-[#0DF205] text-sm flex items-center justify-between">
-                        <span className={currentPage === 'frentes-especialistas' ? 'text-[#0DF205]' : ''}>Especialistas Dedicados</span>
+                        <span className={isCurrent(PATHS.frentesEspecialistas) ? 'text-[#0DF205]' : ''}>Especialistas Dedicados</span>
                         <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                       <p className="text-xs text-white/60 mt-0.5">Squad sênior on demand para gargalos</p>
-                    </a>
+                    </Link>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -225,17 +169,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={() => setActiveDropdown('especialidade')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button
-                onClick={() => handleLinkClick('especialidade-seo')}
+              <Link
+                to={PATHS.especialidadeSeo}
+                onClick={closeMenus}
                 className={`flex items-center gap-1 px-3 py-2 tracking-wide transition-colors cursor-pointer ${
-                  currentPage?.startsWith('especialidade-')
+                  isInSection('/especialidades')
                     ? 'text-[#0DF205] font-bold'
                     : 'text-white/90 font-normal hover:text-[#0DF205]'
                 }`}
               >
                 <span>Especialidade</span>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'especialidade' ? 'rotate-180 text-[#0DF205]' : ''}`} />
-              </button>
+              </Link>
 
               <AnimatePresence>
                 {activeDropdown === 'especialidade' && (
@@ -247,29 +192,26 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className="absolute top-full left-0 w-80 mt-1 bg-[#111815] border border-white/10 rounded-xl p-3 shadow-2xl backdrop-blur-xl z-50 grid grid-cols-2 gap-1.5"
                   >
                     {[
-                      { name: 'SEO Técnico', desc: 'Core Web Vitals & Tráfego', id: 'especialidade-seo' },
-                      { name: 'Mídia & CAPI', desc: 'Atribuição e ROAS', id: 'especialidade-midia' },
-                      { name: 'CRM & Retenção', desc: 'LTV & Automações', id: 'especialidade-crm' },
-                      { name: 'Dados & GA4', desc: 'Telemetria e BI', id: 'especialidade-dados' },
-                      { name: 'Dev & Infra', desc: 'Sustentação e Código', id: 'especialidade-dev' },
-                      { name: 'CRO & Growth', desc: 'Otimização de Taxa', id: 'especialidade-growth' },
+                      { name: 'SEO Técnico', desc: 'Core Web Vitals & Tráfego', path: PATHS.especialidadeSeo },
+                      { name: 'Mídia & CAPI', desc: 'Atribuição e ROAS', path: PATHS.especialidadeMidia },
+                      { name: 'CRM & Retenção', desc: 'LTV & Automações', path: PATHS.especialidadeCrm },
+                      { name: 'Dados & GA4', desc: 'Telemetria e BI', path: PATHS.especialidadeDados },
+                      { name: 'Dev & Infra', desc: 'Sustentação e Código', path: PATHS.especialidadeDev },
+                      { name: 'CRO & Growth', desc: 'Otimização de Taxa', path: PATHS.especialidadeGrowth },
                     ].map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={`#${item.id}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleLinkClick(item.id);
-                        }}
+                        to={item.path}
+                        onClick={closeMenus}
                         className={`p-2 rounded-lg hover:bg-white/5 transition-colors group ${
-                          currentPage === item.id ? 'bg-white/10 border border-[#0DF205]/30' : ''
+                          isCurrent(item.path) ? 'bg-white/10 border border-[#0DF205]/30' : ''
                         }`}
                       >
-                        <div className={`text-xs font-bold ${currentPage === item.id ? 'text-[#0DF205]' : 'text-white group-hover:text-[#0DF205]'}`}>
+                        <div className={`text-xs font-bold ${isCurrent(item.path) ? 'text-[#0DF205]' : 'text-white group-hover:text-[#0DF205]'}`}>
                           {item.name}
                         </div>
                         <div className="text-[11px] text-white/50">{item.desc}</div>
-                      </a>
+                      </Link>
                     ))}
                   </motion.div>
                 )}
@@ -282,10 +224,11 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={() => setActiveDropdown('ferramentas')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button
-                onClick={() => handleLinkClick('ferramentas')}
+              <Link
+                to={PATHS.ferramentas}
+                onClick={closeMenus}
                 className={`flex items-center gap-1 px-3 py-2 tracking-wide transition-colors cursor-pointer ${
-                  currentPage?.startsWith('ferramentas')
+                  isInSection('/ferramentas')
                     ? 'text-[#0DF205] font-bold'
                     : 'text-white/90 font-normal hover:text-[#0DF205]'
                 }`}
@@ -295,7 +238,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span className="w-1.5 h-1.5 rounded-full bg-[#0DF205] animate-pulse" />
                 </span>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'ferramentas' ? 'rotate-180 text-[#0DF205]' : ''}`} />
-              </button>
+              </Link>
 
               <AnimatePresence>
                 {activeDropdown === 'ferramentas' && (
@@ -306,12 +249,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                     transition={{ duration: 0.15 }}
                     className="absolute top-full left-0 w-80 mt-1 bg-[#111815] border border-[#0DF205]/30 rounded-xl p-3 shadow-2xl backdrop-blur-xl z-50 flex flex-col gap-1.5"
                   >
-                    <a
-                      href="#ferramentas-vision"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLinkClick('ferramentas-vision');
-                      }}
+                    <Link
+                      to={PATHS.ferramentasVision}
+                      onClick={closeMenus}
                       className="block p-2.5 rounded-lg hover:bg-white/5 group transition-colors"
                     >
                       <div className="text-white font-medium group-hover:text-[#0DF205] text-sm flex items-center justify-between">
@@ -322,14 +262,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-[#0DF205]" />
                       </div>
                       <p className="text-xs text-white/60 mt-0.5">Auditoria técnica & visibilidade para IA</p>
-                    </a>
+                    </Link>
 
-                    <a
-                      href="#ferramentas-alfredo"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLinkClick('ferramentas-alfredo');
-                      }}
+                    <Link
+                      to={PATHS.ferramentasAlfredo}
+                      onClick={closeMenus}
                       className="block p-2.5 rounded-lg hover:bg-white/5 group transition-colors"
                     >
                       <div className="text-white font-medium group-hover:text-[#0DF205] text-sm flex items-center justify-between">
@@ -340,49 +277,57 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-[#0DF205]" />
                       </div>
                       <p className="text-xs text-white/60 mt-0.5">Gestão inteligente de times e operações</p>
-                    </a>
+                    </Link>
 
                     <div className="pt-2 border-t border-white/10 mt-1">
-                      <button
-                        onClick={() => handleLinkClick('ferramentas')}
-                        className="w-full py-1.5 text-center text-xs font-bold text-[#0DF205] hover:underline"
+                      <Link
+                        to={PATHS.ferramentas}
+                        onClick={closeMenus}
+                        className="block w-full py-1.5 text-center text-xs font-bold text-[#0DF205] hover:underline"
                       >
                         Ver Ecossistema Completo →
-                      </button>
+                      </Link>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
-            <button
-              onClick={() => handleLinkClick('cases')}
-              className="px-3 py-2 text-white/90 font-normal tracking-wide hover:text-[#0DF205] transition-colors cursor-pointer"
+            <Link
+              to={PATHS.cases}
+              onClick={closeMenus}
+              className={`px-3 py-2 transition-colors cursor-pointer ${
+                isInSection(PATHS.cases)
+                  ? 'text-[#0DF205] font-bold'
+                  : 'text-white/90 font-normal hover:text-[#0DF205]'
+              }`}
             >
               Cases
-            </button>
+            </Link>
 
-            <button
-              onClick={() => handleLinkClick('blog')}
+            <Link
+              to={PATHS.blog}
+              onClick={closeMenus}
               className={`px-3 py-2 transition-colors cursor-pointer ${
-                currentPage === 'blog' || currentPage === 'blog-post'
+                isInSection(PATHS.blog)
                   ? 'text-[#0DF205] font-bold'
                   : 'text-white/90 font-normal hover:text-[#0DF205]'
               }`}
             >
               Blog
-            </button>
+            </Link>
 
-            <button
-              onClick={() => handleLinkClick('partners')}
+            <Link
+              to={PATHS.partners}
+              onClick={closeMenus}
               className={`px-3 py-2 transition-colors cursor-pointer ${
-                currentPage === 'partners'
+                isCurrent(PATHS.partners)
                   ? 'text-[#0DF205] font-bold'
                   : 'text-white/90 font-normal hover:text-[#0DF205]'
               }`}
             >
               Partners
-            </button>
+            </Link>
           </nav>
 
           {/* Action CTA Button */}
@@ -432,41 +377,39 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="lg:hidden bg-[#000604]/98 border-b border-white/10 px-6 py-6 font-familjen space-y-4"
           >
             <div className="flex flex-col space-y-3 text-lg">
-              <button
-                onClick={() => handleLinkClick('home')}
-                className={`text-left font-medium py-1 ${currentPage === 'home' ? 'text-[#0DF205]' : 'text-white/90 hover:text-[#0DF205]'}`}
+              <Link
+                to={PATHS.home}
+                onClick={closeMenus}
+                className={`text-left font-medium py-1 ${isCurrent(PATHS.home) ? 'text-[#0DF205]' : 'text-white/90 hover:text-[#0DF205]'}`}
               >
                 Home
-              </button>
-              <button
-                onClick={() => handleLinkClick('metodologia')}
-                className={`text-left font-medium py-1 ${currentPage === 'metodologia' ? 'text-[#0DF205]' : 'text-white/90 hover:text-[#0DF205]'}`}
+              </Link>
+              <Link
+                to={PATHS.metodologia}
+                onClick={closeMenus}
+                className={`text-left font-medium py-1 ${isCurrent(PATHS.metodologia) ? 'text-[#0DF205]' : 'text-white/90 hover:text-[#0DF205]'}`}
               >
                 Metodologia
-              </button>
-              
+              </Link>
+
               <div className="pt-1 pb-1 border-y border-white/5 space-y-1.5 pl-2">
                 <div className="text-xs uppercase text-[#0DF205] font-bold tracking-wider pt-1">
                   Frentes de Atuação
                 </div>
-                <button
-                  onClick={() => handleLinkClick('frentes-aceleradora')}
-                  className={`text-left text-sm block w-full py-1 ${currentPage === 'frentes-aceleradora' ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
-                >
-                  • Aceleradora de E-commerce
-                </button>
-                <button
-                  onClick={() => handleLinkClick('frentes-consultoria')}
-                  className={`text-left text-sm block w-full py-1 ${currentPage === 'frentes-consultoria' ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
-                >
-                  • Consultoria Estratégica
-                </button>
-                <button
-                  onClick={() => handleLinkClick('frentes-especialistas')}
-                  className={`text-left text-sm block w-full py-1 ${currentPage === 'frentes-especialistas' ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
-                >
-                  • Especialistas Dedicados
-                </button>
+                {[
+                  { name: 'Aceleradora de E-commerce', path: PATHS.frentesAceleradora },
+                  { name: 'Consultoria Estratégica', path: PATHS.frentesConsultoria },
+                  { name: 'Especialistas Dedicados', path: PATHS.frentesEspecialistas },
+                ].map((frente) => (
+                  <Link
+                    key={frente.path}
+                    to={frente.path}
+                    onClick={closeMenus}
+                    className={`text-left text-sm block w-full py-1 ${isCurrent(frente.path) ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
+                  >
+                    • {frente.name}
+                  </Link>
+                ))}
               </div>
 
               <div className="pt-1 pb-1 border-b border-white/5 space-y-1.5 pl-2">
@@ -474,75 +417,84 @@ export const Navbar: React.FC<NavbarProps> = ({
                   Especialidades
                 </div>
                 {[
-                  { name: 'SEO Técnico', id: 'especialidade-seo' },
-                  { name: 'Mídia Paga & CAPI', id: 'especialidade-midia' },
-                  { name: 'CRM & Retenção', id: 'especialidade-crm' },
-                  { name: 'Dados & GA4', id: 'especialidade-dados' },
-                  { name: 'Dev & Infraestrutura', id: 'especialidade-dev' },
-                  { name: 'CRO & Growth', id: 'especialidade-growth' },
+                  { name: 'SEO Técnico', path: PATHS.especialidadeSeo },
+                  { name: 'Mídia Paga & CAPI', path: PATHS.especialidadeMidia },
+                  { name: 'CRM & Retenção', path: PATHS.especialidadeCrm },
+                  { name: 'Dados & GA4', path: PATHS.especialidadeDados },
+                  { name: 'Dev & Infraestrutura', path: PATHS.especialidadeDev },
+                  { name: 'CRO & Growth', path: PATHS.especialidadeGrowth },
                 ].map((esp) => (
-                  <button
-                    key={esp.id}
-                    onClick={() => handleLinkClick(esp.id)}
-                    className={`text-left text-sm block w-full py-1 ${currentPage === esp.id ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
+                  <Link
+                    key={esp.path}
+                    to={esp.path}
+                    onClick={closeMenus}
+                    className={`text-left text-sm block w-full py-1 ${isCurrent(esp.path) ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
                   >
                     • {esp.name}
-                  </button>
+                  </Link>
                 ))}
               </div>
               <div className="py-2 border-y border-white/5 space-y-1">
                 <div className="text-xs font-mono text-[#0DF205] uppercase tracking-wider font-bold">
                   Ferramentas (Ecosistema)
                 </div>
-                <button
-                  onClick={() => handleLinkClick('ferramentas-vision')}
-                  className={`text-left text-sm block w-full py-1 flex items-center justify-between ${currentPage === 'ferramentas-vision' ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
+                <Link
+                  to={PATHS.ferramentasVision}
+                  onClick={closeMenus}
+                  className={`text-left text-sm block w-full py-1 flex items-center justify-between ${isCurrent(PATHS.ferramentasVision) ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
                 >
                   <span>• Vision (AI Search Readiness)</span>
                   <span className="text-[10px] bg-[#0DF205]/20 text-[#0DF205] px-1.5 py-0.5 rounded font-bold">ATIVO</span>
-                </button>
-                <button
-                  onClick={() => handleLinkClick('ferramentas-alfredo')}
-                  className={`text-left text-sm block w-full py-1 flex items-center justify-between ${currentPage === 'ferramentas-alfredo' ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
+                </Link>
+                <Link
+                  to={PATHS.ferramentasAlfredo}
+                  onClick={closeMenus}
+                  className={`text-left text-sm block w-full py-1 flex items-center justify-between ${isCurrent(PATHS.ferramentasAlfredo) ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
                 >
                   <span>• Alfredo (Gestão com IA)</span>
                   <span className="text-[10px] bg-[#0DF205]/20 text-[#0DF205] px-1.5 py-0.5 rounded font-bold">EM BREVE</span>
-                </button>
-                <button
-                  onClick={() => handleLinkClick('ferramentas')}
+                </Link>
+                <Link
+                  to={PATHS.ferramentas}
+                  onClick={closeMenus}
                   className="text-left text-xs text-[#0DF205] font-bold py-1 hover:underline block"
                 >
                   Ver Todas as Ferramentas →
-                </button>
+                </Link>
               </div>
-              <button
-                onClick={() => handleLinkClick('cases')}
-                className="text-left text-white/90 hover:text-[#0DF205] py-1"
+              <Link
+                to={PATHS.cases}
+                onClick={closeMenus}
+                className={`text-left py-1 transition-colors ${
+                  isInSection(PATHS.cases) ? 'text-[#0DF205] font-bold' : 'text-white/90 hover:text-[#0DF205]'
+                }`}
               >
                 Cases de Sucesso
-              </button>
-              <button
-                onClick={() => handleLinkClick('blog')}
+              </Link>
+              <Link
+                to={PATHS.blog}
+                onClick={closeMenus}
                 className={`text-left py-1 transition-colors ${
-                  currentPage === 'blog' || currentPage === 'blog-post'
+                  isInSection(PATHS.blog)
                     ? 'text-[#0DF205] font-bold'
                     : 'text-white/90 hover:text-[#0DF205]'
                 }`}
               >
                 Blog & Insights
-              </button>
-              <button
-                onClick={() => handleLinkClick('partners')}
+              </Link>
+              <Link
+                to={PATHS.partners}
+                onClick={closeMenus}
                 className={`text-left py-1 transition-colors ${
-                  currentPage === 'partners'
+                  isCurrent(PATHS.partners)
                     ? 'text-[#0DF205] font-bold'
                     : 'text-white/90 hover:text-[#0DF205]'
                 }`}
               >
                 Partners
-              </button>
+              </Link>
               <button
-                onClick={() => handleLinkClick('faq')}
+                onClick={() => handleSectionClick('faq')}
                 className="text-left text-white/90 hover:text-[#0DF205] py-1"
               >
                 Perguntas Frequentes

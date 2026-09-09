@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, CheckCircle2, ChevronDown, ArrowRight, Activity, LineChart, Search, Target, Database, Cpu, Zap, Layers, Globe, ShieldCheck, Users, BarChart3 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { PATHS } from '../routes';
 
 interface ConsultoriaPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: 'home' | 'metodologia' | 'frentes-aceleradora' | 'frentes-consultoria' | 'frentes-especialistas') => void;
   onLeadSuccess?: (data: { name: string; email: string; company: string; role: string }) => void;
 }
 
 export const ConsultoriaPage: React.FC<ConsultoriaPageProps> = ({
   onOpenAuditModal,
-  onNavigatePage,
   onLeadSuccess,
 }) => {
   const [openFaqId, setOpenFaqId] = useState<number | null>(0);
@@ -129,12 +129,12 @@ export const ConsultoriaPage: React.FC<ConsultoriaPageProps> = ({
                   <span>Agendar Diagnóstico Gratuito</span>
                 </button>
 
-                <button
-                  onClick={() => onNavigatePage('metodologia')}
+                <Link
+                  to={PATHS.metodologia}
                   className="px-8 py-4 border border-[#3B4B35] hover:border-[#0DF205] text-[#D8E6DF] hover:text-white font-bold text-sm sm:text-base uppercase tracking-wider rounded-lg transition-all cursor-pointer"
                 >
                   Ver Metodologia
-                </button>
+                </Link>
               </div>
             </motion.div>
 

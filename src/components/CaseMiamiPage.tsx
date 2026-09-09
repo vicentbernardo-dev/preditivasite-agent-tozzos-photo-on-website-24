@@ -14,29 +14,28 @@ import {
   ArrowUpRight,
   ExternalLink
 } from 'lucide-react';
-import { PageRoute } from './Navbar';
+import { Link } from 'react-router-dom';
+import { PATHS } from '../routes';
 
 interface CaseMiamiPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
 }
 
 export const CaseMiamiPage: React.FC<CaseMiamiPageProps> = ({
   onOpenAuditModal,
-  onNavigatePage,
 }) => {
   return (
     <div className="w-full flex flex-col bg-[#000604] text-white font-familjen">
       {/* Back Navigation Bar */}
       <div className="bg-[#0D0F0D] border-b border-white/10 pt-28 pb-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <button
-            onClick={() => onNavigatePage('cases')}
+          <Link
+            to={PATHS.cases}
             className="inline-flex items-center gap-2 text-sm text-[#D9D9D9] hover:text-[#0DF205] transition-colors cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4" />
             <span>Voltar para todos os cases</span>
-          </button>
+          </Link>
           <div className="text-xs text-[#0DF205] uppercase tracking-wider font-bold">
             Case Study • Miami Ad School
           </div>

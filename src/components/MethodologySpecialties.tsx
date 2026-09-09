@@ -1,59 +1,56 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, ArrowRight } from 'lucide-react';
-import { PageRoute } from './Navbar';
+import { Link } from 'react-router-dom';
+import { PATHS } from '../routes';
 
 interface MethodologySpecialtiesProps {
   onOpenAuditModal: () => void;
-  onSelectSpecialty?: (specialtyName: string) => void;
-  onNavigateSpecialty?: (route: PageRoute) => void;
 }
 
 export const MethodologySpecialties: React.FC<MethodologySpecialtiesProps> = ({
   onOpenAuditModal,
-  onSelectSpecialty,
-  onNavigateSpecialty,
 }) => {
   const specialties = [
     {
       num: '01',
       title: 'CRM',
-      route: 'especialidade-crm' as PageRoute,
+      path: PATHS.especialidadeCrm,
       highlighted: false,
       desc: 'Fluxos automatizados de recompra e retenção.',
     },
     {
       num: '02',
       title: 'SEO',
-      route: 'especialidade-seo' as PageRoute,
+      path: PATHS.especialidadeSeo,
       highlighted: true, // As in Figma: neon green background with black text
       desc: 'Otimização técnica, Core Web Vitals e autoridade.',
     },
     {
       num: '03',
       title: 'Mídia',
-      route: 'especialidade-midia' as PageRoute,
+      path: PATHS.especialidadeMidia,
       highlighted: false,
       desc: 'Gestão de tráfego com CAPI e atribuição multitoque.',
     },
     {
       num: '04',
       title: 'Dev + Infra',
-      route: 'especialidade-dev' as PageRoute,
+      path: PATHS.especialidadeDev,
       highlighted: false,
       desc: 'Arquitetura headless, velocidade e sustentação.',
     },
     {
       num: '05',
       title: 'Dados',
-      route: 'especialidade-dados' as PageRoute,
+      path: PATHS.especialidadeDados,
       highlighted: false,
       desc: 'Server-side tagging, GA4 e dashboards em tempo real.',
     },
     {
       num: '06',
       title: 'CRO & Growth',
-      route: 'especialidade-growth' as PageRoute,
+      path: PATHS.especialidadeGrowth,
       highlighted: false,
       desc: 'Testes A/B científicos e expansão de faturamento.',
     },
@@ -115,23 +112,15 @@ export const MethodologySpecialties: React.FC<MethodologySpecialtiesProps> = ({
 
               {/* Saiba Mais Link */}
               <div>
-                <button
-                  onClick={() => {
-                    if (onNavigateSpecialty) {
-                      onNavigateSpecialty(spec.route);
-                    } else if (onSelectSpecialty) {
-                      onSelectSpecialty(spec.title);
-                    } else {
-                      onOpenAuditModal();
-                    }
-                  }}
+                <Link
+                  to={spec.path}
                   className={`text-sm font-semibold underline hover:opacity-80 transition-opacity cursor-pointer flex items-center gap-1 ${
                     spec.highlighted ? 'text-[#000604]' : 'text-[#EFEFEF]'
                   }`}
                 >
                   <span>Saiba mais</span>
                   <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                </Link>
               </div>
             </motion.div>
           ))}

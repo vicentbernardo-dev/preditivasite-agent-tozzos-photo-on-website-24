@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, Share2, Bookmark, Check, Copy } from 'lucide-react';
-import { PageRoute } from './Navbar';
+import { Link, useParams } from 'react-router-dom';
+import { PATHS } from '../routes';
 import { RadarNewsletter } from './RadarNewsletter';
 import { client } from '../lib/sanity';
 import { PortableText } from '@portabletext/react';
 
 interface BlogPostPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
-  slug?: string; // Futuramente, você pode passar o slug do post clicado aqui
 }
 
 // Estilização automática para o texto vindo do Sanity
@@ -31,9 +30,9 @@ const richTextStyles = {
 
 export const BlogPostPage: React.FC<BlogPostPageProps> = ({
   onOpenAuditModal,
-  onNavigatePage,
-  slug
 }) => {
+  // O slug vem da URL (/blog/:slug)
+  const { slug } = useParams<{ slug: string }>();
   const [copied, setCopied] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [sidebarEmail, setSidebarEmail] = useState('');
@@ -87,7 +86,7 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
     return (
       <div className="w-full min-h-screen bg-[#000604] flex flex-col items-center justify-center text-[#B9CCAF]">
         <p className="mb-4">Artigo não encontrado.</p>
-        <button onClick={() => onNavigatePage('blog')} className="text-[#0DF205] underline">Voltar para o blog</button>
+        <Link to={PATHS.blog} className="text-[#0DF205] underline">Voltar para o blog</Link>
       </div>
     );
   }
@@ -97,13 +96,13 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
       {/* TOP NAVIGATION / BREADCRUMB */}
       <div className="bg-[#0D0F0D] border-b border-white/10 pt-28 pb-4">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <button
-            onClick={() => onNavigatePage('blog')}
+          <Link
+            to={PATHS.blog}
             className="inline-flex items-center gap-2 text-sm text-[#D9D9D9] hover:text-[#0DF205] transition-colors cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4" />
             <span>Voltar para o Blog</span>
-          </button>
+          </Link>
           
           <div className="flex items-center gap-2">
             <span className="px-2.5 py-1 bg-[#0DF205]/10 border border-[#0DF205]/30 rounded text-[#0DF205] text-[10px] font-bold uppercase tracking-wider">

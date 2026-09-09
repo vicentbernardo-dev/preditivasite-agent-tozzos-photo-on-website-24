@@ -1,38 +1,34 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, CheckCircle2, Sparkles, ChevronRight, MessageSquareCode, ExternalLink } from 'lucide-react';
 import { SPECIALTIES } from '../data/mockData';
 import { Specialty } from '../types';
-import { PageRoute } from './Navbar';
+import { PATHS } from '../routes';
 
 interface SpecialtiesSectionProps {
-  onSelectSpecialty: (specialty: Specialty) => void;
   onOpenContact: () => void;
-  onNavigateSpecialty?: (route: PageRoute) => void;
 }
 
-export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({
-  onSelectSpecialty,
-  onOpenContact,
-  onNavigateSpecialty
-}) => {
+export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({ onOpenContact }) => {
   const [activeSpecialty, setActiveSpecialty] = useState<Specialty>(SPECIALTIES[1]); // Default to SEO (02) as highlighted in Figma
 
-  const getSpecialtyRoute = (spec: Specialty): PageRoute => {
+  // Each specialty tab has its own page URL.
+  const getSpecialtyPath = (spec: Specialty): string => {
     switch (spec.number) {
       case '01':
-        return 'especialidade-crm';
+        return PATHS.especialidadeCrm;
       case '02':
-        return 'especialidade-seo';
+        return PATHS.especialidadeSeo;
       case '03':
-        return 'especialidade-midia';
+        return PATHS.especialidadeMidia;
       case '04':
-        return 'especialidade-dev';
+        return PATHS.especialidadeDev;
       case '05':
-        return 'especialidade-dados';
+        return PATHS.especialidadeDados;
       case '06':
       default:
-        return 'especialidade-growth';
+        return PATHS.especialidadeGrowth;
     }
   };
 
@@ -70,10 +66,7 @@ export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({
               <motion.div
                 key={spec.number}
                 whileHover={{ y: -4 }}
-                onClick={() => {
-                  setActiveSpecialty(spec);
-                  onSelectSpecialty(spec);
-                }}
+                onClick={() => setActiveSpecialty(spec)}
                 className={`cursor-pointer rounded-xl p-5 sm:p-6 flex flex-col justify-between min-h-[250px] transition-all duration-300 ${
                   isSelected
                     ? 'bg-[#0DF205] text-[#000604] shadow-[0_0_35px_rgba(13,242,5,0.35)] scale-[1.02]'
@@ -136,15 +129,13 @@ export const SpecialtiesSection: React.FC<SpecialtiesSectionProps> = ({
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                {onNavigateSpecialty && (
-                  <button
-                    onClick={() => onNavigateSpecialty(getSpecialtyRoute(activeSpecialty))}
-                    className="px-6 py-3 bg-[#0DF205] text-[#000604] hover:bg-[#0be004] font-familjen font-bold text-sm rounded-lg transition-colors flex items-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(13,242,5,0.3)]"
-                  >
-                    <span>Ver Página da Especialidade</span>
-                    <ExternalLink className="w-4 h-4" />
-                  </button>
-                )}
+                <Link
+                  to={getSpecialtyPath(activeSpecialty)}
+                  className="px-6 py-3 bg-[#0DF205] text-[#000604] hover:bg-[#0be004] font-familjen font-bold text-sm rounded-lg transition-colors flex items-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(13,242,5,0.3)]"
+                >
+                  <span>Ver Página da Especialidade</span>
+                  <ExternalLink className="w-4 h-4" />
+                </Link>
 
                 <button
                   onClick={onOpenContact}

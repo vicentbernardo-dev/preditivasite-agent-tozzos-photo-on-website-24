@@ -23,21 +23,29 @@ import {
   Lock,
   ArrowLeft
 } from 'lucide-react';
-import { PageRoute } from './Navbar';
+import { Link } from 'react-router-dom';
 import { TOOLS_ECOSYSTEM_DATA } from '../data/toolsData';
+import { PATHS } from '../routes';
+
+type ToolsTab = 'all' | 'vision' | 'alfredo';
+
+// Each tab of the ecosystem has its own URL.
+const TAB_PATHS: Record<ToolsTab, string> = {
+  all: PATHS.ferramentas,
+  vision: PATHS.ferramentasVision,
+  alfredo: PATHS.ferramentasAlfredo,
+};
 
 interface ToolsPageProps {
-  initialTab?: 'all' | 'vision' | 'alfredo';
+  activeTab?: ToolsTab;
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
 }
 
 export const ToolsPage: React.FC<ToolsPageProps> = ({
-  initialTab = 'all',
+  activeTab = 'all',
   onOpenAuditModal,
-  onNavigatePage,
 }) => {
-  const [selectedTab, setSelectedTab] = useState<'all' | 'vision' | 'alfredo'>(initialTab);
+  const selectedTab = activeTab;
   const [visionTestDomain, setVisionTestDomain] = useState('');
   const [activeVisionDimension, setActiveVisionDimension] = useState(0);
 
@@ -99,12 +107,12 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-xs font-mono text-white/50">
-              <button 
-                onClick={() => onNavigatePage('home')}
+              <Link
+                to={PATHS.home}
                 className="hover:text-[#0DF205] transition-colors"
               >
                 Início
-              </button>
+              </Link>
               <span>/</span>
               <span className="text-[#0DF205]">Ferramentas</span>
             </div>
@@ -115,8 +123,8 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({
 
           {/* Tab Selector */}
           <div className="inline-flex p-1 rounded-2xl bg-[#0C1410] border border-white/10">
-            <button
-              onClick={() => setSelectedTab('all')}
+            <Link
+              to={TAB_PATHS.all}
               className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer ${
                 selectedTab === 'all'
                   ? 'bg-[#0DF205] text-[#000604] shadow-[0_0_15px_#0DF205]'
@@ -124,9 +132,9 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({
               }`}
             >
               Todos os Produtos
-            </button>
-            <button
-              onClick={() => setSelectedTab('vision')}
+            </Link>
+            <Link
+              to={TAB_PATHS.vision}
               className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer ${
                 selectedTab === 'vision'
                   ? 'bg-[#0DF205] text-[#000604] shadow-[0_0_15px_#0DF205]'
@@ -134,9 +142,9 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({
               }`}
             >
               Vision (IA Search)
-            </button>
-            <button
-              onClick={() => setSelectedTab('alfredo')}
+            </Link>
+            <Link
+              to={TAB_PATHS.alfredo}
               className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all cursor-pointer ${
                 selectedTab === 'alfredo'
                   ? 'bg-[#0DF205] text-[#000604] shadow-[0_0_15px_#0DF205]'
@@ -144,7 +152,7 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({
               }`}
             >
               Alfredo (Operações)
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -174,13 +182,13 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({
                     <span>{hero_banner.cta.label}</span>
                     <ExternalLink className="w-4 h-4" />
                   </a>
-                  <button
-                    onClick={() => setSelectedTab('vision')}
+                  <Link
+                    to={TAB_PATHS.vision}
                     className="px-6 py-4 bg-white/5 hover:bg-white/10 text-white border border-[#0DF205]/40 font-bold text-sm uppercase tracking-wider rounded-xl transition-all flex items-center gap-2 cursor-pointer"
                   >
                     <span>Ver detalhes do Vision</span>
                     <ArrowRight className="w-4 h-4 text-[#0DF205]" />
-                  </button>
+                  </Link>
                 </div>
               </div>
 
@@ -238,12 +246,12 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({
                     <span>Acessar Vision</span>
                     <ExternalLink className="w-3.5 h-3.5" />
                   </a>
-                  <button
-                    onClick={() => setSelectedTab('vision')}
+                  <Link
+                    to={TAB_PATHS.vision}
                     className="px-4 py-3.5 bg-white/5 hover:bg-white/10 text-white border border-white/10 text-xs font-bold uppercase tracking-wider rounded-xl cursor-pointer"
                   >
                     Detalhes
-                  </button>
+                  </Link>
                 </div>
               </div>
 
@@ -270,19 +278,19 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({
                 </div>
 
                 <div className="pt-4 border-t border-white/10 flex items-center gap-3">
-                  <button
-                    onClick={() => setSelectedTab('alfredo')}
+                  <Link
+                    to={TAB_PATHS.alfredo}
                     className="flex-1 py-3.5 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-xs uppercase tracking-wider rounded-xl transition-all text-center flex items-center justify-center gap-1.5 cursor-pointer shadow-[0_0_20px_rgba(13,242,5,0.3)]"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
                     <span>Entrar na Lista VIP</span>
-                  </button>
-                  <button
-                    onClick={() => setSelectedTab('alfredo')}
+                  </Link>
+                  <Link
+                    to={TAB_PATHS.alfredo}
                     className="px-4 py-3.5 bg-white/5 hover:bg-white/10 text-white border border-white/10 text-xs font-bold uppercase tracking-wider rounded-xl cursor-pointer"
                   >
                     Detalhes
-                  </button>
+                  </Link>
                 </div>
               </div>
 

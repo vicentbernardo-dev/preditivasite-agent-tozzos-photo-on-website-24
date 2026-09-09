@@ -21,11 +21,9 @@ import {
   Building2,
   HelpCircle
 } from 'lucide-react';
-import { PageRoute } from './Navbar';
 
 interface PartnersPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
 }
 
 interface PartnerLevel {
@@ -39,7 +37,6 @@ interface PartnerLevel {
 
 export const PartnersPage: React.FC<PartnersPageProps> = ({
   onOpenAuditModal,
-  onNavigatePage,
 }) => {
   // Hero Partner Form State
   const [heroForm, setHeroForm] = useState({

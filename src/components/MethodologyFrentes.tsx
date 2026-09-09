@@ -2,17 +2,16 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ShoppingBag, LineChart, Users, Sparkles, ArrowRight } from 'lucide-react';
 import { ServiceCard } from '../types';
+import { ServiceCta } from './ServiceCta';
 
 interface MethodologyFrentesProps {
   onSelectService?: (service: ServiceCard) => void;
   onOpenAuditModal: () => void;
-  onNavigateFrente?: (frentePage: 'frentes-aceleradora' | 'frentes-consultoria' | 'frentes-especialistas') => void;
 }
 
 export const MethodologyFrentes: React.FC<MethodologyFrentesProps> = ({
   onSelectService,
   onOpenAuditModal,
-  onNavigateFrente,
 }) => {
   const frentesData: ServiceCard[] = [
     {
@@ -134,20 +133,10 @@ export const MethodologyFrentes: React.FC<MethodologyFrentesProps> = ({
 
                 {/* Bottom CTA Button */}
                 <div className="pt-8 mt-6">
-                  <button
-                    onClick={() => {
-                      if (frente.id === 'aceleradora' && onNavigateFrente) {
-                        onNavigateFrente('frentes-aceleradora');
-                      } else if (frente.id === 'consultoria' && onNavigateFrente) {
-                        onNavigateFrente('frentes-consultoria');
-                      } else if (frente.id === 'especialistas' && onNavigateFrente) {
-                        onNavigateFrente('frentes-especialistas');
-                      } else if (onSelectService) {
-                        onSelectService(frente);
-                      } else {
-                        onOpenAuditModal();
-                      }
-                    }}
+                  <ServiceCta
+                    service={frente}
+                    onSelectService={onSelectService}
+                    onFallback={onOpenAuditModal}
                     className={`w-full py-4 px-6 rounded-lg font-bold text-sm sm:text-base uppercase tracking-wide transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer ${
                       isNeon
                         ? 'bg-[#0DF205] hover:bg-[#0be004] text-[#000604] shadow-[0_0_20px_rgba(13,242,5,0.3)]'
@@ -158,7 +147,7 @@ export const MethodologyFrentes: React.FC<MethodologyFrentesProps> = ({
                   >
                     <span>{frente.ctaText}</span>
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </ServiceCta>
                 </div>
 
               </motion.div>
