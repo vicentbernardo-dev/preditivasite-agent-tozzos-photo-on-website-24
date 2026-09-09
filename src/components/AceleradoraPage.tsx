@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, CheckCircle2, ChevronDown, ArrowRight, Quote, Zap, Activity, TrendingUp, Search, Database, Users, ShieldAlert, Cpu, BarChart3, LineChart, Code2, Globe, Layers } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { PATHS } from '../routes';
 
 interface AceleradoraPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: 'home' | 'metodologia' | 'frentes-aceleradora' | 'frentes-consultoria' | 'frentes-especialistas') => void;
   onLeadSuccess?: (data: { name: string; email: string; company: string; role: string }) => void;
 }
 
 export const AceleradoraPage: React.FC<AceleradoraPageProps> = ({
   onOpenAuditModal,
-  onNavigatePage,
   onLeadSuccess,
 }) => {
   const [openFaqId, setOpenFaqId] = useState<number | null>(0);
@@ -177,12 +177,12 @@ export const AceleradoraPage: React.FC<AceleradoraPageProps> = ({
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
-                <button
-                  onClick={() => onNavigatePage('home')}
+                <Link
+                  to={PATHS.cases}
                   className="px-8 py-4 border border-[#84967C] hover:border-[#0DF205] text-[#D8E6DF] hover:text-[#0DF205] font-bold text-sm sm:text-base uppercase tracking-wider rounded transition-all cursor-pointer"
                 >
                   VER CASES
-                </button>
+                </Link>
               </div>
             </motion.div>
 

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, CheckCircle2, ChevronDown, ArrowRight, Search, Code2, Users2, Database, Megaphone, Zap, ShieldCheck, Clock, Layers, Award } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { PATHS } from '../routes';
 
 interface EspecialistasPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: 'home' | 'metodologia' | 'frentes-aceleradora' | 'frentes-consultoria' | 'frentes-especialistas') => void;
   onLeadSuccess?: (data: { name: string; email: string; company: string; role: string }) => void;
 }
 
 export const EspecialistasPage: React.FC<EspecialistasPageProps> = ({
   onOpenAuditModal,
-  onNavigatePage,
   onLeadSuccess,
 }) => {
   const [openFaqId, setOpenFaqId] = useState<number | null>(0);
@@ -119,12 +119,12 @@ export const EspecialistasPage: React.FC<EspecialistasPageProps> = ({
                   Conhecer Nossos Especialistas
                 </button>
 
-                <button
-                  onClick={() => onNavigatePage('home')}
+                <Link
+                  to={PATHS.cases}
                   className="px-8 py-4 border border-white/20 hover:border-[#0DF205] text-white hover:text-[#0DF205] font-bold text-sm sm:text-base uppercase tracking-wider rounded transition-all cursor-pointer"
                 >
                   Ver Nossos Cases
-                </button>
+                </Link>
               </div>
             </motion.div>
 

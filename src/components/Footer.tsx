@@ -1,16 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Logo } from './Logo';
 import { Phone, MapPin, ArrowUpRight, Send, MessageCircle } from 'lucide-react';
 
-import { PageRoute } from './Navbar';
+import { PATHS } from '../routes';
 
 interface FooterProps {
   onNavigateSection: (sectionId: string) => void;
   onOpenAuditModal: () => void;
-  onNavigatePage?: (page: PageRoute) => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditModal, onNavigatePage }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditModal }) => {
   return (
     <footer className="relative bg-[#000604] text-white pt-20 pb-12 border-t border-white/10 overflow-hidden font-familjen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -86,29 +86,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
             </h4>
             <ul className="space-y-2.5 text-sm sm:text-base text-white/90">
               <li>
-                <button 
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('ferramentas');
-                    else onNavigateSection('preditiva-tools-ecosystem');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }} 
+                <Link
+                  to={PATHS.ferramentas}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer flex items-center gap-1.5"
                 >
                   <span>Ferramentas</span>
                   <span className="text-[10px] bg-[#0DF205]/20 text-[#0DF205] px-1.5 py-0.2 rounded font-bold">NOVO</span>
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('blog');
-                    else onNavigateSection('insights');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }} 
-                  className="hover:text-[#0DF205] transition-colors cursor-pointer"
-                >
+                <Link to={PATHS.blog} className="hover:text-[#0DF205] transition-colors cursor-pointer">
                   Blog
-                </button>
+                </Link>
               </li>
               <li>
                 <button onClick={() => onNavigateSection('contato')} className="hover:text-[#0DF205] transition-colors cursor-pointer">
@@ -116,27 +105,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('metodologia');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="hover:text-[#0DF205] transition-colors cursor-pointer"
-                >
+                <Link to={PATHS.metodologia} className="hover:text-[#0DF205] transition-colors cursor-pointer">
                   Metodologia
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('partners');
-                    else onNavigateSection('parceiros');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }} 
-                  className="hover:text-[#0DF205] transition-colors cursor-pointer"
-                >
+                <Link to={PATHS.partners} className="hover:text-[#0DF205] transition-colors cursor-pointer">
                   Nossos Parceiros
-                </button>
+                </Link>
               </li>
               <li>
                 <a href="#cookies" onClick={(e) => { e.preventDefault(); alert('Política de Cookies atualizada conforme LGPD.'); }} className="hover:text-[#0DF205] transition-colors">
@@ -149,16 +125,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
                 </a>
               </li>
               <li>
-                <button 
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('partners');
-                    else onOpenAuditModal();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }} 
-                  className="hover:text-[#0DF205] transition-colors cursor-pointer"
-                >
+                <Link to={PATHS.partners} className="hover:text-[#0DF205] transition-colors cursor-pointer">
                   Seja um parceiro
-                </button>
+                </Link>
               </li>
               <li>
                 <button onClick={() => onNavigateSection('contato')} className="hover:text-[#0DF205] transition-colors cursor-pointer">
@@ -176,37 +145,28 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
               </h4>
               <ul className="space-y-2.5 text-sm sm:text-base text-white/90">
                 <li>
-                  <button
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('frentes-aceleradora');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
+                  <Link
+                    to={PATHS.frentesAceleradora}
                     className="hover:text-[#0DF205] transition-colors text-left cursor-pointer"
                   >
                     Aceleradora de E-commerce
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('frentes-consultoria');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
+                  <Link
+                    to={PATHS.frentesConsultoria}
                     className="hover:text-[#0DF205] transition-colors text-left cursor-pointer"
                   >
                     Consultoria Estratégica
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('frentes-especialistas');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
+                  <Link
+                    to={PATHS.frentesEspecialistas}
                     className="hover:text-[#0DF205] transition-colors text-left cursor-pointer"
                   >
                     Especialistas Dedicados
-                  </button>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -217,52 +177,36 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
               </h4>
               <ul className="space-y-2 text-sm sm:text-base text-white/90">
                 <li>
-                  <button 
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('case-gtex');
-                      else onNavigateSection('cases');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
+                  <Link 
+                    to={PATHS.caseGtex}
                     className="hover:text-[#0DF205] transition-colors cursor-pointer"
                   >
                     GTEX
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button 
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('case-miami');
-                      else onNavigateSection('cases');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
+                  <Link 
+                    to={PATHS.caseMiami}
                     className="hover:text-[#0DF205] transition-colors cursor-pointer"
                   >
                     Miami Ad School
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button 
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('case-master');
-                      else onNavigateSection('cases');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
+                  <Link 
+                    to={PATHS.caseMaster}
                     className="hover:text-[#0DF205] transition-colors cursor-pointer"
                   >
                     Master Cidadania
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button 
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('cases');
-                      else onNavigateSection('cases');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
+                  <Link 
+                    to={PATHS.cases}
                     className="text-[#0DF205] underline hover:text-white transition-colors cursor-pointer"
                   >
                     ver todos &gt;
-                  </button>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -275,76 +219,52 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
             </h4>
             <ul className="space-y-2.5 text-sm sm:text-base text-white/90 uppercase font-semibold">
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-seo');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <Link
+                  to={PATHS.especialidadeSeo}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   SEO TÉCNICO
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-crm');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <Link
+                  to={PATHS.especialidadeCrm}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   CRM & RETENÇÃO
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-midia');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <Link
+                  to={PATHS.especialidadeMidia}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   MÍDIA PAGA & CAPI
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-dados');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <Link
+                  to={PATHS.especialidadeDados}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   DADOS & GA4
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-dev');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <Link
+                  to={PATHS.especialidadeDev}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   DEV & INFRA
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-growth');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <Link
+                  to={PATHS.especialidadeGrowth}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   CRO & GROWTH
-                </button>
+                </Link>
               </li>
             </ul>
           </div>

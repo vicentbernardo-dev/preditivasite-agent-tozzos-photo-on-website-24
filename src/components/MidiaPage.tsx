@@ -20,17 +20,16 @@ import {
   Filter,
   Eye
 } from 'lucide-react';
-import { PageRoute } from './Navbar';
+import { Link } from 'react-router-dom';
+import { homeSectionPath } from '../routes';
 
 interface MidiaPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
   onLeadSuccess?: (data: { name: string; email: string; company: string; role: string }) => void;
 }
 
 export const MidiaPage: React.FC<MidiaPageProps> = ({
   onOpenAuditModal,
-  onNavigatePage,
   onLeadSuccess,
 }) => {
   const [openFaqId, setOpenFaqId] = useState<number | null>(0);
@@ -149,17 +148,12 @@ export const MidiaPage: React.FC<MidiaPageProps> = ({
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <button
-                onClick={() => {
-                  onNavigatePage('home');
-                  setTimeout(() => {
-                    document.getElementById('cases')?.scrollIntoView({ behavior: 'smooth' });
-                  }, 100);
-                }}
+              <Link
+                to={homeSectionPath('cases')}
                 className="px-8 py-4 border border-white/20 hover:border-[#0DF205] text-[#E3E3DF] hover:text-[#0DF205] font-bold text-sm sm:text-base uppercase tracking-wider rounded transition-all cursor-pointer"
               >
                 Ver Cases
-              </button>
+              </Link>
             </motion.div>
 
           </div>
@@ -543,18 +537,13 @@ export const MidiaPage: React.FC<MidiaPageProps> = ({
               Insights
             </h2>
 
-            <button
-              onClick={() => {
-                onNavigatePage('home');
-                setTimeout(() => {
-                  document.getElementById('insights')?.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-              }}
+            <Link
+              to={homeSectionPath('insights')}
               className="text-[#0DF205] text-sm sm:text-base font-medium flex items-center gap-2 hover:underline cursor-pointer"
             >
               <span>Ver todas as matérias</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

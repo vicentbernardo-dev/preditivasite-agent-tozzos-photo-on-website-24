@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, ArrowRight, ArrowUpRight, Zap, ChevronDown, Download
 } from 'lucide-react';
-import { PageRoute } from './Navbar';
+import { Link } from 'react-router-dom';
+import { blogPostPath } from '../routes';
 import { RadarNewsletter } from './RadarNewsletter';
 import { client, postsQuery } from '../lib/sanity';
 
 interface BlogPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
 }
 
 type BlogCategory = 'TODOS' | 'CRM' | 'MÍDIA PAGA' | 'SEO' | 'SOCIAL' | 'DESIGN THINKING';
@@ -77,7 +77,6 @@ const mapSanityPostToArticle = (post: any): ArticleItem => {
 
 export const BlogPage: React.FC<BlogPageProps> = ({
   onOpenAuditModal,
-  onNavigatePage,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<BlogCategory>('TODOS');
@@ -216,50 +215,50 @@ export const BlogPage: React.FC<BlogPageProps> = ({
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredArticles.map((article, idx) => (
-                <motion.article
-                  key={article.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: idx * 0.1 }}
-                  onClick={() => onNavigatePage('blog-post')} // Futuramente, passe o article.id aqui
-                  className="group rounded-3xl bg-[#1A1C1A] border border-[#3B4B35]/15 hover:border-[#0DF205]/40 overflow-hidden flex flex-col justify-between transition-all duration-300 shadow-xl cursor-pointer"
-                >
-                  <div>
-                    <div className="relative h-60 overflow-hidden bg-black/60">
-                      <img
-                        src={article.image}
-                        alt={article.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#1A1C1A] via-transparent to-transparent" />
+                <Link key={article.id} to={blogPostPath(article.id)} className="block h-full">
+                  <motion.article
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: idx * 0.1 }}
+                    className="group rounded-3xl bg-[#1A1C1A] border border-[#3B4B35]/15 hover:border-[#0DF205]/40 overflow-hidden flex flex-col justify-between transition-all duration-300 shadow-xl cursor-pointer h-full"
+                  >
+                    <div>
+                      <div className="relative h-60 overflow-hidden bg-black/60">
+                        <img
+                          src={article.image}
+                          alt={article.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#1A1C1A] via-transparent to-transparent" />
                       
-                      <div className="absolute top-5 left-5 px-3 py-1 bg-[#0D0F0D]/80 backdrop-blur-md rounded border border-white/10 text-[#00FF00] text-[10px] font-bold uppercase tracking-wider">
-                        {article.category}
+                        <div className="absolute top-5 left-5 px-3 py-1 bg-[#0D0F0D]/80 backdrop-blur-md rounded border border-white/10 text-[#00FF00] text-[10px] font-bold uppercase tracking-wider">
+                          {article.category}
+                        </div>
+                      </div>
+
+                      <div className="p-7 sm:p-8 space-y-3">
+                        <h3 className="text-xl sm:text-2xl font-bold text-[#E3E3DF] group-hover:text-[#0DF205] transition-colors leading-snug">
+                          {article.title}
+                        </h3>
+                        <p className="text-sm text-[#B9CCAF] leading-relaxed opacity-80 line-clamp-3">
+                          {article.excerpt}
+                        </p>
                       </div>
                     </div>
 
-                    <div className="p-7 sm:p-8 space-y-3">
-                      <h3 className="text-xl sm:text-2xl font-bold text-[#E3E3DF] group-hover:text-[#0DF205] transition-colors leading-snug">
-                        {article.title}
-                      </h3>
-                      <p className="text-sm text-[#B9CCAF] leading-relaxed opacity-80 line-clamp-3">
-                        {article.excerpt}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="p-7 sm:p-8 pt-0">
-                    <div className="pt-5 border-t border-[#3B4B35]/20 flex items-center justify-between">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#84967C]">
-                        {article.date}
-                      </span>
-                      <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#00FF00] group-hover:underline">
-                        <span>LER MAIS</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    <div className="p-7 sm:p-8 pt-0">
+                      <div className="pt-5 border-t border-[#3B4B35]/20 flex items-center justify-between">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#84967C]">
+                          {article.date}
+                        </span>
+                        <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-[#00FF00] group-hover:underline">
+                          <span>LER MAIS</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </motion.article>
+                  </motion.article>
+                </Link>
               ))}
 
               {/* Special Whitepaper Card */}

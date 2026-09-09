@@ -12,16 +12,15 @@ import {
   Globe,
   ChevronRight
 } from 'lucide-react';
-import { PageRoute } from './Navbar';
+import { Link } from 'react-router-dom';
+import { PATHS } from '../routes';
 
 interface CasesPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
 }
 
 export const CasesPage: React.FC<CasesPageProps> = ({
   onOpenAuditModal,
-  onNavigatePage,
 }) => {
   return (
     <div className="w-full flex flex-col bg-[#000604] text-white font-familjen">
@@ -157,13 +156,13 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                 </div>
 
                 <div>
-                  <button
-                    onClick={() => onNavigatePage('case-miami')}
+                  <Link
+                    to={PATHS.caseMiami}
                     className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>VER DETALHES</span>
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -204,13 +203,13 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                 </p>
 
                 <div>
-                  <button
-                    onClick={() => onNavigatePage('case-gtex')}
+                  <Link
+                    to={PATHS.caseGtex}
                     className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>VER DETALHES</span>
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -243,13 +242,13 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                     Reposicionamento global e automação de leads qualificados para processos de cidadania europeia em 12 países.
                   </p>
 
-                  <button
-                    onClick={() => onNavigatePage('case-master')}
+                  <Link
+                    to={PATHS.caseMaster}
                     className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>VER DETALHES</span>
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </Link>
                 </div>
 
                 <div className="lg:col-span-5 flex items-center justify-start lg:justify-end gap-10 sm:gap-14 pt-4 lg:pt-0">
