@@ -8,11 +8,14 @@ import { PageRoute } from './Navbar';
 interface InsightsSectionProps {
   onSelectArticle: (article: InsightArticle) => void;
   onNavigatePage?: (page: PageRoute) => void;
+  /** Opens an article under its real URL (/blog/:slug). */
+  onOpenPost?: (slug: string) => void;
 }
 
 export const InsightsSection: React.FC<InsightsSectionProps> = ({ 
   onSelectArticle,
-  onNavigatePage 
+  onNavigatePage,
+  onOpenPost,
 }) => {
   return (
     <section id="insights" className="relative py-24 lg:py-32 bg-[#000604] text-white overflow-hidden border-t border-white/10">
@@ -51,7 +54,9 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
               onClick={() => {
-                if (onNavigatePage) {
+                if (onOpenPost) {
+                  onOpenPost(article.id);
+                } else if (onNavigatePage) {
                   onNavigatePage('blog-post');
                 } else {
                   onSelectArticle(article);
