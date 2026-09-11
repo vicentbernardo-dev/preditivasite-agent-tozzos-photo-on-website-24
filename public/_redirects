@@ -1,1 +1,5 @@
+# Redirect (301) do domínio padrão do Netlify para o domínio principal
+https://preditivacosite.netlify.app/*  https://preditiva.co/:splat  301!
+
+# SPA fallback
 /*    /index.html   200

@@ -39,6 +39,7 @@ import { ArticleModal } from './components/ArticleModal';
 import { ServiceModal } from './components/ServiceModal';
 
 import { CaseStudy, InsightArticle, ServiceCard, Specialty } from './types';
+import { SEO } from './components/SEO';
 import { Sparkles, MessageCircle } from 'lucide-react';
 
 export default function App() {
@@ -137,6 +138,10 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#000604] text-white font-familjen flex flex-col selection:bg-[#0DF205] selection:text-black">
+      {/* Canonical dinâmico para a página atual */}
+      <SEO
+        path={currentPage === 'home' ? '/' : `/#/${currentPage}`}
+      />
       {/* Header Navigation */}
       <Navbar
         currentPage={currentPage}
