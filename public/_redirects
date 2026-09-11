@@ -1,1 +1,6 @@
+# Static SEO files must be served as real files (not the SPA fallback).
+/sitemap.xml    /sitemap.xml    200
+/robots.txt     /robots.txt     200
+
+# SPA fallback: every other path renders the app (index.html).
 /*    /index.html   200

@@ -40,10 +40,13 @@ import { ServiceModal } from './components/ServiceModal';
 
 import { CaseStudy, InsightArticle, ServiceCard, Specialty } from './types';
 import { Sparkles, MessageCircle } from 'lucide-react';
+import { pathOf, resolvePath } from './routes';
 
 export default function App() {
-  // Page state: 'home' | 'metodologia' | 'frentes-aceleradora' | 'frentes-consultoria' | 'frentes-especialistas' | 'especialidade-seo' | 'especialidade-midia' | 'especialidade-crm' | 'especialidade-dados' | 'especialidade-dev' | 'especialidade-growth'
+  // Page state: 'home' | 'metodologia' | ... | 'blog-post' | 'ferramentas-alfredo'
   const [currentPage, setCurrentPage] = useState<PageRoute>('home');
+  // Slug of the blog post being read (populated from /blog/:slug URLs).
+  const [postSlug, setPostSlug] = useState<string | null>(null);
 
   // Modal states
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
@@ -57,6 +60,28 @@ export default function App() {
 
   // Toast notification state
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Central navigation: switches page state and keeps the URL in sync so
+  // every page has a real, shareable, sitemap-consistent address.
+  const navigate = (page: PageRoute) => {
+    setCurrentPage(page);
+    const path = pathOf(page);
+    if (window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Opens a blog article by slug under its real URL (/blog/:slug).
+  const navigateToPost = (slug: string) => {
+    const path = `/blog/${slug}`;
+    setCurrentPage('blog-post');
+    setPostSlug(slug);
+    if (window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const validPages: PageRoute[] = [
     'home',
@@ -83,11 +108,25 @@ export default function App() {
   ];
 
   useEffect(() => {
-    // Check URL hash if available
-    const hash = window.location.hash.replace('#', '') as PageRoute;
-    if (validPages.includes(hash)) {
-      setCurrentPage(hash);
-    }
+    // Resolve the real URL path (/metodologia, /blog/:slug, ...) to the
+    // matching page state. Keeps sitemap URLs landing on the right page.
+    const resolveFromUrl = () => {
+      const path = window.location.pathname;
+      const resolution = resolvePath(path);
+      if (resolution) {
+        setCurrentPage(resolution.page);
+        setPostSlug(resolution.params.slug ?? null);
+        return;
+      }
+      // Legacy fallback: old URLs used hash navigation (#metodologia).
+      const hash = window.location.hash.replace('#', '') as PageRoute;
+      if (validPages.includes(hash)) {
+        setCurrentPage(hash);
+      }
+    };
+    resolveFromUrl();
+    window.addEventListener('popstate', resolveFromUrl);
+    return () => window.removeEventListener('popstate', resolveFromUrl);
   }, []);
 
   const showToast = (msg: string) => {
@@ -104,8 +143,7 @@ export default function App() {
 
   const handleNavigateSection = (sectionId: string) => {
     if (validPages.includes(sectionId as PageRoute)) {
-      setCurrentPage(sectionId as PageRoute);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      navigate(sectionId as PageRoute);
       return;
     }
 
@@ -116,6 +154,9 @@ export default function App() {
       // If section is on another page, switch to home first
       if (['solucoes', 'gargalos', 'diagnostico', 'cases', 'depoimentos', 'especialidades', 'insights', 'faq', 'contato'].includes(sectionId)) {
         setCurrentPage('home');
+        if (window.location.pathname !== '/') {
+          window.history.pushState({}, '', '/');
+        }
         setTimeout(() => {
           const targetElement = document.getElementById(sectionId);
           if (targetElement) {
@@ -140,10 +181,7 @@ export default function App() {
       {/* Header Navigation */}
       <Navbar
         currentPage={currentPage}
-        onNavigatePage={(page) => {
-          setCurrentPage(page);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onNavigatePage={navigate}
         onOpenAuditModal={() => handleOpenAuditModal()}
         onNavigateSection={handleNavigateSection}
       />
@@ -154,11 +192,10 @@ export default function App() {
           <MethodologyPage
             onOpenAuditModal={() => handleOpenAuditModal()}
             onSelectService={(service) => {
-              if (service.id === 'aceleradora') setCurrentPage('frentes-aceleradora');
-              else if (service.id === 'consultoria') setCurrentPage('frentes-consultoria');
-              else if (service.id === 'especialistas') setCurrentPage('frentes-especialistas');
+              if (service.id === 'aceleradora') navigate('frentes-aceleradora');
+              else if (service.id === 'consultoria') navigate('frentes-consultoria');
+              else if (service.id === 'especialistas') navigate('frentes-especialistas');
               else setSelectedService(service);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             onSelectSpecialty={(specTitle) => {
               showToast(`Especialidade selecionada: ${specTitle}`);
@@ -166,12 +203,10 @@ export default function App() {
             }}
             onLeadSuccess={handleCtaLeadSuccess}
             onNavigateFrente={(frentePage) => {
-              setCurrentPage(frentePage);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              navigate(frentePage);
             }}
             onNavigateSpecialty={(specPage) => {
-              setCurrentPage(specPage);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
+              navigate(specPage);
             }}
           />
         )}
@@ -179,10 +214,7 @@ export default function App() {
         {currentPage === 'frentes-aceleradora' && (
           <AceleradoraPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -190,10 +222,7 @@ export default function App() {
         {currentPage === 'frentes-consultoria' && (
           <ConsultoriaPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -201,10 +230,7 @@ export default function App() {
         {currentPage === 'frentes-especialistas' && (
           <EspecialistasPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -212,10 +238,7 @@ export default function App() {
         {currentPage === 'especialidade-seo' && (
           <SEOPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -223,10 +246,7 @@ export default function App() {
         {currentPage === 'especialidade-midia' && (
           <MidiaPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -234,10 +254,7 @@ export default function App() {
         {currentPage === 'especialidade-crm' && (
           <CRMPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -245,10 +262,7 @@ export default function App() {
         {currentPage === 'especialidade-dados' && (
           <DadosPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -256,10 +270,7 @@ export default function App() {
         {currentPage === 'especialidade-dev' && (
           <DevPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -267,10 +278,7 @@ export default function App() {
         {currentPage === 'especialidade-growth' && (
           <GrowthPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -278,70 +286,51 @@ export default function App() {
         {currentPage === 'cases' && (
           <CasesPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
         {currentPage === 'case-miami' && (
           <CaseMiamiPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
         {currentPage === 'case-gtex' && (
           <CaseGtexPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
         {currentPage === 'case-master' && (
           <CaseMasterPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
         {currentPage === 'blog' && (
           <BlogPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
+            onOpenPost={navigateToPost}
           />
         )}
 
         {currentPage === 'blog-post' && (
           <BlogPostPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
+            slug={postSlug ?? undefined}
           />
         )}
 
         {currentPage === 'partners' && (
           <PartnersPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
@@ -355,10 +344,7 @@ export default function App() {
                 : 'all'
             }
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
@@ -374,14 +360,11 @@ export default function App() {
             <SolutionsSection
               onSelectService={(service) => {
                 if (service.id === 'aceleradora') {
-                  setCurrentPage('frentes-aceleradora');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  navigate('frentes-aceleradora');
                 } else if (service.id === 'consultoria') {
-                  setCurrentPage('frentes-consultoria');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  navigate('frentes-consultoria');
                 } else if (service.id === 'especialistas') {
-                  setCurrentPage('frentes-especialistas');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  navigate('frentes-especialistas');
                 } else {
                   setSelectedService(service);
                 }
@@ -409,10 +392,7 @@ export default function App() {
             <RealResults
               onSelectCase={(cs) => setSelectedCase(cs)}
               onOpenAuditModal={() => handleOpenAuditModal()}
-              onNavigatePage={(page) => {
-                setCurrentPage(page);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
+              onNavigatePage={navigate}
             />
 
             {/* Depoimentos (Testimonials) */}
@@ -425,18 +405,15 @@ export default function App() {
               }}
               onOpenContact={() => handleOpenAuditModal()}
               onNavigateSpecialty={(route) => {
-                setCurrentPage(route);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                navigate(route);
               }}
             />
 
             {/* Insights (Blog) */}
             <InsightsSection
               onSelectArticle={(art) => setSelectedArticle(art)}
-              onNavigatePage={(page) => {
-                setCurrentPage(page);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
+              onNavigatePage={navigate}
+              onOpenPost={navigateToPost}
             />
 
             {/* Perguntas Frequentes (FAQ) */}
@@ -454,10 +431,7 @@ export default function App() {
       <Footer
         onNavigateSection={handleNavigateSection}
         onOpenAuditModal={() => handleOpenAuditModal()}
-        onNavigatePage={(page) => {
-          setCurrentPage(page);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onNavigatePage={navigate}
       />
 
       {/* Floating Action Button for WhatsApp / Rapid Contact */}
