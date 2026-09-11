@@ -39,11 +39,60 @@ import { ArticleModal } from './components/ArticleModal';
 import { ServiceModal } from './components/ServiceModal';
 
 import { CaseStudy, InsightArticle, ServiceCard, Specialty } from './types';
+import { SEO } from './components/SEO';
 import { Sparkles, MessageCircle } from 'lucide-react';
+
+// Mapeamento das páginas internas para URLs limpas (sem hash)
+const pagePathMap: Record<string, string> = {
+  home: '/',
+  metodologia: '/metodologia',
+  'frentes-aceleradora': '/frentes-aceleradora',
+  'frentes-consultoria': '/frentes-consultoria',
+  'frentes-especialistas': '/frentes-especialistas',
+  'especialidade-seo': '/especialidade-seo',
+  'especialidade-midia': '/especialidade-midia',
+  'especialidade-crm': '/especialidade-crm',
+  'especialidade-dados': '/especialidade-dados',
+  'especialidade-dev': '/especialidade-dev',
+  'especialidade-growth': '/especialidade-growth',
+  cases: '/cases',
+  'case-miami': '/case-miami',
+  'case-gtex': '/case-gtex',
+  'case-master': '/case-master',
+  blog: '/blog',
+  'blog-post': '/blog',
+  partners: '/partners',
+  ferramentas: '/ferramentas',
+  'ferramentas-vision': '/ferramentas/vision',
+  'ferramentas-alfredo': '/ferramentas/alfredo',
+};
+
+// Rotas válidas que o servidor precisa servir (SPA fallback do Netlify resolve o resto)
+const validPaths = new Set(Object.values(pagePathMap));
+
+const pathToPage = (pathname: string): PageRoute | null => {
+  const clean = pathname.replace(/\/+$/, '') || '/';
+  for (const [page, path] of Object.entries(pagePathMap)) {
+    if (path === clean) {
+      // '/' só resolve para 'home' quando a URL termina em '/', evitando
+      // que URLs desconhecidas (ex.: /xpto) caiam na home por engano.
+      if (clean === '/' && !pathname.endsWith('/')) return null;
+      return page as PageRoute;
+    }
+  }
+  return null;
+};
 
 export default function App() {
   // Page state: 'home' | 'metodologia' | 'frentes-aceleradora' | 'frentes-consultoria' | 'frentes-especialistas' | 'especialidade-seo' | 'especialidade-midia' | 'especialidade-crm' | 'especialidade-dados' | 'especialidade-dev' | 'especialidade-growth'
-  const [currentPage, setCurrentPage] = useState<PageRoute>('home');
+  const [currentPage, setCurrentPage] = useState<PageRoute>(() => {
+    // Resolve a página inicial sincronamente a partir da URL limpa (ex.: /blog)
+    // com fallback para o hash legado (#/blog)
+    const fromPath = pathToPage(window.location.pathname);
+    if (fromPath) return fromPath;
+    const hash = window.location.hash.replace('#', '') as PageRoute;
+    return validPages.includes(hash) ? hash : 'home';
+  });
 
   // Modal states
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
@@ -82,13 +131,36 @@ export default function App() {
     'ferramentas-alfredo',
   ];
 
+  // Sincroniza a URL (pathname limpo) sempre que a página muda
   useEffect(() => {
-    // Check URL hash if available
-    const hash = window.location.hash.replace('#', '') as PageRoute;
-    if (validPages.includes(hash)) {
-      setCurrentPage(hash);
+    const targetPath = pagePathMap[currentPage] || '/';
+    const currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
+    if (currentPath !== targetPath) {
+      window.history.replaceState({ preditivaPage: currentPage }, '', targetPath);
     }
-  }, []);
+    window.dispatchEvent(
+      new CustomEvent('preditiva:routechange', { detail: { path: targetPath } }),
+    );
+    // GTM / GA4 / Clarity acompanham a mudança de página virtual
+    const w = window as any;
+    w.dataLayer = w.dataLayer || [];
+    w.dataLayer.push({
+      event: 'preditiva_page_view',
+      pagePath: targetPath,
+      pageTitle: document.title,
+    });
+    if (typeof w.clarity === 'function') {
+      w.clarity('set', 'page', targetPath);
+    }
+    // Google Analytics 4 (gtag) — rastreia a navegação entre páginas virtuais
+    if (typeof w.gtag === 'function') {
+      w.gtag('event', 'page_view', {
+        page_path: targetPath,
+        page_title: document.title,
+        page_location: window.location.origin + targetPath,
+      });
+    }
+  }, [currentPage]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -137,6 +209,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#000604] text-white font-familjen flex flex-col selection:bg-[#0DF205] selection:text-black">
+      {/* SEO: canonical dinâmico, title e description por página (path explícito = mesma fonte de verdade da URL) */}
+      <SEO page={currentPage} path={pagePathMap[currentPage]} />
+
       {/* Header Navigation */}
       <Navbar
         currentPage={currentPage}

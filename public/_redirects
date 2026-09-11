@@ -1,1 +1,5 @@
-/*    /index.html   200
+# Redirect 301 forçado: domínio padrão do Netlify -> domínio oficial (evita duplicidade no Google)
+https://preditivacosite.netlify.app/*  https://preditiva.co/:splat  301!
+
+# SPA fallback: serve o index.html para todas as rotas limpas (/blog, /metodologia etc.)
+/*  /index.html  200
