@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Navbar, PageRoute } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { SolutionsSection } from './components/SolutionsSection';
@@ -41,9 +41,64 @@ import { ServiceModal } from './components/ServiceModal';
 import { CaseStudy, InsightArticle, ServiceCard, Specialty } from './types';
 import { Sparkles, MessageCircle } from 'lucide-react';
 
+const VALID_PAGES: PageRoute[] = [
+  'home',
+  'metodologia',
+  'frentes-aceleradora',
+  'frentes-consultoria',
+  'frentes-especialistas',
+  'especialidade-seo',
+  'especialidade-midia',
+  'especialidade-crm',
+  'especialidade-dados',
+  'especialidade-dev',
+  'especialidade-growth',
+  'cases',
+  'case-miami',
+  'case-gtex',
+  'case-master',
+  'blog',
+  'blog-post',
+  'partners',
+  'ferramentas',
+  'ferramentas-vision',
+  'ferramentas-alfredo',
+];
+
+// Resolve the initial page from the URL: supports clean paths (/metodologia,
+// /blog, /blog/:slug) and legacy hash routes (#metodologia, #blog, ...).
+const resolveRouteFromLocation = (): { page: PageRoute; slug?: string } => {
+  // 1) Legacy hash-based routes (#blog, #metodologia, ...)
+  const hash = window.location.hash.replace('#', '') as PageRoute;
+  if (VALID_PAGES.includes(hash)) {
+    return { page: hash };
+  }
+
+  // 2) Clean path-based routes (/metodologia, /blog, /blog/:slug, ...)
+  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+  if (path === '/') {
+    return { page: 'home' };
+  }
+
+  const segments = path.split('/').filter(Boolean);
+  const first = segments[0];
+
+  if (first === 'blog' && segments.length >= 2 && segments[1]) {
+    return { page: 'blog-post', slug: decodeURIComponent(segments[1]) };
+  }
+
+  if (VALID_PAGES.includes(first as PageRoute)) {
+    return { page: first as PageRoute };
+  }
+
+  return { page: 'home' };
+};
+
 export default function App() {
   // Page state: 'home' | 'metodologia' | 'frentes-aceleradora' | 'frentes-consultoria' | 'frentes-especialistas' | 'especialidade-seo' | 'especialidade-midia' | 'especialidade-crm' | 'especialidade-dados' | 'especialidade-dev' | 'especialidade-growth'
-  const [currentPage, setCurrentPage] = useState<PageRoute>('home');
+  const initialRoute = resolveRouteFromLocation();
+  const [currentPage, setCurrentPage] = useState<PageRoute>(initialRoute.page);
+  const [currentSlug, setCurrentSlug] = useState<string | undefined>(initialRoute.slug);
 
   // Modal states
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
@@ -58,37 +113,33 @@ export default function App() {
   // Toast notification state
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const validPages: PageRoute[] = [
-    'home',
-    'metodologia',
-    'frentes-aceleradora',
-    'frentes-consultoria',
-    'frentes-especialistas',
-    'especialidade-seo',
-    'especialidade-midia',
-    'especialidade-crm',
-    'especialidade-dados',
-    'especialidade-dev',
-    'especialidade-growth',
-    'cases',
-    'case-miami',
-    'case-gtex',
-    'case-master',
-    'blog',
-    'blog-post',
-    'partners',
-    'ferramentas',
-    'ferramentas-vision',
-    'ferramentas-alfredo',
-  ];
-
   useEffect(() => {
-    // Check URL hash if available
-    const hash = window.location.hash.replace('#', '') as PageRoute;
-    if (validPages.includes(hash)) {
-      setCurrentPage(hash);
-    }
+    const handlePopState = () => {
+      const popRoute = resolveRouteFromLocation();
+      setCurrentPage(popRoute.page);
+      setCurrentSlug(popRoute.slug);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  // Keep the address bar in sync with the current page (clean URLs)
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    const target =
+      currentPage === 'blog-post' && currentSlug
+        ? `/blog/${encodeURIComponent(currentSlug)}`
+        : currentPage === 'home'
+          ? '/'
+          : `/${currentPage}`;
+    if (window.location.pathname !== target) {
+      window.history.pushState({}, '', target);
+    }
+  }, [currentPage, currentSlug]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -103,7 +154,7 @@ export default function App() {
   };
 
   const handleNavigateSection = (sectionId: string) => {
-    if (validPages.includes(sectionId as PageRoute)) {
+    if (VALID_PAGES.includes(sectionId as PageRoute)) {
       setCurrentPage(sectionId as PageRoute);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -332,6 +383,7 @@ export default function App() {
               setCurrentPage(page);
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
+            slug={currentSlug}
           />
         )}
 

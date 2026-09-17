@@ -221,7 +221,10 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: idx * 0.1 }}
-                  onClick={() => onNavigatePage('blog-post')} // Futuramente, passe o article.id aqui
+                  onClick={() => {
+                    window.history.pushState({}, '', `/blog/${encodeURIComponent(article.id)}`);
+                    onNavigatePage('blog-post');
+                  }}
                   className="group rounded-3xl bg-[#1A1C1A] border border-[#3B4B35]/15 hover:border-[#0DF205]/40 overflow-hidden flex flex-col justify-between transition-all duration-300 shadow-xl cursor-pointer"
                 >
                   <div>
