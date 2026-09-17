@@ -18,7 +18,7 @@ import { PageRoute } from './Navbar';
 
 interface CaseGtexPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
+  onNavigatePage: (page: PageRoute, slug?: string) => void;
 }
 
 export const CaseGtexPage: React.FC<CaseGtexPageProps> = ({

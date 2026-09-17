@@ -130,6 +130,10 @@ export default function App() {
       isFirstRender.current = false;
       return;
     }
+    // '/blog-post' não é uma URL real: sem slug não há o que sincronizar
+    if (currentPage === 'blog-post' && !currentSlug) {
+      return;
+    }
     const target =
       currentPage === 'blog-post' && currentSlug
         ? `/blog/${encodeURIComponent(currentSlug)}`
@@ -186,16 +190,21 @@ export default function App() {
     showToast(`Obrigado, ${lead.name}! Recebemos sua solicitação.`);
   };
 
+  // Navegação centralizada: mantém página, slug e URL sempre consistentes.
+  // O slug é obrigatório ao abrir um post (evita URLs genéricas /blog-post).
+  const navigate = (page: PageRoute, slug?: string) => {
+    setCurrentPage(page);
+    setCurrentSlug(slug);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-[#000604] text-white font-familjen flex flex-col selection:bg-[#0DF205] selection:text-black">
       {/* Header Navigation */}
       <Navbar
         currentPage={currentPage}
-        onNavigatePage={(page) => {
-          setCurrentPage(page);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        onOpenAuditModal={() => handleOpenAuditModal()}
+        onNavigatePage={navigate}
+                onOpenAuditModal={() => handleOpenAuditModal()}
         onNavigateSection={handleNavigateSection}
       />
 
@@ -230,10 +239,7 @@ export default function App() {
         {currentPage === 'frentes-aceleradora' && (
           <AceleradoraPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -241,10 +247,7 @@ export default function App() {
         {currentPage === 'frentes-consultoria' && (
           <ConsultoriaPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -252,10 +255,7 @@ export default function App() {
         {currentPage === 'frentes-especialistas' && (
           <EspecialistasPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -263,10 +263,7 @@ export default function App() {
         {currentPage === 'especialidade-seo' && (
           <SEOPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -274,10 +271,7 @@ export default function App() {
         {currentPage === 'especialidade-midia' && (
           <MidiaPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -285,10 +279,7 @@ export default function App() {
         {currentPage === 'especialidade-crm' && (
           <CRMPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -296,10 +287,7 @@ export default function App() {
         {currentPage === 'especialidade-dados' && (
           <DadosPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -307,10 +295,7 @@ export default function App() {
         {currentPage === 'especialidade-dev' && (
           <DevPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -318,10 +303,7 @@ export default function App() {
         {currentPage === 'especialidade-growth' && (
           <GrowthPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             onLeadSuccess={handleCtaLeadSuccess}
           />
         )}
@@ -329,60 +311,42 @@ export default function App() {
         {currentPage === 'cases' && (
           <CasesPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
         {currentPage === 'case-miami' && (
           <CaseMiamiPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
         {currentPage === 'case-gtex' && (
           <CaseGtexPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
         {currentPage === 'case-master' && (
           <CaseMasterPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
         {currentPage === 'blog' && (
           <BlogPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
         {currentPage === 'blog-post' && (
           <BlogPostPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
             slug={currentSlug}
           />
         )}
@@ -390,10 +354,7 @@ export default function App() {
         {currentPage === 'partners' && (
           <PartnersPage
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
@@ -407,10 +368,7 @@ export default function App() {
                 : 'all'
             }
             onOpenAuditModal={() => handleOpenAuditModal()}
-            onNavigatePage={(page) => {
-              setCurrentPage(page);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
+            onNavigatePage={navigate}
           />
         )}
 
@@ -461,10 +419,8 @@ export default function App() {
             <RealResults
               onSelectCase={(cs) => setSelectedCase(cs)}
               onOpenAuditModal={() => handleOpenAuditModal()}
-              onNavigatePage={(page) => {
-                setCurrentPage(page);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
+              onNavigatePage={navigate}
+              
             />
 
             {/* Depoimentos (Testimonials) */}
@@ -485,10 +441,8 @@ export default function App() {
             {/* Insights (Blog) */}
             <InsightsSection
               onSelectArticle={(art) => setSelectedArticle(art)}
-              onNavigatePage={(page) => {
-                setCurrentPage(page);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
+              onNavigatePage={navigate}
+              
             />
 
             {/* Perguntas Frequentes (FAQ) */}
@@ -506,11 +460,8 @@ export default function App() {
       <Footer
         onNavigateSection={handleNavigateSection}
         onOpenAuditModal={() => handleOpenAuditModal()}
-        onNavigatePage={(page) => {
-          setCurrentPage(page);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-      />
+        onNavigatePage={navigate}
+              />
 
       {/* Floating Action Button for WhatsApp / Rapid Contact */}
       <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">

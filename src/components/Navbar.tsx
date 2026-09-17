@@ -28,7 +28,7 @@ export type PageRoute =
 
 interface NavbarProps {
   currentPage?: PageRoute;
-  onNavigatePage?: (page: PageRoute) => void;
+  onNavigatePage?: (page: PageRoute, slug?: string) => void;
   onOpenAuditModal: () => void;
   onNavigateSection: (sectionId: string) => void;
 }

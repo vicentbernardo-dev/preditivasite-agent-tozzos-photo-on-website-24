@@ -29,7 +29,7 @@ import { TOOLS_ECOSYSTEM_DATA } from '../data/toolsData';
 interface ToolsPageProps {
   initialTab?: 'all' | 'vision' | 'alfredo';
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
+  onNavigatePage: (page: PageRoute, slug?: string) => void;
 }
 
 export const ToolsPage: React.FC<ToolsPageProps> = ({

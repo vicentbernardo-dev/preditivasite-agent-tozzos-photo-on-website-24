@@ -28,7 +28,7 @@ import { PageRoute } from './Navbar';
 
 interface CRMPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
+  onNavigatePage: (page: PageRoute, slug?: string) => void;
   onLeadSuccess?: (data: { name: string; email: string; company: string; role: string }) => void;
 }
 
