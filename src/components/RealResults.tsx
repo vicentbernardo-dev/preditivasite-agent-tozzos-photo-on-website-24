@@ -8,7 +8,7 @@ import { PageRoute } from './Navbar';
 interface RealResultsProps {
   onSelectCase: (caseStudy: CaseStudy) => void;
   onOpenAuditModal: () => void;
-  onNavigatePage?: (page: PageRoute) => void;
+  onNavigatePage?: (page: PageRoute, slug?: string) => void;
 }
 
 export const RealResults: React.FC<RealResultsProps> = ({ 

@@ -17,7 +17,7 @@ import { PageRoute } from './Navbar';
 
 interface CaseMasterPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
+  onNavigatePage: (page: PageRoute, slug?: string) => void;
 }
 
 export const CaseMasterPage: React.FC<CaseMasterPageProps> = ({

@@ -7,7 +7,7 @@ import { PortableText } from '@portabletext/react';
 
 interface BlogPostPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
+  onNavigatePage: (page: PageRoute, slug?: string) => void;
   slug?: string; // Futuramente, você pode passar o slug do post clicado aqui
 }
 
@@ -47,12 +47,17 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
     const fetchPost = async () => {
       try {
         setLoading(true);
+        // Normaliza o slug (decodifica %XX e remove barras/espacos das pontas)
+        const normalizedSlug = slug
+          ? decodeURIComponent(slug).replace(/^\/+|\/+$/g, '').trim()
+          : '';
         // Se tiver slug, busca ele. Se não, busca o último post publicado para demonstração.
-        const query = slug 
-          ? `*[_type == "post" && slug.current == $slug][0]{..., "imageUrl": image.asset->url}`
-          : `*[_type == "post"] | order(date desc)[0]{..., "imageUrl": image.asset->url}`;
-        
-        const data = await client.fetch(query, { slug });
+        // lower() torna a busca resiliente a variações de caixa.
+        const query = normalizedSlug
+          ? `*[_type in ["post", "blogPost", "article"] && lower(slug.current) == lower($slug)][0]{..., "imageUrl": image.asset->url}`
+          : `*[_type in ["post", "blogPost", "article"]] | order(coalesce(date, publishedAt, _createdAt) desc)[0]{..., "imageUrl": image.asset->url}`;
+
+        const data = await client.fetch(query, { slug: normalizedSlug });
         setPost(data);
       } catch (error) {
         console.error("Erro ao buscar post completo:", error);
