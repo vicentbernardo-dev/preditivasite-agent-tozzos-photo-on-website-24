@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { lazy, Suspense, useState, useEffect, useRef } from 'react';
 import { Navbar, PageRoute } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { SolutionsSection } from './components/SolutionsSection';
@@ -11,24 +11,24 @@ import { InsightsSection } from './components/InsightsSection';
 import { FaqSection } from './components/FaqSection';
 import { CtaBottomSection } from './components/CtaBottomSection';
 import { Footer } from './components/Footer';
-import { MethodologyPage } from './components/MethodologyPage';
-import { ConsultoriaPage } from './components/ConsultoriaPage';
-import { EspecialistasPage } from './components/EspecialistasPage';
-import { AceleradoraPage } from './components/AceleradoraPage';
-import { SEOPage } from './components/SEOPage';
-import { MidiaPage } from './components/MidiaPage';
-import { CRMPage } from './components/CRMPage';
-import { DadosPage } from './components/DadosPage';
-import { DevPage } from './components/DevPage';
-import { GrowthPage } from './components/GrowthPage';
-import { CasesPage } from './components/CasesPage';
-import { CaseMiamiPage } from './components/CaseMiamiPage';
-import { CaseGtexPage } from './components/CaseGtexPage';
-import { CaseMasterPage } from './components/CaseMasterPage';
-import { BlogPage } from './components/BlogPage';
-import { BlogPostPage } from './components/BlogPostPage';
-import { PartnersPage } from './components/PartnersPage';
-import { ToolsPage } from './components/ToolsPage';
+const MethodologyPage = lazy(() => import('./components/MethodologyPage').then(({ MethodologyPage }) => ({ default: MethodologyPage })));
+const ConsultoriaPage = lazy(() => import('./components/ConsultoriaPage').then(({ ConsultoriaPage }) => ({ default: ConsultoriaPage })));
+const EspecialistasPage = lazy(() => import('./components/EspecialistasPage').then(({ EspecialistasPage }) => ({ default: EspecialistasPage })));
+const AceleradoraPage = lazy(() => import('./components/AceleradoraPage').then(({ AceleradoraPage }) => ({ default: AceleradoraPage })));
+const SEOPage = lazy(() => import('./components/SEOPage').then(({ SEOPage }) => ({ default: SEOPage })));
+const MidiaPage = lazy(() => import('./components/MidiaPage').then(({ MidiaPage }) => ({ default: MidiaPage })));
+const CRMPage = lazy(() => import('./components/CRMPage').then(({ CRMPage }) => ({ default: CRMPage })));
+const DadosPage = lazy(() => import('./components/DadosPage').then(({ DadosPage }) => ({ default: DadosPage })));
+const DevPage = lazy(() => import('./components/DevPage').then(({ DevPage }) => ({ default: DevPage })));
+const GrowthPage = lazy(() => import('./components/GrowthPage').then(({ GrowthPage }) => ({ default: GrowthPage })));
+const CasesPage = lazy(() => import('./components/CasesPage').then(({ CasesPage }) => ({ default: CasesPage })));
+const CaseMiamiPage = lazy(() => import('./components/CaseMiamiPage').then(({ CaseMiamiPage }) => ({ default: CaseMiamiPage })));
+const CaseGtexPage = lazy(() => import('./components/CaseGtexPage').then(({ CaseGtexPage }) => ({ default: CaseGtexPage })));
+const CaseMasterPage = lazy(() => import('./components/CaseMasterPage').then(({ CaseMasterPage }) => ({ default: CaseMasterPage })));
+const BlogPage = lazy(() => import('./components/BlogPage').then(({ BlogPage }) => ({ default: BlogPage })));
+const BlogPostPage = lazy(() => import('./components/BlogPostPage').then(({ BlogPostPage }) => ({ default: BlogPostPage })));
+const PartnersPage = lazy(() => import('./components/PartnersPage').then(({ PartnersPage }) => ({ default: PartnersPage })));
+const ToolsPage = lazy(() => import('./components/ToolsPage').then(({ ToolsPage }) => ({ default: ToolsPage })));
 import { ToolsSection } from './components/ToolsSection';
 import { VisionDetailModal } from './components/VisionDetailModal';
 import { AlfredoDetailModal } from './components/AlfredoDetailModal';
@@ -209,6 +209,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
+      <Suspense fallback={null}>
       <main className="flex-grow">
         {currentPage === 'metodologia' && (
           <MethodologyPage
@@ -455,6 +456,7 @@ export default function App() {
           </>
         )}
       </main>
+      </Suspense>
 
       {/* Footer */}
       <Footer
