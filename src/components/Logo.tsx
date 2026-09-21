@@ -23,6 +23,8 @@ export const Logo: React.FC<LogoProps> = ({
       <img
         src={logoImg}
         alt="Preditiva"
+        width={321}
+        height={77}
         className={`${sizeClasses[size]} w-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow-[0_0_8px_rgba(13,242,5,0.3)]`}
       />
     </div>
