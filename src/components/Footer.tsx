@@ -7,7 +7,7 @@ import { PageRoute } from './Navbar';
 interface FooterProps {
   onNavigateSection: (sectionId: string) => void;
   onOpenAuditModal: () => void;
-  onNavigatePage?: (page: PageRoute) => void;
+  onNavigatePage?: (page: PageRoute, slug?: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditModal, onNavigatePage }) => {

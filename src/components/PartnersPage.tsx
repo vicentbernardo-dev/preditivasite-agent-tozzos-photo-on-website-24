@@ -25,7 +25,7 @@ import { PageRoute } from './Navbar';
 
 interface PartnersPageProps {
   onOpenAuditModal: () => void;
-  onNavigatePage: (page: PageRoute) => void;
+  onNavigatePage: (page: PageRoute, slug?: string) => void;
 }
 
 interface PartnerLevel {

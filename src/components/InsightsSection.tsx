@@ -7,7 +7,7 @@ import { PageRoute } from './Navbar';
 
 interface InsightsSectionProps {
   onSelectArticle: (article: InsightArticle) => void;
-  onNavigatePage?: (page: PageRoute) => void;
+  onNavigatePage?: (page: PageRoute, slug?: string) => void;
 }
 
 export const InsightsSection: React.FC<InsightsSectionProps> = ({ 
@@ -51,11 +51,9 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
               onClick={() => {
-                if (onNavigatePage) {
-                  onNavigatePage('blog-post');
-                } else {
-                  onSelectArticle(article);
-                }
+                // Artigos da home são mockados (sem slug no Sanity):
+                // abrem o modal de artigo em vez de gerar uma URL de post inexistente.
+                onSelectArticle(article);
               }}
               className="relative flex flex-col justify-between rounded-xl bg-[#111815] border border-white/10 overflow-hidden group hover:border-[#0DF205]/60 transition-all duration-300 cursor-pointer shadow-xl"
             >
