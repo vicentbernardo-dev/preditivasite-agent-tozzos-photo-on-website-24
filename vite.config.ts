@@ -10,11 +10,13 @@ export default defineConfig(() => {
     build: {
       target: 'esnext',
       minify: 'esbuild' as const,
+      chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
           manualChunks: {
             'react-vendor': ['react', 'react-dom'],
             icons: ['lucide-react'],
+            sanity: ['@sanity/client'],
           },
         },
       },
