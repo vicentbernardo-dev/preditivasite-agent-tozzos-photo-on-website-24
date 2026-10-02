@@ -29,14 +29,13 @@ const BlogPage = lazy(() => import('./components/BlogPage').then(({ BlogPage }) 
 const BlogPostPage = lazy(() => import('./components/BlogPostPage').then(({ BlogPostPage }) => ({ default: BlogPostPage })));
 const PartnersPage = lazy(() => import('./components/PartnersPage').then(({ PartnersPage }) => ({ default: PartnersPage })));
 const ToolsPage = lazy(() => import('./components/ToolsPage').then(({ ToolsPage }) => ({ default: ToolsPage })));
-import { ToolsSection } from './components/ToolsSection';
-import { VisionDetailModal } from './components/VisionDetailModal';
-import { AlfredoDetailModal } from './components/AlfredoDetailModal';
-
-import { LiveAuditModal } from './components/LiveAuditModal';
-import { CaseStudyModal } from './components/CaseStudyModal';
-import { ArticleModal } from './components/ArticleModal';
-import { ServiceModal } from './components/ServiceModal';
+const ToolsSection = lazy(() => import('./components/ToolsSection').then(m => ({ default: m.ToolsSection })));
+const LiveAuditModal = lazy(() => import('./components/LiveAuditModal').then(m => ({ default: m.LiveAuditModal })));
+const CaseStudyModal = lazy(() => import('./components/CaseStudyModal').then(m => ({ default: m.CaseStudyModal })));
+const ArticleModal = lazy(() => import('./components/ArticleModal').then(m => ({ default: m.ArticleModal })));
+const ServiceModal = lazy(() => import('./components/ServiceModal').then(m => ({ default: m.ServiceModal })));
+const VisionDetailModal = lazy(() => import('./components/VisionDetailModal').then(m => ({ default: m.VisionDetailModal })));
+const AlfredoDetailModal = lazy(() => import('./components/AlfredoDetailModal').then(m => ({ default: m.AlfredoDetailModal })));
 
 import { CaseStudy, InsightArticle, ServiceCard, Specialty } from './types';
 import { Sparkles, MessageCircle } from 'lucide-react';
@@ -489,62 +488,64 @@ export default function App() {
         </div>
       )}
 
-      {/* MODALS */}
-      {/* Live Technical Audit Scanner Modal */}
-      <LiveAuditModal
-        isOpen={isAuditModalOpen}
-        onClose={() => setIsAuditModalOpen(false)}
-        initialData={auditData}
-      />
+      {/* MODALS - Lazy loaded on demand */}
+      <Suspense fallback={null}>
+        {/* Live Technical Audit Scanner Modal */}
+        <LiveAuditModal
+          isOpen={isAuditModalOpen}
+          onClose={() => setIsAuditModalOpen(false)}
+          initialData={auditData}
+        />
 
-      {/* Full Case Study Modal */}
-      <CaseStudyModal
-        caseStudy={selectedCase}
-        onClose={() => setSelectedCase(null)}
-        onOpenAudit={() => {
-          setSelectedCase(null);
-          setIsAuditModalOpen(true);
-        }}
-      />
+        {/* Full Case Study Modal */}
+        <CaseStudyModal
+          caseStudy={selectedCase}
+          onClose={() => setSelectedCase(null)}
+          onOpenAudit={() => {
+            setSelectedCase(null);
+            setIsAuditModalOpen(true);
+          }}
+        />
 
-      {/* Full Insight Article Modal */}
-      <ArticleModal
-        article={selectedArticle}
-        onClose={() => setSelectedArticle(null)}
-        onOpenAudit={() => {
-          setSelectedArticle(null);
-          setIsAuditModalOpen(true);
-        }}
-      />
+        {/* Full Insight Article Modal */}
+        <ArticleModal
+          article={selectedArticle}
+          onClose={() => setSelectedArticle(null)}
+          onOpenAudit={() => {
+            setSelectedArticle(null);
+            setIsAuditModalOpen(true);
+          }}
+        />
 
-      {/* Service Details Modal */}
-      <ServiceModal
-        service={selectedService}
-        onClose={() => setSelectedService(null)}
-        onOpenAudit={() => {
-          setSelectedService(null);
-          setIsAuditModalOpen(true);
-        }}
-      />
+        {/* Service Details Modal */}
+        <ServiceModal
+          service={selectedService}
+          onClose={() => setSelectedService(null)}
+          onOpenAudit={() => {
+            setSelectedService(null);
+            setIsAuditModalOpen(true);
+          }}
+        />
 
-      {/* Vision Technical Diagnostics Modal */}
-      <VisionDetailModal
-        isOpen={isVisionModalOpen}
-        onClose={() => setIsVisionModalOpen(false)}
-        onRunAudit={(domain) => {
-          setIsVisionModalOpen(false);
-          handleOpenAuditModal({ url: domain });
-        }}
-      />
+        {/* Vision Technical Diagnostics Modal */}
+        <VisionDetailModal
+          isOpen={isVisionModalOpen}
+          onClose={() => setIsVisionModalOpen(false)}
+          onRunAudit={(domain) => {
+            setIsVisionModalOpen(false);
+            handleOpenAuditModal({ url: domain });
+          }}
+        />
 
-      {/* Alfredo Squad Copilot Modal */}
-      <AlfredoDetailModal
-        isOpen={isAlfredoModalOpen}
-        onClose={() => setIsAlfredoModalOpen(false)}
-        onSuccessWaitlist={(name) => {
-          showToast(`Perfeito, ${name}! Você está na lista de espera VIP do Alfredo.`);
-        }}
-      />
+        {/* Alfredo Squad Copilot Modal */}
+        <AlfredoDetailModal
+          isOpen={isAlfredoModalOpen}
+          onClose={() => setIsAlfredoModalOpen(false)}
+          onSuccessWaitlist={(name) => {
+            showToast(`Perfeito, ${name}! Você está na lista de espera VIP do Alfredo.`);
+          }}
+        />
+      </Suspense>
     </div>
   );
 }
