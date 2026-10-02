@@ -12,16 +12,18 @@ export const HERO_SERVICES_LIST = [
 ];
 
 export const CLIENT_LOGOS = [
-  { name: 'Reflorestas', category: 'E-commerce' },
-  { name: 'Master Cidadania', category: 'Serviços Globais' },
-  { name: 'Desk Manager', category: 'SaaS' },
-  { name: 'GTEX', category: 'Indústria' },
-  { name: 'Casa de Gê', category: 'Home Care' },
-  { name: 'Miami Ad School', category: 'Educação' },
-  { name: 'Swarovski', category: 'Luxo' },
-  { name: 'Red Bull', category: 'Bebidas' },
-  { name: 'Shoulder', category: 'Moda' },
-  { name: 'Océane', category: 'Beleza' }
+  { name: 'Reflorestas', category: 'E-commerce', logo: '/logo/reflorestar_logo_1x.webp' },
+  { name: 'Master', category: 'Serviços Globais', logo: '/logo/master_logo_1x.webp' },
+  { name: 'Desk Manager', category: 'SaaS', logo: '/logo/desk_manager_logo_1x.webp' },
+  { name: 'GTEX', category: 'Indústria', logo: '/logo/gtex_logo_1x.webp' },
+  { name: 'Casa de Gê', category: 'Home Care', logo: '/logo/casa_de_g_logo_1x.webp' },
+  { name: 'Miami Ad School', category: 'Educação', logo: '/logo/miami_ad_school_logo_1x.webp' },
+  { name: 'Red Bull', category: 'Bebidas', logo: '/logo/red_bull_logo_1x.webp' },
+  { name: 'Shoulder', category: 'Moda', logo: '/logo/shoulder_logo_1x.webp' },
+  { name: 'Océane', category: 'Beleza', logo: '/logo/oceane_logo_1x.webp' },
+  { name: 'Flamengo', category: 'Esportes', logo: '/logo/flamengo_logo_1x.webp' },
+  { name: 'Rolex', category: 'Luxo', logo: '/logo/rolex_logo_1x.webp' },
+  { name: 'Monte Carlo', category: 'Joias', logo: '/logo/monte_carlo_logo_1x.webp' }
 ];
 
 export const SERVICES: ServiceCard[] = [
@@ -148,13 +150,13 @@ export const CASE_STUDIES: CaseStudy[] = [
 
 export const TESTIMONIALS: Testimonial[] = [
   {
-    id: 'paulo-henrique',
-    name: 'PAULO HENRIQUE',
+    id: 'paulo-andre',
+    name: 'PAULO ANDRÉ',
     role: 'CEO DA MIAMI AD SCHOOL',
     company: 'Miami Ad School',
     headline: 'Melhoria radical',
     quote: 'Nossa performance site melhorou radicalmente no curto prazo, a experiência do user melhorou e a jornada ficou muito mais fluída, melhorando a conversão final de nossas vendas.',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: '/clientes/paulo-andré-miami.jpg',
     rating: 5
   },
   {
@@ -164,7 +166,7 @@ export const TESTIMONIALS: Testimonial[] = [
     company: 'GTEX / Casa de Gê',
     headline: 'Satisfação e crescimento!',
     quote: 'Estou muito satisfeito com o trabalho realizado. Nosso canal orgânico hoje cresceu em receita e qualidade!',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: '/clientes/edu-sato-ab-mauri.jpg',
     rating: 5
   }
 ];
