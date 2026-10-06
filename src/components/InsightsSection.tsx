@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, Clock, Calendar } from 'lucide-react';
 import { InsightArticle } from '../types';
 import { PageRoute } from './Navbar';
 import { client } from '../lib/sanity';
+import { withSanityImageFormat } from '../lib/seo';
 
 interface SanityPost {
   _id: string;
@@ -15,6 +16,7 @@ interface SanityPost {
   excerpt?: string;
   readTime?: number | string;
   imageUrl?: string;
+  imageAlt?: string;
 }
 
 const RECENT_POSTS_QUERY = `*[_type == "post" && defined(slug.current) && defined(coalesce(publishedAt, date))] | order(coalesce(publishedAt, date) desc)[0...3] {
@@ -26,7 +28,8 @@ const RECENT_POSTS_QUERY = `*[_type == "post" && defined(slug.current) && define
   categoryTag,
   excerpt,
   readTime,
-  "imageUrl": coalesce(image.asset->url, mainImage.asset->url)
+  "imageUrl": coalesce(image.asset->url, mainImage.asset->url),
+  "imageAlt": coalesce(image.alt, mainImage.alt)
 }`;
 
 const formatDate = (dateString?: string) => {
@@ -83,7 +86,7 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
     summary: post.excerpt || 'Resumo não disponível.',
     readTime: `${post.readTime || 5} min de leitura`,
     date: formatDate(post.publishedAt),
-    image: post.imageUrl || '',
+    image: withSanityImageFormat(post.imageUrl) || '',
     content: post.excerpt || '',
   }));
 
@@ -173,7 +176,7 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
                   {article.image && (
                     <img
                       src={article.image}
-                      alt={article.title}
+                      alt={posts[index].imageAlt || article.title || 'Imagem de capa do artigo'}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
                     />
                   )}

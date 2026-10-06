@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState, useEffect, useRef } from 'react';
+import React, { lazy, Suspense, useState, useEffect, useRef, useCallback } from 'react';
 import { Navbar, PageRoute } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { SolutionsSection } from './components/SolutionsSection';
@@ -40,6 +40,7 @@ import { ServiceModal } from './components/ServiceModal';
 
 import { CaseStudy, InsightArticle, ServiceCard, Specialty } from './types';
 import { Sparkles, MessageCircle } from 'lucide-react';
+import { ArticleSeoData, updatePageSeo } from './lib/seo';
 
 const VALID_PAGES: PageRoute[] = [
   'home',
@@ -99,6 +100,11 @@ export default function App() {
   const initialRoute = resolveRouteFromLocation();
   const [currentPage, setCurrentPage] = useState<PageRoute>(initialRoute.page);
   const [currentSlug, setCurrentSlug] = useState<string | undefined>(initialRoute.slug);
+  const [articleSeo, setArticleSeo] = useState<{ routeKey: string; data: ArticleSeoData } | null>(null);
+  const handleArticleSeoChange = useCallback((slug: string | undefined, data: ArticleSeoData | null) => {
+    const routeKey = `blog-post:${slug || ''}`;
+    setArticleSeo(data ? { routeKey, data } : null);
+  }, []);
 
   // Modal states
   const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
@@ -112,6 +118,12 @@ export default function App() {
 
   // Toast notification state
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const routeKey = `${currentPage}:${currentSlug || ''}`;
+    const pageArticleSeo = articleSeo?.routeKey === routeKey ? articleSeo.data : undefined;
+    updatePageSeo(currentPage, currentSlug, pageArticleSeo);
+  }, [currentPage, currentSlug, articleSeo]);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -349,6 +361,7 @@ export default function App() {
             onOpenAuditModal={() => handleOpenAuditModal()}
             onNavigatePage={navigate}
             slug={currentSlug}
+            onSeoDataChange={handleArticleSeoChange}
           />
         )}
 
