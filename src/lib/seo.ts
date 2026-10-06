@@ -14,8 +14,8 @@ interface PageSeo {
 
 const SITE_URL = 'https://preditiva.co';
 const BRAND = 'Preditiva';
-const ORGANIZATION_SCHEMA_ID = 'organization-schema';
-const ARTICLE_SCHEMA_ID = 'article-schema';
+const ARTICLE_SCHEMA_ID = 'schema-blog';
+const DEFAULT_SHARE_IMAGE = `${SITE_URL}/og-cover.png`;
 const MIN_DESCRIPTION_LENGTH = 140;
 const MAX_DESCRIPTION_LENGTH = 160;
 
@@ -116,26 +116,60 @@ const setMeta = (attribute: 'name' | 'property', key: string, content: string) =
   ensureMeta(attribute, key).content = content;
 };
 
-const upsertJsonLd = (id: string, data: Record<string, unknown> | null) => {
-  let script = document.head.querySelector<HTMLScriptElement>(`script#${id}`);
-  if (!data) {
-    script?.remove();
-    return;
-  }
-  if (!script) {
-    script = document.createElement('script');
-    script.id = id;
-    script.type = 'application/ld+json';
-    document.head.appendChild(script);
-  }
-  script.textContent = JSON.stringify(data);
-};
-
 export const withSanityImageFormat = (imageUrl?: string): string | undefined => {
   if (!imageUrl) return undefined;
   try {
     const url = new URL(imageUrl);
     url.searchParams.set('auto', 'format');
+    return url.toString();
+  } catch {
+    return imageUrl;
+  }
+};
+
+export const updateBlogPostSchema = (slug: string | undefined, article: ArticleSeoData) => {
+  const canonicalUrl = `${SITE_URL}/blog/${encodeURIComponent(slug || '')}`;
+  const image = article.image
+    ? getSocialImageUrl(withSanityImageFormat(article.image) || DEFAULT_SHARE_IMAGE)
+    : DEFAULT_SHARE_IMAGE;
+  const publishedAt = article.publishedAt ? new Date(article.publishedAt) : null;
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: article.title,
+    description: buildArticleDescription(article.description),
+    image,
+    mainEntityOfPage: canonicalUrl,
+    ...(publishedAt && !Number.isNaN(publishedAt.getTime()) ? { datePublished: publishedAt.toISOString() } : {}),
+    author: {
+      '@type': 'Organization',
+      name: BRAND,
+    },
+  };
+
+  let script = document.head.querySelector<HTMLScriptElement>('#schema-blog');
+  if (!script) {
+    script = document.createElement('script');
+    script.id = ARTICLE_SCHEMA_ID;
+    script.type = 'application/ld+json';
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(schema);
+};
+
+export const removeBlogPostSchema = () => {
+  document.head.querySelector('#schema-blog')?.remove();
+};
+
+const getSocialImageUrl = (imageUrl: string) => {
+  try {
+    const url = new URL(imageUrl);
+    if (url.hostname.endsWith('cdn.sanity.io')) {
+      url.searchParams.set('w', '1200');
+      url.searchParams.set('h', '630');
+      url.searchParams.set('fit', 'crop');
+      url.searchParams.set('auto', 'format');
+    }
     return url.toString();
   } catch {
     return imageUrl;
@@ -198,19 +232,26 @@ export const updatePageSeo = (
   const description = isArticle
     ? buildArticleDescription(article.description)
     : buildPageDescription(pageSeo.description);
-  const image = withSanityImageFormat(article?.image) || `${SITE_URL}/LOGO.png`;
+  const image = article?.image
+    ? withSanityImageFormat(article.image)
+    : DEFAULT_SHARE_IMAGE;
+  const socialImage = image ? getSocialImageUrl(image) : DEFAULT_SHARE_IMAGE;
 
   document.title = title;
   setMeta('name', 'description', description);
   setMeta('property', 'og:title', title);
+  setMeta('property', 'og:site_name', BRAND);
   setMeta('property', 'og:description', description);
-  setMeta('property', 'og:image', image);
+  setMeta('property', 'og:image', socialImage);
+  setMeta('property', 'og:image:width', '1200');
+  setMeta('property', 'og:image:height', '630');
+  setMeta('property', 'og:image:alt', isArticle ? article.title : 'Preditiva: aceleradora de e-commerce, SEO técnico e growth');
   setMeta('property', 'og:url', canonicalUrl);
   setMeta('property', 'og:type', isArticle ? 'article' : 'website');
   setMeta('name', 'twitter:card', 'summary_large_image');
   setMeta('name', 'twitter:title', title);
   setMeta('name', 'twitter:description', description);
-  setMeta('name', 'twitter:image', image);
+  setMeta('name', 'twitter:image', socialImage);
 
   let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
   if (!canonical) {
@@ -220,27 +261,4 @@ export const updatePageSeo = (
   }
   canonical.href = canonicalUrl;
 
-  upsertJsonLd(ORGANIZATION_SCHEMA_ID, page === 'home' ? {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: BRAND,
-    url: SITE_URL,
-    logo: `${SITE_URL}/LOGO.png`,
-    description: 'Aceleradora de e-commerce e camada técnica especializada em SEO, Growth e Analytics.',
-  } : null);
-
-  const publishedAt = article?.publishedAt ? new Date(article.publishedAt) : null;
-  upsertJsonLd(ARTICLE_SCHEMA_ID, isArticle ? {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: article.title,
-    description,
-    image,
-    mainEntityOfPage: canonicalUrl,
-    ...(publishedAt && !Number.isNaN(publishedAt.getTime()) ? { datePublished: publishedAt.toISOString() } : {}),
-    author: {
-      '@type': 'Organization',
-      name: BRAND,
-    },
-  } : null);
 };

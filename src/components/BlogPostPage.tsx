@@ -4,7 +4,7 @@ import { PageRoute } from './Navbar';
 import { RadarNewsletter } from './RadarNewsletter';
 import { client } from '../lib/sanity';
 import { PortableText } from '@portabletext/react';
-import { ArticleSeoData, withSanityImageFormat } from '../lib/seo';
+import { ArticleSeoData, removeBlogPostSchema, updateBlogPostSchema, withSanityImageFormat } from '../lib/seo';
 
 interface BlogPostPageProps {
   onOpenAuditModal: () => void;
@@ -95,13 +95,16 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
 
   useEffect(() => {
     if (!post) return;
-    onSeoDataChange(slug, {
+    const articleSeo = {
       title: post.title || 'Artigo do Blog',
       description: post.excerpt,
       image: withSanityImageFormat(post.imageUrl),
       publishedAt: post.date || post.publishedAt || post._createdAt,
-    });
-  }, [post, onSeoDataChange]);
+    };
+    onSeoDataChange(slug, articleSeo);
+    updateBlogPostSchema(slug, articleSeo);
+    return removeBlogPostSchema;
+  }, [post, slug, onSeoDataChange]);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
