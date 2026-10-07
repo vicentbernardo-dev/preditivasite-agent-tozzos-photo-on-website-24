@@ -40,7 +40,7 @@ import { ServiceModal } from './components/ServiceModal';
 
 import { CaseStudy, InsightArticle, ServiceCard, Specialty } from './types';
 import { Sparkles, MessageCircle } from 'lucide-react';
-import { ArticleSeoData, updatePageSeo } from './lib/seo';
+import { ArticleSeoData, updateBreadcrumbSchema, updatePageSeo } from './lib/seo';
 
 const VALID_PAGES: PageRoute[] = [
   'home',
@@ -123,6 +123,7 @@ export default function App() {
     const routeKey = `${currentPage}:${currentSlug || ''}`;
     const pageArticleSeo = articleSeo?.routeKey === routeKey ? articleSeo.data : undefined;
     updatePageSeo(currentPage, currentSlug, pageArticleSeo);
+    updateBreadcrumbSchema(currentPage, pageArticleSeo?.title);
   }, [currentPage, currentSlug, articleSeo]);
 
   useEffect(() => {

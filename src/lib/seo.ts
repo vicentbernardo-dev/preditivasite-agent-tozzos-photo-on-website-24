@@ -15,6 +15,7 @@ interface PageSeo {
 const SITE_URL = 'https://preditiva.co';
 const BRAND = 'Preditiva';
 const ARTICLE_SCHEMA_ID = 'schema-blog';
+const BREADCRUMB_SCHEMA_ID = 'schema-breadcrumb-list';
 const DEFAULT_SHARE_IMAGE = `${SITE_URL}/og-cover.png`;
 const MIN_DESCRIPTION_LENGTH = 140;
 const MAX_DESCRIPTION_LENGTH = 160;
@@ -100,6 +101,72 @@ const PAGE_SEO: Record<Exclude<PageRoute, 'blog-post'>, PageSeo> = {
     title: 'Alfredo: Inteligência para E-commerce | Preditiva',
     description: 'Descubra como o Alfredo pode apoiar decisões e rotinas da sua operação de e-commerce com inteligência.',
   },
+};
+
+const PAGE_BREADCRUMB_NAMES: Partial<Record<PageRoute, string>> = {
+  metodologia: 'Metodologia',
+  'frentes-aceleradora': 'Aceleradora',
+  'frentes-consultoria': 'Consultoria',
+  'frentes-especialistas': 'Especialistas',
+  'especialidade-seo': 'SEO',
+  'especialidade-midia': 'Mídia',
+  'especialidade-crm': 'CRM',
+  'especialidade-dados': 'Dados',
+  'especialidade-dev': 'Desenvolvimento',
+  'especialidade-growth': 'Growth',
+  cases: 'Casos de Sucesso',
+  'case-miami': 'Case Miami',
+  'case-gtex': 'Case GTEX',
+  'case-master': 'Case Master',
+  blog: 'Blog',
+  partners: 'Parceiros',
+  ferramentas: 'Ferramentas',
+  'ferramentas-vision': 'Vision',
+  'ferramentas-alfredo': 'Alfredo',
+};
+
+export const updateBreadcrumbSchema = (page: PageRoute, articleTitle?: string) => {
+  const pageName = page === 'blog-post' ? articleTitle : PAGE_BREADCRUMB_NAMES[page];
+  if (!pageName || page === 'home') {
+    document.head.querySelector(`#${BREADCRUMB_SCHEMA_ID}`)?.remove();
+    return;
+  }
+
+  const itemListElement = [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: SITE_URL,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: page === 'blog-post' ? 'Blog' : pageName,
+      ...(page === 'blog' || page === 'blog-post' ? { item: `${SITE_URL}/blog` } : {}),
+    },
+    ...(page === 'blog-post'
+      ? [{
+          '@type': 'ListItem',
+          position: 3,
+          name: pageName,
+        }]
+      : []),
+  ];
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement,
+  };
+
+  let script = document.head.querySelector<HTMLScriptElement>(`#${BREADCRUMB_SCHEMA_ID}`);
+  if (!script) {
+    script = document.createElement('script');
+    script.id = BREADCRUMB_SCHEMA_ID;
+    script.type = 'application/ld+json';
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(schema);
 };
 
 const ensureMeta = (attribute: 'name' | 'property', key: string): HTMLMetaElement => {
