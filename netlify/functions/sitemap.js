@@ -1,5 +1,6 @@
 exports.handler = async function () {
   const baseUrl = 'https://preditiva.co';
+  const cacheControl = 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400';
 
   try {
     // Importação dinâmica dentro do handler para evitar erro ERR_REQUIRE_ESM
@@ -81,7 +82,7 @@ ${postXml}
       statusCode: 200,
       headers: {
         'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=0, must-revalidate',
+        'Cache-Control': cacheControl,
       },
       body: xml.trim(),
     };
@@ -103,7 +104,7 @@ ${fallbackPages
       statusCode: 200,
       headers: {
         'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=0, must-revalidate',
+        'Cache-Control': cacheControl,
       },
       body: fallbackXml.trim(),
     };
