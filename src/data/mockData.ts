@@ -1,4 +1,5 @@
 import { ServiceCard, FrictionPoint, CaseStudy, Testimonial, Specialty, InsightArticle, FaqItem } from '../types';
+import { LOGOS, AVATARS } from '../assets/images';
 
 export const HERO_SERVICES_LIST = [
   'SEO Técnico',
@@ -12,18 +13,18 @@ export const HERO_SERVICES_LIST = [
 ];
 
 export const CLIENT_LOGOS = [
-  { name: 'Reflorestas', category: 'E-commerce', logo: '/logo/reflorestar_logo_1x.webp' },
-  { name: 'Master', category: 'Serviços Globais', logo: '/logo/master_logo_1x.webp' },
-  { name: 'Desk Manager', category: 'SaaS', logo: '/logo/desk_manager_logo_1x.webp' },
-  { name: 'GTEX', category: 'Indústria', logo: '/logo/gtex_logo_1x.webp' },
-  { name: 'Casa de Gê', category: 'Home Care', logo: '/logo/casa_de_g_logo_1x.webp' },
-  { name: 'Miami Ad School', category: 'Educação', logo: '/logo/miami_ad_school_logo_1x.webp' },
-  { name: 'Red Bull', category: 'Bebidas', logo: '/logo/red_bull_logo_1x.webp' },
-  { name: 'Shoulder', category: 'Moda', logo: '/logo/shoulder_logo_1x.webp' },
-  { name: 'Océane', category: 'Beleza', logo: '/logo/oceane_logo_1x.webp' },
-  { name: 'Flamengo', category: 'Esportes', logo: '/logo/flamengo_logo_1x.webp' },
-  { name: 'Rolex', category: 'Luxo', logo: '/logo/rolex_logo_1x.webp' },
-  { name: 'Monte Carlo', category: 'Joias', logo: '/logo/monte_carlo_logo_1x.webp' }
+  { name: 'Reflorestas', category: 'E-commerce', logo: LOGOS.reflorestar },
+  { name: 'Master', category: 'Serviços Globais', logo: LOGOS.master },
+  { name: 'Desk Manager', category: 'SaaS', logo: LOGOS.deskManager },
+  { name: 'GTEX', category: 'Indústria', logo: LOGOS.gtex },
+  { name: 'Casa de Gê', category: 'Home Care', logo: LOGOS.casaDeG },
+  { name: 'Miami Ad School', category: 'Educação', logo: LOGOS.miamiAdSchool },
+  { name: 'Red Bull', category: 'Bebidas', logo: LOGOS.redBull },
+  { name: 'Shoulder', category: 'Moda', logo: LOGOS.shoulder },
+  { name: 'Océane', category: 'Beleza', logo: LOGOS.oceane },
+  { name: 'Flamengo', category: 'Esportes', logo: LOGOS.flamengo },
+  { name: 'Rolex', category: 'Luxo', logo: LOGOS.rolex },
+  { name: 'Monte Carlo', category: 'Joias', logo: LOGOS.monteCarlo }
 ];
 
 export const SERVICES: ServiceCard[] = [
@@ -156,7 +157,7 @@ export const TESTIMONIALS: Testimonial[] = [
     company: 'Miami Ad School',
     headline: 'Melhoria radical',
     quote: 'Nossa performance site melhorou radicalmente no curto prazo, a experiência do user melhorou e a jornada ficou muito mais fluída, melhorando a conversão final de nossas vendas.',
-    avatar: '/clientes/paulo-andré-miami.jpg',
+    avatar: AVATARS.pauloAndre,
     rating: 5
   },
   {
@@ -166,7 +167,7 @@ export const TESTIMONIALS: Testimonial[] = [
     company: 'GTEX / Casa de Gê',
     headline: 'Satisfação e crescimento!',
     quote: 'Estou muito satisfeito com o trabalho realizado. Nosso canal orgânico hoje cresceu em receita e qualidade!',
-    avatar: '/clientes/edu-sato-ab-mauri.jpg',
+    avatar: AVATARS.eduSato,
     rating: 5
   }
 ];
