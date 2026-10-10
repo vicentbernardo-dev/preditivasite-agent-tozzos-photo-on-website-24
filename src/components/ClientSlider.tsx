@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Client {
   name: string;
-  category: string;
+  category?: string;
   logo: string;
 }
 
@@ -40,7 +40,7 @@ export const ClientSlider: React.FC<ClientSliderProps> = ({
 
   const slideVariants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 1000 : -1000,
+      x: direction > 0 ? 40 : -40,
       opacity: 0,
     }),
     center: {
@@ -50,7 +50,7 @@ export const ClientSlider: React.FC<ClientSliderProps> = ({
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
+      x: direction < 0 ? 40 : -40,
       opacity: 0,
     }),
   };
@@ -67,25 +67,19 @@ export const ClientSlider: React.FC<ClientSliderProps> = ({
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{
-              x: { type: "spring", stiffness: 300, damping: 30 },
-              opacity: { duration: 0.2 },
-            }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6"
           >
             {visibleClients.map((client) => (
               <div
                 key={client.name}
-                className="h-16 px-4 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-[#0DF205]/30 transition-all flex flex-col items-center justify-center group"
+                className="h-24 flex items-center justify-center group"
               >
                 <img
                   src={client.logo}
                   alt={client.name}
-                  className="h-10 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                  className="h-20 w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
                 />
-                <span className="text-[10px] text-white/40 uppercase tracking-widest font-mono mt-1">
-                  {client.category}
-                </span>
               </div>
             ))}
           </motion.div>
