@@ -1,4 +1,5 @@
 import { ServiceCard, FrictionPoint, CaseStudy, Testimonial, Specialty, InsightArticle, FaqItem } from '../types';
+import { LOGOS, AVATARS } from '../assets/images';
 
 export const HERO_SERVICES_LIST = [
   'SEO Técnico',
@@ -12,16 +13,24 @@ export const HERO_SERVICES_LIST = [
 ];
 
 export const CLIENT_LOGOS = [
-  { name: 'Reflorestas', category: 'E-commerce' },
-  { name: 'Master Cidadania', category: 'Serviços Globais' },
-  { name: 'Desk Manager', category: 'SaaS' },
-  { name: 'GTEX', category: 'Indústria' },
-  { name: 'Casa de Gê', category: 'Home Care' },
-  { name: 'Miami Ad School', category: 'Educação' },
-  { name: 'Swarovski', category: 'Luxo' },
-  { name: 'Red Bull', category: 'Bebidas' },
-  { name: 'Shoulder', category: 'Moda' },
-  { name: 'Océane', category: 'Beleza' }
+  { name: 'Reflorestas', category: 'E-commerce', logo: LOGOS.reflorestar },
+  { name: 'Master', category: 'Serviços Globais', logo: LOGOS.master },
+  { name: 'Desk Manager', category: 'SaaS', logo: LOGOS.deskManager },
+  { name: 'GTEX', category: 'Indústria', logo: LOGOS.gtex },
+  { name: 'Casa de Gê', category: 'Home Care', logo: LOGOS.casaDeG },
+  { name: 'Miami Ad School', category: 'Educação', logo: LOGOS.miamiAdSchool },
+  { name: 'Red Bull', category: 'Bebidas', logo: LOGOS.redBull },
+  { name: 'Shoulder', category: 'Moda', logo: LOGOS.shoulder },
+  { name: 'Océane', category: 'Beleza', logo: LOGOS.oceane },
+  { name: 'Flamengo', category: 'Esportes', logo: LOGOS.flamengo },
+  { name: 'Rolex', category: 'Luxo', logo: LOGOS.rolex },
+  { name: 'Monte Carlo', category: 'Joias', logo: LOGOS.monteCarlo },
+  { name: 'Abdibi', logo: LOGOS.abdibi },
+  { name: 'Claudia Arbex', logo: LOGOS.claudiaArbex },
+  { name: 'Consage', logo: LOGOS.consage },
+  { name: 'Gift Aid', logo: LOGOS.giftAid },
+  { name: 'Swarovski', logo: LOGOS.swarovski },
+  { name: 'Vakinha', logo: LOGOS.vakinha }
 ];
 
 export const SERVICES: ServiceCard[] = [
@@ -148,13 +157,13 @@ export const CASE_STUDIES: CaseStudy[] = [
 
 export const TESTIMONIALS: Testimonial[] = [
   {
-    id: 'paulo-henrique',
-    name: 'PAULO HENRIQUE',
+    id: 'paulo-andre',
+    name: 'PAULO ANDRÉ',
     role: 'CEO DA MIAMI AD SCHOOL',
     company: 'Miami Ad School',
     headline: 'Melhoria radical',
     quote: 'Nossa performance site melhorou radicalmente no curto prazo, a experiência do user melhorou e a jornada ficou muito mais fluída, melhorando a conversão final de nossas vendas.',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: AVATARS.pauloAndre,
     rating: 5
   },
   {
@@ -164,7 +173,7 @@ export const TESTIMONIALS: Testimonial[] = [
     company: 'GTEX / Casa de Gê',
     headline: 'Satisfação e crescimento!',
     quote: 'Estou muito satisfeito com o trabalho realizado. Nosso canal orgânico hoje cresceu em receita e qualidade!',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80',
+    avatar: AVATARS.eduSato,
     rating: 5
   }
 ];

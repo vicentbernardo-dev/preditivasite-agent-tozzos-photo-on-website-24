@@ -5,9 +5,9 @@ import { Quote } from 'lucide-react';
 export const MethodologyTestimonials: React.FC = () => {
   const testimonials = [
     {
-      name: 'PAULO HENRIQUE',
+      name: 'PAULO ANDRÉ',
       role: 'CEO DA MIAMI AD SCHOOL',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=250&q=80',
+      avatar: '/clientes/paulo-andré-miami.jpg',
       headline: 'Melhoria radical',
       quote:
         'Nossa performance site melhorou radicalmente no curto prazo, a experiência do user melhorou e a jornada ficou muito mais fluída, melhorando a conversão final de nossas vendas.',
@@ -15,7 +15,7 @@ export const MethodologyTestimonials: React.FC = () => {
     {
       name: 'EDU SATO',
       role: 'DIRETOR MKT GTEX',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=250&q=80',
+      avatar: '/clientes/edu-sato-ab-mauri.jpg',
       headline: 'Satisfação e crescimento!',
       quote:
         'Estou muito satisfeito com o trabalho realizado. Nosso canal orgânico hoje cresceu em receita e qualidade!',
