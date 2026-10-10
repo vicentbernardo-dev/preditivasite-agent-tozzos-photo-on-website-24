@@ -6,6 +6,7 @@ import {
 import { PageRoute } from './Navbar';
 import { RadarNewsletter } from './RadarNewsletter';
 import { client, postsQuery } from '../lib/sanity';
+import { withSanityImageFormat } from '../lib/seo';
 
 interface BlogPageProps {
   onOpenAuditModal: () => void;
@@ -24,6 +25,7 @@ interface ArticleItem {
   date: string;
   readTime: string;
   image: string;
+  imageAlt: string;
   author?: {
     name: string;
     initials: string;
@@ -52,7 +54,7 @@ const getInitials = (name: string): string => {
 // Converte os dados brutos do Sanity para o formato do Layout com segurança
 const mapSanityPostToArticle = (post: any): ArticleItem => {
   // Pega a URL da imagem (tenta 'image' ou 'mainImage' dependendo de como a IA gerou o schema)
-  const imageUrl = post.image?.asset?.url || post.mainImage?.asset?.url || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80';
+  const imageUrl = withSanityImageFormat(post.image?.asset?.url || post.mainImage?.asset?.url) || 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=80';
   
   // Pega a data (tenta 'date', 'publishedAt' ou a data de criação)
   const postDate = post.date || post.publishedAt || post._createdAt;
@@ -67,10 +69,11 @@ const mapSanityPostToArticle = (post: any): ArticleItem => {
     date: formatDate(postDate),
     readTime: `${post.readTime || 5} min`,
     image: imageUrl,
+    imageAlt: post.image?.alt || post.mainImage?.alt || post.title || 'Imagem de capa do artigo',
     author: {
       name: post.author?.name || 'Redação Preditiva',
       initials: getInitials(post.author?.name || 'Redação'),
-      avatar: post.author?.avatar?.asset?.url
+      avatar: withSanityImageFormat(post.author?.avatar?.asset?.url)
     }
   };
 };
@@ -228,7 +231,7 @@ export const BlogPage: React.FC<BlogPageProps> = ({
                     <div className="relative h-60 overflow-hidden bg-black/60">
                       <img
                         src={article.image}
-                        alt={article.title}
+                        alt={article.imageAlt}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#1A1C1A] via-transparent to-transparent" />

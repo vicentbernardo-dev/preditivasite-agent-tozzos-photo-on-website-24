@@ -1,6 +1,7 @@
 'use client'
 
 import { PortableText, PortableTextComponents } from '@portabletext/react'
+import { withSanityImageFormat } from '../lib/seo'
 
 type PortableTextBlockProps = {
   value: any
@@ -10,7 +11,7 @@ type PortableTextBlockProps = {
 const portableTextComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => <p className="mb-4 leading-relaxed">{children}</p>,
-    h1: ({ children }) => <h1 className="text-4xl font-bold mb-6 mt-8">{children}</h1>,
+    h1: ({ children }) => <h2 className="text-4xl font-bold mb-6 mt-8">{children}</h2>,
     h2: ({ children }) => <h2 className="text-3xl font-bold mb-4 mt-8">{children}</h2>,
     h3: ({ children }) => <h3 className="text-2xl font-bold mb-3 mt-6">{children}</h3>,
     h4: ({ children }) => <h4 className="text-xl font-bold mb-3 mt-4">{children}</h4>,
@@ -27,8 +28,8 @@ const portableTextComponents: PortableTextComponents = {
       return (
         <figure className="my-8">
           <img
-            src={value.asset.url}
-            alt={value.alt || 'Blog image'}
+            src={withSanityImageFormat(value.asset.url)}
+            alt={value.alt || value.caption || 'Imagem ilustrativa do artigo'}
             className="w-full rounded-lg"
           />
           {value.caption && (

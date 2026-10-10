@@ -4,17 +4,19 @@ import { PageRoute } from './Navbar';
 import { RadarNewsletter } from './RadarNewsletter';
 import { client } from '../lib/sanity';
 import { PortableText } from '@portabletext/react';
+import { ArticleSeoData, removeBlogPostSchema, updateBlogPostSchema, withSanityImageFormat } from '../lib/seo';
 
 interface BlogPostPageProps {
   onOpenAuditModal: () => void;
   onNavigatePage: (page: PageRoute, slug?: string) => void;
   slug?: string; // Futuramente, você pode passar o slug do post clicado aqui
+  onSeoDataChange: (slug: string | undefined, data: ArticleSeoData | null) => void;
 }
 
 // Estilização automática para o texto vindo do Sanity
 const richTextStyles = {
   block: {
-    h1: ({children}: any) => <h1 className="text-4xl font-bold mt-10 mb-4 text-[#E3E3DF] tracking-tight">{children}</h1>,
+    h1: ({children}: any) => <h2 className="text-2xl sm:text-3xl font-bold mt-10 mb-4 text-[#E3E3DF] tracking-tight">{children}</h2>,
     h2: ({children}: any) => <h2 className="text-2xl sm:text-3xl font-bold mt-10 mb-4 text-[#E3E3DF] tracking-tight">{children}</h2>,
     h3: ({children}: any) => <h3 className="text-xl sm:text-2xl font-bold mt-8 mb-4 text-[#E3E3DF] tracking-tight">{children}</h3>,
     normal: ({children}: any) => <p className="text-base sm:text-lg text-[#B9CCAF] leading-relaxed mb-6">{children}</p>,
@@ -27,12 +29,29 @@ const richTextStyles = {
   marks: {
     strong: ({children}: any) => <strong className="font-bold text-white">{children}</strong>,
   },
+  types: {
+    image: ({value}: any) => {
+      const imageUrl = withSanityImageFormat(value?.asset?.url);
+      if (!imageUrl) return null;
+      return (
+        <figure className="my-8">
+          <img
+            src={imageUrl}
+            alt={value.alt || value.caption || 'Imagem ilustrativa do artigo'}
+            className="w-full rounded-2xl"
+          />
+          {value.caption && <figcaption className="mt-2 text-sm text-[#B9CCAF]">{value.caption}</figcaption>}
+        </figure>
+      );
+    },
+  },
 };
 
 export const BlogPostPage: React.FC<BlogPostPageProps> = ({
   onOpenAuditModal,
   onNavigatePage,
-  slug
+  slug,
+  onSeoDataChange,
 }) => {
   const [copied, setCopied] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
@@ -44,9 +63,12 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isActive = true;
     const fetchPost = async () => {
       try {
         setLoading(true);
+        setPost(null);
+        onSeoDataChange(slug, null);
         // Normaliza o slug (decodifica %XX e remove barras/espacos das pontas)
         const normalizedSlug = slug
           ? decodeURIComponent(slug).replace(/^\/+|\/+$/g, '').trim()
@@ -54,19 +76,35 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
         // Se tiver slug, busca ele. Se não, busca o último post publicado para demonstração.
         // lower() torna a busca resiliente a variações de caixa.
         const query = normalizedSlug
-          ? `*[_type in ["post", "blogPost", "article"] && lower(slug.current) == lower($slug)][0]{..., "imageUrl": image.asset->url}`
-          : `*[_type in ["post", "blogPost", "article"]] | order(coalesce(date, publishedAt, _createdAt) desc)[0]{..., "imageUrl": image.asset->url}`;
+          ? `*[_type in ["post", "blogPost", "article"] && lower(slug.current) == lower($slug)][0]{..., "imageUrl": image.asset->url, "imageAlt": image.alt, "body": body[]{..., _type == "image" => {"asset": asset->{url}, alt, caption}}}`
+          : `*[_type in ["post", "blogPost", "article"]] | order(coalesce(date, publishedAt, _createdAt) desc)[0]{..., "imageUrl": image.asset->url, "imageAlt": image.alt, "body": body[]{..., _type == "image" => {"asset": asset->{url}, alt, caption}}}`;
 
         const data = await client.fetch(query, { slug: normalizedSlug });
-        setPost(data);
+        if (isActive) setPost(data);
       } catch (error) {
         console.error("Erro ao buscar post completo:", error);
       } finally {
-        setLoading(false);
+        if (isActive) setLoading(false);
       }
     };
     fetchPost();
+    return () => {
+      isActive = false;
+    };
   }, [slug]);
+
+  useEffect(() => {
+    if (!post) return;
+    const articleSeo = {
+      title: post.title || 'Artigo do Blog',
+      description: post.excerpt,
+      image: withSanityImageFormat(post.imageUrl),
+      publishedAt: post.date || post.publishedAt || post._createdAt,
+    };
+    onSeoDataChange(slug, articleSeo);
+    updateBlogPostSchema(slug, articleSeo);
+    return removeBlogPostSchema;
+  }, [post, slug, onSeoDataChange]);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
@@ -159,8 +197,8 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
 
           <div className="relative rounded-3xl overflow-hidden border border-[#3B4B35]/30 shadow-2xl bg-black h-72 sm:h-96 lg:h-[440px] flex items-center justify-center group">
             <img
-              src={post.imageUrl || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80'}
-              alt={post.title}
+              src={withSanityImageFormat(post.imageUrl) || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80'}
+              alt={post.imageAlt || post.title || 'Imagem de capa do artigo'}
               className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
             />
           </div>

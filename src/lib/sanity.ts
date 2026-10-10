@@ -19,6 +19,7 @@ export const postsQuery = `*[_type == "post"] | order(date desc) {
   date,
   readTime,
   image {
+    alt,
     asset -> {
       url
     }
@@ -46,6 +47,7 @@ export const postBySlugQuery = `*[_type == "post" && slug.current == $slug][0] {
   date,
   readTime,
   image {
+    alt,
     asset -> {
       url
     }
