@@ -24,7 +24,13 @@ export const CLIENT_LOGOS = [
   { name: 'Océane', category: 'Beleza', logo: LOGOS.oceane },
   { name: 'Flamengo', category: 'Esportes', logo: LOGOS.flamengo },
   { name: 'Rolex', category: 'Luxo', logo: LOGOS.rolex },
-  { name: 'Monte Carlo', category: 'Joias', logo: LOGOS.monteCarlo }
+  { name: 'Monte Carlo', category: 'Joias', logo: LOGOS.monteCarlo },
+  { name: 'Abdibi', logo: LOGOS.abdibi },
+  { name: 'Claudia Arbex', logo: LOGOS.claudiaArbex },
+  { name: 'Consage', logo: LOGOS.consage },
+  { name: 'Gift Aid', logo: LOGOS.giftAid },
+  { name: 'Swarovski', logo: LOGOS.swarovski },
+  { name: 'Vakinha', logo: LOGOS.vakinha }
 ];
 
 export const SERVICES: ServiceCard[] = [

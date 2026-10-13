@@ -11,6 +11,12 @@ import oceaneLogo from '/logo/oceane_logo_1x.webp';
 import flamongoLogo from '/logo/flamengo_logo_1x.webp';
 import rolexLogo from '/logo/rolex_logo_1x.webp';
 import monteCarloLogo from '/logo/monte_carlo_logo_1x.webp';
+import abdibiLogo from '/logo/abdibi_logo_1x.webp';
+import claudiaArbexLogo from '/logo/claudia_arbex_logo_1x.webp';
+import consageLogo from '/logo/consage_logo_1x.webp';
+import giftAidLogo from '/logo/gift_aid_logo_1x.webp';
+import swarovskiLogo from '/logo/swarovski_logo_1x.webp';
+import vakinhaLogo from '/logo/vakinha_logo_1x.webp';
 
 // Cliente Avatars
 import pauloAndreAvatar from '/clientes/paulo-andré-miami.jpg';
@@ -29,6 +35,12 @@ export const LOGOS = {
   flamengo: flamongoLogo,
   rolex: rolexLogo,
   monteCarlo: monteCarloLogo,
+  abdibi: abdibiLogo,
+  claudiaArbex: claudiaArbexLogo,
+  consage: consageLogo,
+  giftAid: giftAidLogo,
+  swarovski: swarovskiLogo,
+  vakinha: vakinhaLogo,
 };
 
 export const AVATARS = {

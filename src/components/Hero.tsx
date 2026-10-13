@@ -5,6 +5,7 @@ import { HERO_SERVICES_LIST, CLIENT_LOGOS } from "../data/mockData";
 import { HeroLogoMotion } from "./HeroLogoMotion";
 import { ClientSlider } from "./ClientSlider";
 import { TypewriterText } from "./TypewriterText";
+import { ClientSlider } from "./ClientSlider";
 
 interface HeroProps {
   onOpenAuditModal: () => void;

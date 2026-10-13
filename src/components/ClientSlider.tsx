@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 
 interface Client {
   name: string;
-  category: string;
+  category?: string;
   logo: string;
 }
 
@@ -20,11 +20,7 @@ export const ClientSlider: React.FC<ClientSliderProps> = ({
   // The list is rendered twice and the track moves by exactly one copy's width,
   // so the loop restarts without a visible jump and never ends.
   const renderCopy = (copyIndex: number) => (
-    <div
-      key={copyIndex}
-      className="flex shrink-0"
-      aria-hidden={copyIndex > 0}
-    >
+    <div key={copyIndex} className="flex shrink-0" aria-hidden={copyIndex > 0}>
       {clients.map((client) => (
         <div
           key={`${copyIndex}-${client.name}`}
