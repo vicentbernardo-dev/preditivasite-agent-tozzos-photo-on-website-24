@@ -10,26 +10,15 @@ export default defineConfig(() => {
     build: {
       target: 'esnext',
       minify: 'esbuild' as const,
+      cssCodeSplit: true,
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
-          manualChunks(id) {
-            // Separate critical vendor libraries into their own chunks for better caching
-            if (id.includes('node_modules/react') && !id.includes('node_modules/react-dom')) {
-              return 'react-vendor';
-            }
-            if (id.includes('node_modules/react-dom')) {
-              return 'react-dom-vendor';
-            }
-            if (id.includes('node_modules/lucide-react')) {
-              return 'icons-vendor';
-            }
-            if (id.includes('node_modules/motion')) {
-              return 'motion-vendor';
-            }
-            if (id.includes('node_modules/@sanity')) {
-              return 'sanity-vendor';
-            }
+          manualChunks: {
+            'react-vendor': ['react', 'react-dom'],
+            icons: ['lucide-react'],
+            sanity: ['@sanity/client'],
+            'motion-vendor': ['motion'],
           },
         },
       },
