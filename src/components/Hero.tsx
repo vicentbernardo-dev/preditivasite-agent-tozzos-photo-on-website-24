@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { HERO_SERVICES_LIST, CLIENT_LOGOS } from "../data/mockData";
 import { HeroLogoMotion } from "./HeroLogoMotion";
+import { ClientSlider } from "./ClientSlider";
 import { TypewriterText } from "./TypewriterText";
 
 interface HeroProps {
@@ -129,24 +130,8 @@ export const Hero: React.FC<HeroProps> = ({
             Empresas que aceleram seus resultados com a Preditiva
           </h3>
 
-          {/* Client Logos Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:gap-6 items-center justify-center">
-            {CLIENT_LOGOS.slice(0, 5).map((client) => (
-              <div
-                key={client.name}
-                className="h-16 px-4 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-[#0DF205]/30 transition-all flex flex-col items-center justify-center group"
-              >
-                <img
-                  src={client.logo}
-                  alt={client.name}
-                  className="h-10 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
-                />
-                <span className="text-[10px] text-white/40 uppercase tracking-widest font-mono mt-1">
-                  {client.category}
-                </span>
-              </div>
-            ))}
-          </div>
+          {/* Client Logos Carousel (auto-scrolling, infinite loop) */}
+          <ClientSlider clients={CLIENT_LOGOS} />
         </div>
 
         {/* 3 Metric Cards from Figma Design */}
