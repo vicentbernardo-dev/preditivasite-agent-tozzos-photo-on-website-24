@@ -512,17 +512,17 @@ export const AceleradoraPage: React.FC<AceleradoraPageProps> = ({
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Paulo Henrique */}
+            {/* Paulo André */}
             <div className="p-8 sm:p-10 rounded-2xl bg-gradient-to-b from-white/[0.06] to-white/[0.02] border border-white/20 backdrop-blur-md flex flex-col sm:flex-row items-start sm:items-center gap-6 sm:gap-8 group hover:border-[#0DF205]/40 transition-all">
               <div className="flex flex-col items-center text-center flex-shrink-0 mx-auto sm:mx-0">
                 <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#0DF205]/40 p-0.5 mb-3 shadow-[0_0_15px_rgba(13,242,5,0.2)]">
                   <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=250&q=80"
-                    alt="Paulo Henrique"
+                    src="/clientes/paulo-andré-miami.jpg"
+                    alt="Paulo André"
                     className="w-full h-full object-cover rounded-full"
                   />
                 </div>
-                <div className="font-bold text-white text-base">PAULO HENRIQUE</div>
+                <div className="font-bold text-white text-base">PAULO ANDRÉ</div>
                 <div className="text-[10px] text-white/60 uppercase">CEO DA MIAMI AD SCHOOL</div>
               </div>
               <div className="space-y-2 flex-grow">
@@ -538,7 +538,7 @@ export const AceleradoraPage: React.FC<AceleradoraPageProps> = ({
               <div className="flex flex-col items-center text-center flex-shrink-0 mx-auto sm:mx-0">
                 <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#0DF205]/40 p-0.5 mb-3 shadow-[0_0_15px_rgba(13,242,5,0.2)]">
                   <img
-                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=250&q=80"
+                    src="/clientes/edu-sato-ab-mauri.jpg"
                     alt="Edu Sato"
                     className="w-full h-full object-cover rounded-full"
                   />

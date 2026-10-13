@@ -8,6 +8,11 @@ interface FrictionPointsProps {
 }
 
 export const FrictionPoints: React.FC<FrictionPointsProps> = ({ onOpenAuditModal }) => {
+  const handleCleanRedirect = (url: string) => {
+    const cleanUrl = url.split('?')[0];
+    window.open(cleanUrl, '_blank');
+  };
+
   return (
     <section id="metodologia" className="relative py-20 lg:py-28 bg-white text-[#000604] overflow-hidden border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -52,16 +57,14 @@ export const FrictionPoints: React.FC<FrictionPointsProps> = ({ onOpenAuditModal
               </p>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#0DF205] font-mono">
-              <span>Gargalo de Conversão</span>
-              <a 
-                href="https://vision.preditiva.co/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline flex items-center gap-1 cursor-pointer"
+            <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between">
+              <span className="text-xs text-[#0DF205] font-mono">Gargalo de Conversão</span>
+              <button
+                onClick={() => handleCleanRedirect("https://vision.preditiva.co/")}
+                className="px-4 py-2 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-familjen font-bold text-xs uppercase rounded-md transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(13,242,5,0.5)] cursor-pointer flex items-center gap-1"
               >
                 Auditar agora <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
+              </button>
             </div>
           </motion.div>
 
@@ -92,16 +95,14 @@ export const FrictionPoints: React.FC<FrictionPointsProps> = ({ onOpenAuditModal
               </p>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#0DF205] font-mono">
-              <span>Gargalo de Telemetria</span>
-              <a 
-                href="https://vision.preditiva.co/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline flex items-center gap-1 cursor-pointer"
+            <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between">
+              <span className="text-xs text-[#0DF205] font-mono">Gargalo de Telemetria</span>
+              <button
+                onClick={() => handleCleanRedirect("https://vision.preditiva.co/")}
+                className="px-4 py-2 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-familjen font-bold text-xs uppercase rounded-md transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(13,242,5,0.5)] cursor-pointer flex items-center gap-1"
               >
                 Auditar agora <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
+              </button>
             </div>
           </motion.div>
 
@@ -133,16 +134,14 @@ export const FrictionPoints: React.FC<FrictionPointsProps> = ({ onOpenAuditModal
               </p>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs text-[#0DF205] font-mono">
-              <span>Gargalo de Retenção</span>
-              <a 
-                href="https://vision.preditiva.co/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline flex items-center gap-1 cursor-pointer"
+            <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between">
+              <span className="text-xs text-[#0DF205] font-mono">Gargalo de Retenção</span>
+              <button
+                onClick={() => handleCleanRedirect("https://vision.preditiva.co/")}
+                className="px-4 py-2 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-familjen font-bold text-xs uppercase rounded-md transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-[0_0_20px_rgba(13,242,5,0.5)] cursor-pointer flex items-center gap-1"
               >
                 Auditar agora <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
+              </button>
             </div>
           </motion.div>
         </div>

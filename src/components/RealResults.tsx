@@ -126,12 +126,21 @@ export const RealResults: React.FC<RealResultsProps> = ({
 
           {/* Logos Band with high visual fidelity */}
           <div className="w-full max-w-4xl py-6 px-8 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-6 items-center justify-items-center mb-10">
-            {['SWAROVSKI', 'Red Bull', 'shoulder', 'océane'].map((brand) => (
+            {[
+              { name: 'Swarovski', logo: '/logo/swarovski_logo_1x.webp' },
+              { name: 'Red Bull', logo: '/logo/red_bull_logo_1x.webp' },
+              { name: 'Shoulder', logo: '/logo/shoulder_logo_1x.webp' },
+              { name: 'Océane', logo: '/logo/oceane_logo_1x.webp' }
+            ].map((brand) => (
               <div
-                key={brand}
-                className="font-familjen text-lg sm:text-xl font-bold tracking-widest text-[#EFEFEF]/80 hover:text-[#0DF205] transition-colors py-2"
+                key={brand.name}
+                className="h-12 flex items-center justify-center group hover:scale-110 transition-transform duration-300"
               >
-                {brand}
+                <img
+                  src={brand.logo}
+                  alt={brand.name}
+                  className="h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300 max-w-[100px]"
+                />
               </div>
             ))}
           </div>
