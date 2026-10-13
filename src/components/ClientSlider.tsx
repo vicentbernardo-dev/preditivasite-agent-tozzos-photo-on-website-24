@@ -24,16 +24,13 @@ export const ClientSlider: React.FC<ClientSliderProps> = ({
       {clients.map((client) => (
         <div
           key={`${copyIndex}-${client.name}`}
-          className="w-44 sm:w-52 h-16 mr-4 sm:mr-6 px-4 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/5 hover:border-[#0DF205]/30 transition-all flex flex-col items-center justify-center group shrink-0"
+          className="w-36 sm:w-44 h-16 mr-6 sm:mr-10 flex items-center justify-center shrink-0"
         >
           <img
             src={client.logo}
             alt={copyIndex === 0 ? client.name : ""}
-            className="h-10 object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+            className="h-10 max-w-full object-contain grayscale hover:grayscale-0 transition-all duration-300"
           />
-          <span className="text-[10px] text-white/40 uppercase tracking-widest font-mono mt-1">
-            {client.category}
-          </span>
         </div>
       ))}
     </div>
