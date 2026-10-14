@@ -736,9 +736,9 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({
                   <AnimatePresence>
                     {isOpen && (
                       <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
                         transition={{ duration: 0.3 }}
                         className="px-6 sm:px-7 pb-6 sm:pb-7 text-base text-[#B9CCAF] leading-relaxed border-t border-white/5 pt-4"
                       >

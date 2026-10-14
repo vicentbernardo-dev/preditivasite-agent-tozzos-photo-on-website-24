@@ -437,9 +437,9 @@ export const Navbar: React.FC<NavbarProps> = ({
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
             className="lg:hidden bg-[#000604]/98 border-b border-white/10 px-6 py-6 font-familjen space-y-4"
           >
             <div className="flex flex-col space-y-3 text-lg">

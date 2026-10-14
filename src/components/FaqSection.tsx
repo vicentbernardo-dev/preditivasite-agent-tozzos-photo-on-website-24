@@ -61,9 +61,9 @@ export const FaqSection: React.FC = () => {
                 <AnimatePresence>
                   {isOpen && (
                     <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -4 }}
                       transition={{ duration: 0.3 }}
                     >
                       <div className="px-6 pb-8 sm:px-8 sm:pb-8 pt-2 text-[#EFEFEF]/85 font-familjen text-base sm:text-lg leading-relaxed border-t border-white/5">
