@@ -39,6 +39,7 @@ const AlfredoDetailModal = lazy(() => import('./components/AlfredoDetailModal').
 
 import { CaseStudy, InsightArticle, ServiceCard, Specialty } from './types';
 import { Sparkles, MessageCircle } from 'lucide-react';
+import { MotionConfig } from 'motion/react';
 import { ArticleSeoData, updateBreadcrumbSchema, updatePageSeo } from './lib/seo';
 
 const VALID_PAGES: PageRoute[] = [
@@ -211,6 +212,7 @@ export default function App() {
   };
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="min-h-screen bg-[#000604] text-white font-familjen flex flex-col selection:bg-[#0DF205] selection:text-black">
       {/* Header Navigation */}
       <Navbar
@@ -561,5 +563,6 @@ export default function App() {
         />
       </Suspense>
     </div>
+    </MotionConfig>
   );
 }

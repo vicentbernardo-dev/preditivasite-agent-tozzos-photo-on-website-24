@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
 interface Client {
   name: string;
@@ -17,6 +17,8 @@ export const ClientSlider: React.FC<ClientSliderProps> = ({
   clients,
   duration = 30,
 }) => {
+  const shouldReduceMotion = useReducedMotion() ?? true;
+
   // The list is rendered twice and the track moves by exactly one copy's width,
   // so the loop restarts without a visible jump and never ends.
   const renderCopy = (copyIndex: number) => (
@@ -29,7 +31,11 @@ export const ClientSlider: React.FC<ClientSliderProps> = ({
           <img
             src={client.logo}
             alt={copyIndex === 0 ? client.name : ""}
+            width={160}
+            height={40}
             className="h-10 max-w-full object-contain grayscale hover:grayscale-0 transition-all duration-300"
+            loading="lazy"
+            decoding="async"
           />
         </div>
       ))}
@@ -40,11 +46,11 @@ export const ClientSlider: React.FC<ClientSliderProps> = ({
     <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent)]">
       <motion.div
         className="flex w-max"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration, ease: "linear", repeat: Infinity }}
+        animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
+        transition={shouldReduceMotion ? undefined : { duration, ease: "linear", repeat: Infinity }}
       >
         {renderCopy(0)}
-        {renderCopy(1)}
+        {!shouldReduceMotion && renderCopy(1)}
       </motion.div>
     </div>
   );

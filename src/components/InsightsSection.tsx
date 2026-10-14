@@ -3,7 +3,6 @@ import { motion } from 'motion/react';
 import { ArrowRight, BookOpen, Clock, Calendar } from 'lucide-react';
 import { InsightArticle } from '../types';
 import { PageRoute } from './Navbar';
-import { client } from '../lib/sanity';
 import { withSanityImageFormat } from '../lib/seo';
 
 interface SanityPost {
@@ -63,6 +62,7 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
 
     const fetchRecentPosts = async () => {
       try {
+        const { client } = await import('../lib/sanity');
         const recentPosts = await client.fetch<SanityPost[]>(RECENT_POSTS_QUERY);
         if (isActive) setPosts(recentPosts);
       } catch (error) {

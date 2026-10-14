@@ -35,6 +35,8 @@
     <!-- Preconnect & DNS-Prefetch (Reduz latência de rede) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://ioanix6u.api.sanity.io" crossorigin />
+    <link rel="dns-prefetch" href="https://ioanix6u.api.sanity.io" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://connect.facebook.net">
     <link rel="dns-prefetch" href="https://scripts.clarity.ms">
@@ -64,7 +66,7 @@
           })(window,document,'script','dataLayer','GTM-KSRNCH5G');
         }
         // Carrega apos interagir com a pagina
-        ['touchstart', 'mousemove', 'scroll', 'keydown'].forEach(function(e) {
+        ['scroll', 'mousemove', 'touchstart'].forEach(function(e) {
           window.addEventListener(e, loadGTM, { once: true, passive: true });
         });
         // Ou apos 3.5 segundos de inatividade
