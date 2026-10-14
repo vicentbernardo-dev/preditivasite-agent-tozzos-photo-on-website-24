@@ -12,7 +12,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditModal, onNavigatePage }) => {
   return (
-    <footer className="relative bg-[#000604] text-white pt-20 pb-12 border-t border-white/10 overflow-hidden font-familjen">
+    <footer className="relative bg-[#000604] text-white pt-20 pb-12 border-t border-white/10 overflow-hidden font-familjen [content-visibility:auto] [contain-intrinsic-size:1px_500px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Main Footer Grid */}
