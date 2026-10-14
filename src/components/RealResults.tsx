@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, TrendingUp, Sparkles, CheckCircle, ExternalLink } from 'lucide-react';
-import { CASE_STUDIES, CLIENT_LOGOS } from '../data/mockData';
+import { CASE_STUDIES } from '../data/mockData';
 import { CaseStudy } from '../types';
 import { PageRoute } from './Navbar';
 

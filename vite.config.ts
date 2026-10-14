@@ -1,12 +1,11 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 import path from 'path';
 import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), tailwindcss(), cssInjectedByJsPlugin()],
+    plugins: [react(), tailwindcss()],
     build: {
       target: 'esnext',
       minify: 'esbuild' as const,
@@ -15,9 +14,9 @@ export default defineConfig(() => {
       rollupOptions: {
         output: {
           manualChunks: {
-            'react-vendor': ['react', 'react-dom'],
+            'react-vendor': ['react', 'react-dom', 'react-dom/client'],
             icons: ['lucide-react'],
-            'motion-vendor': ['motion'],
+            'motion-vendor': ['motion', 'framer-motion'],
           },
         },
       },

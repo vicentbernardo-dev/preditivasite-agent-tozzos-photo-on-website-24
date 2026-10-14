@@ -1,16 +1,16 @@
 import React, { lazy, Suspense, useState, useEffect, useRef, useCallback } from 'react';
 import { Navbar, PageRoute } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { SolutionsSection } from './components/SolutionsSection';
-import { FrictionPoints } from './components/FrictionPoints';
-import { DiagnosticSection } from './components/DiagnosticSection';
-import { RealResults } from './components/RealResults';
-import { Testimonials } from './components/Testimonials';
-import { SpecialtiesSection } from './components/SpecialtiesSection';
-import { InsightsSection } from './components/InsightsSection';
-import { FaqSection } from './components/FaqSection';
-import { CtaBottomSection } from './components/CtaBottomSection';
-import { Footer } from './components/Footer';
+const SolutionsSection = lazy(() => import('./components/SolutionsSection').then(({ SolutionsSection }) => ({ default: SolutionsSection })));
+const FrictionPoints = lazy(() => import('./components/FrictionPoints').then(({ FrictionPoints }) => ({ default: FrictionPoints })));
+const DiagnosticSection = lazy(() => import('./components/DiagnosticSection').then(({ DiagnosticSection }) => ({ default: DiagnosticSection })));
+const RealResults = lazy(() => import('./components/RealResults').then(({ RealResults }) => ({ default: RealResults })));
+const Testimonials = lazy(() => import('./components/Testimonials').then(({ Testimonials }) => ({ default: Testimonials })));
+const SpecialtiesSection = lazy(() => import('./components/SpecialtiesSection').then(({ SpecialtiesSection }) => ({ default: SpecialtiesSection })));
+const InsightsSection = lazy(() => import('./components/InsightsSection').then(({ InsightsSection }) => ({ default: InsightsSection })));
+const FaqSection = lazy(() => import('./components/FaqSection').then(({ FaqSection }) => ({ default: FaqSection })));
+const CtaBottomSection = lazy(() => import('./components/CtaBottomSection').then(({ CtaBottomSection }) => ({ default: CtaBottomSection })));
+const Footer = lazy(() => import('./components/Footer').then(({ Footer }) => ({ default: Footer })));
 const MethodologyPage = lazy(() => import('./components/MethodologyPage').then(({ MethodologyPage }) => ({ default: MethodologyPage })));
 const ConsultoriaPage = lazy(() => import('./components/ConsultoriaPage').then(({ ConsultoriaPage }) => ({ default: ConsultoriaPage })));
 const EspecialistasPage = lazy(() => import('./components/EspecialistasPage').then(({ EspecialistasPage }) => ({ default: EspecialistasPage })));
@@ -37,10 +37,10 @@ const ServiceModal = lazy(() => import('./components/ServiceModal').then(m => ({
 const VisionDetailModal = lazy(() => import('./components/VisionDetailModal').then(m => ({ default: m.VisionDetailModal })));
 const AlfredoDetailModal = lazy(() => import('./components/AlfredoDetailModal').then(m => ({ default: m.AlfredoDetailModal })));
 
-import { CaseStudy, InsightArticle, ServiceCard, Specialty } from './types';
+import type { CaseStudy, InsightArticle, ServiceCard } from './types';
 import { Sparkles, MessageCircle } from 'lucide-react';
 import { MotionConfig } from 'motion/react';
-import { ArticleSeoData, updateBreadcrumbSchema, updatePageSeo } from './lib/seo';
+import type { ArticleSeoData } from './lib/seo';
 
 const VALID_PAGES: PageRoute[] = [
   'home',
@@ -120,10 +120,26 @@ export default function App() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    const routeKey = `${currentPage}:${currentSlug || ''}`;
-    const pageArticleSeo = articleSeo?.routeKey === routeKey ? articleSeo.data : undefined;
-    updatePageSeo(currentPage, currentSlug, pageArticleSeo);
-    updateBreadcrumbSchema(currentPage, pageArticleSeo?.title);
+    let isActive = true;
+
+    const updateSeo = async () => {
+      try {
+        const { updateBreadcrumbSchema, updatePageSeo } = await import('./lib/seo');
+        if (!isActive) return;
+
+        const routeKey = `${currentPage}:${currentSlug || ''}`;
+        const pageArticleSeo = articleSeo?.routeKey === routeKey ? articleSeo.data : undefined;
+        updatePageSeo(currentPage, currentSlug, pageArticleSeo);
+        updateBreadcrumbSchema(currentPage, pageArticleSeo?.title);
+      } catch (error) {
+        console.error('Erro ao atualizar os metadados SEO da página:', error);
+      }
+    };
+
+    void updateSeo();
+    return () => {
+      isActive = false;
+    };
   }, [currentPage, currentSlug, articleSeo]);
 
   useEffect(() => {
@@ -396,89 +412,91 @@ export default function App() {
               onNavigateSection={handleNavigateSection}
             />
 
-            {/* Soluções para o Crescimento do Seu Negócio (COMO ATUAMOS) */}
-            <SolutionsSection
-              onSelectService={(service) => {
-                if (service.id === 'aceleradora') {
-                  setCurrentPage('frentes-aceleradora');
+            <Suspense fallback={null}>
+              {/* Soluções para o Crescimento do Seu Negócio (COMO ATUAMOS) */}
+              <SolutionsSection
+                onSelectService={(service) => {
+                  if (service.id === 'aceleradora') {
+                    setCurrentPage('frentes-aceleradora');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  } else if (service.id === 'consultoria') {
+                    setCurrentPage('frentes-consultoria');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  } else if (service.id === 'especialistas') {
+                    setCurrentPage('frentes-especialistas');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  } else {
+                    setSelectedService(service);
+                  }
+                }}
+              />
+
+              {/* Nova Seção de Ferramentas (Preditiva Tools Ecosystem) */}
+              <ToolsSection
+                onOpenVisionModal={() => setIsVisionModalOpen(true)}
+                onOpenAlfredoModal={() => setIsAlfredoModalOpen(true)}
+                onOpenAuditModal={() => handleOpenAuditModal()}
+              />
+
+              {/* Os Pontos de Fricção (Gargalos) */}
+              <FrictionPoints
+                onOpenAuditModal={() => handleOpenAuditModal()}
+              />
+
+              {/* Diagnóstico Gratuito Form & Live Audit Trigger */}
+              <DiagnosticSection
+                onRunAudit={handleRunAuditFromSection}
+              />
+
+              {/* Resultados Reais (Cases) */}
+              <RealResults
+                onSelectCase={(cs) => setSelectedCase(cs)}
+                onOpenAuditModal={() => handleOpenAuditModal()}
+                onNavigatePage={navigate}
+              />
+
+              {/* Depoimentos (Testimonials) */}
+              <Testimonials />
+
+              {/* Especialidades Técnicas da Preditiva */}
+              <SpecialtiesSection
+                onSelectSpecialty={(spec) => {
+                  // select specialty
+                }}
+                onOpenContact={() => handleOpenAuditModal()}
+                onNavigateSpecialty={(route) => {
+                  setCurrentPage(route);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else if (service.id === 'consultoria') {
-                  setCurrentPage('frentes-consultoria');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else if (service.id === 'especialistas') {
-                  setCurrentPage('frentes-especialistas');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else {
-                  setSelectedService(service);
-                }
-              }}
-            />
+                }}
+              />
 
-            {/* Nova Seção de Ferramentas (Preditiva Tools Ecosystem) */}
-            <ToolsSection
-              onOpenVisionModal={() => setIsVisionModalOpen(true)}
-              onOpenAlfredoModal={() => setIsAlfredoModalOpen(true)}
-              onOpenAuditModal={() => handleOpenAuditModal()}
-            />
+              {/* Insights (Blog) */}
+              <InsightsSection
+                onSelectArticle={(art) => setSelectedArticle(art)}
+                onNavigatePage={navigate}
+              />
 
-            {/* Os Pontos de Fricção (Gargalos) */}
-            <FrictionPoints
-              onOpenAuditModal={() => handleOpenAuditModal()}
-            />
+              {/* Perguntas Frequentes (FAQ) */}
+              <FaqSection />
 
-            {/* Diagnóstico Gratuito Form & Live Audit Trigger */}
-            <DiagnosticSection
-              onRunAudit={handleRunAuditFromSection}
-            />
-
-            {/* Resultados Reais (Cases) */}
-            <RealResults
-              onSelectCase={(cs) => setSelectedCase(cs)}
-              onOpenAuditModal={() => handleOpenAuditModal()}
-              onNavigatePage={navigate}
-              
-            />
-
-            {/* Depoimentos (Testimonials) */}
-            <Testimonials />
-
-            {/* Especialidades Técnicas da Preditiva */}
-            <SpecialtiesSection
-              onSelectSpecialty={(spec) => {
-                // select specialty
-              }}
-              onOpenContact={() => handleOpenAuditModal()}
-              onNavigateSpecialty={(route) => {
-                setCurrentPage(route);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            />
-
-            {/* Insights (Blog) */}
-            <InsightsSection
-              onSelectArticle={(art) => setSelectedArticle(art)}
-              onNavigatePage={navigate}
-              
-            />
-
-            {/* Perguntas Frequentes (FAQ) */}
-            <FaqSection />
-
-            {/* Bottom Lead Capture CTA */}
-            <CtaBottomSection
-              onSuccessSubmit={handleCtaLeadSuccess}
-            />
+              {/* Bottom Lead Capture CTA */}
+              <CtaBottomSection
+                onSuccessSubmit={handleCtaLeadSuccess}
+              />
+            </Suspense>
           </>
         )}
       </main>
       </Suspense>
 
       {/* Footer */}
-      <Footer
-        onNavigateSection={handleNavigateSection}
-        onOpenAuditModal={() => handleOpenAuditModal()}
-        onNavigatePage={navigate}
-              />
+      <Suspense fallback={null}>
+        <Footer
+          onNavigateSection={handleNavigateSection}
+          onOpenAuditModal={() => handleOpenAuditModal()}
+          onNavigatePage={navigate}
+        />
+      </Suspense>
 
       {/* Floating Action Button for WhatsApp / Rapid Contact */}
       <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">

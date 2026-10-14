@@ -1,10 +1,10 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { motion } from "motion/react";
 import { Sparkles, ArrowRight } from "lucide-react";
-import { HERO_SERVICES_LIST, CLIENT_LOGOS } from "../data/mockData";
-import { HeroLogoMotion } from "./HeroLogoMotion";
+import { HERO_SERVICES_LIST } from "../data/heroServices";
 import { TypewriterText } from "./TypewriterText";
-import { ClientSlider } from "./ClientSlider";
+const ClientSlider = lazy(() => import("./ClientSlider").then(({ ClientSlider }) => ({ default: ClientSlider })));
+const HeroLogoMotion = lazy(() => import("./HeroLogoMotion").then(({ HeroLogoMotion }) => ({ default: HeroLogoMotion })));
 
 interface HeroProps {
   onOpenAuditModal: () => void;
@@ -120,7 +120,9 @@ export const Hero: React.FC<HeroProps> = ({
             transition={{ duration: 0.7, delay: 0.2 }}
             className="lg:col-span-4 hidden lg:flex flex-col items-center justify-center relative"
           >
-            <HeroLogoMotion />
+            <Suspense fallback={<div className="w-full max-w-[440px] aspect-square" aria-hidden="true" />}>
+              <HeroLogoMotion />
+            </Suspense>
           </motion.div>
         </div>
 
@@ -131,7 +133,9 @@ export const Hero: React.FC<HeroProps> = ({
           </h3>
 
           {/* Client Logos Carousel (auto-scrolling, infinite loop) */}
-          <ClientSlider clients={CLIENT_LOGOS} />
+          <Suspense fallback={<div className="h-16" aria-hidden="true" />}>
+            <ClientSlider />
+          </Suspense>
         </div>
 
         {/* 3 Metric Cards from Figma Design */}
