@@ -517,7 +517,7 @@ export const AceleradoraPage: React.FC<AceleradoraPageProps> = ({
               <div className="flex flex-col items-center text-center flex-shrink-0 mx-auto sm:mx-0">
                 <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#0DF205]/40 p-0.5 mb-3 shadow-[0_0_15px_rgba(13,242,5,0.2)]">
                   <img
-                    src="/clientes/paulo-andré-miami.jpg"
+                    src="/clientes/paulo-andre-miami.webp"
                     alt="Paulo André"
                     className="w-full h-full object-cover rounded-full"
                   />
@@ -538,7 +538,7 @@ export const AceleradoraPage: React.FC<AceleradoraPageProps> = ({
               <div className="flex flex-col items-center text-center flex-shrink-0 mx-auto sm:mx-0">
                 <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#0DF205]/40 p-0.5 mb-3 shadow-[0_0_15px_rgba(13,242,5,0.2)]">
                   <img
-                    src="/clientes/edu-sato-ab-mauri.jpg"
+                    src="/clientes/edu-sato-ab-mauri.webp"
                     alt="Edu Sato"
                     className="w-full h-full object-cover rounded-full"
                   />

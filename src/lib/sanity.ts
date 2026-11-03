@@ -4,8 +4,9 @@ export const client = createClient({
   projectId: 'ioanix6u',
   dataset: 'production',
   apiVersion: '2025-01-20',
-  useCdn: false,
-  token: import.meta.env.VITE_SANITY_TOKEN, // Optional: only needed for authenticated requests
+  // Leitura pública via CDN (apicdn.sanity.io): mais rápida e não consome cota da API.
+  // Sem token aqui: qualquer VITE_* vai parar no bundle do navegador.
+  useCdn: true,
 })
 
 // GROQ query for fetching blog posts

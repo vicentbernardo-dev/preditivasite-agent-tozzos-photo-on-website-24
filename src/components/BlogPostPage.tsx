@@ -4,7 +4,7 @@ import { PageRoute } from './Navbar';
 import { RadarNewsletter } from './RadarNewsletter';
 import { client } from '../lib/sanity';
 import { PortableText } from '@portabletext/react';
-import { ArticleSeoData, removeBlogPostSchema, setRobotsNoindex, updateBlogPostSchema, withSanityImageFormat } from '../lib/seo';
+import { ArticleSeoData, removeBlogPostSchema, sanitySrcSet, setRobotsNoindex, updateBlogPostSchema, withSanityImageFormat } from '../lib/seo';
 import { SpaLink } from './SpaLink';
 
 interface BlogPostPageProps {
@@ -32,13 +32,15 @@ const richTextStyles = {
   },
   types: {
     image: ({value}: any) => {
-      const imageUrl = withSanityImageFormat(value?.asset?.url);
+      const imageUrl = withSanityImageFormat(value?.asset?.url, 1200);
       if (!imageUrl) return null;
       return (
         <figure className="my-8">
           <img
             src={imageUrl}
             alt={value.alt || value.caption || 'Imagem ilustrativa do artigo'}
+            loading="lazy"
+            decoding="async"
             className="w-full rounded-2xl"
           />
           {value.caption && <figcaption className="mt-2 text-sm text-[#B9CCAF]">{value.caption}</figcaption>}
@@ -207,7 +209,10 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
 
           <div className="relative rounded-3xl overflow-hidden border border-[#3B4B35]/30 shadow-2xl bg-black h-72 sm:h-96 lg:h-[440px] flex items-center justify-center group">
             <img
-              src={withSanityImageFormat(post.imageUrl) || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80'}
+              src={withSanityImageFormat(post.imageUrl, 1280) || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1600&q=80'}
+              srcSet={sanitySrcSet(post.imageUrl, [640, 960, 1280, 1600])}
+              sizes="(min-width: 1152px) 1088px, 100vw"
+              fetchPriority="high"
               alt={post.imageAlt || post.title || 'Imagem de capa do artigo'}
               className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
             />

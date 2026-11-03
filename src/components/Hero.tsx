@@ -1,5 +1,4 @@
 import React, { lazy, Suspense } from "react";
-import { motion } from "motion/react";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { HERO_SERVICES_LIST } from "../data/heroServices";
 import { TypewriterText } from "./TypewriterText";
@@ -41,12 +40,7 @@ export const Hero: React.FC<HeroProps> = ({
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           {/* Left Column: Main Value Proposition */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="lg:col-span-8 flex flex-col items-start text-left"
-          >
+          <div className="rise-in lg:col-span-8 flex flex-col items-start text-left">
             {/* Top Pill Tag */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111815] border border-[#0DF205]/30 text-[#0DF205] text-xs font-semibold uppercase tracking-wider mb-6">
               <span className="w-2 h-2 rounded-full bg-[#0DF205] animate-ping" />
@@ -111,19 +105,14 @@ export const Hero: React.FC<HeroProps> = ({
                 <ArrowRight className="w-5 h-5 text-[#0DF205]" />
               </button>
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Column: Interactive Code & Tech Motion Logo representation */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="lg:col-span-4 hidden lg:flex flex-col items-center justify-center relative"
-          >
+          <div className="rise-in lg:col-span-4 hidden lg:flex flex-col items-center justify-center relative [animation-delay:0.2s]">
             <Suspense fallback={<div className="w-full max-w-[440px] aspect-square" aria-hidden="true" />}>
               <HeroLogoMotion />
             </Suspense>
-          </motion.div>
+          </div>
         </div>
 
         {/* Client Trust Section */}
@@ -141,10 +130,7 @@ export const Hero: React.FC<HeroProps> = ({
         {/* 3 Metric Cards from Figma Design */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Metric 1 */}
-          <motion.div
-            whileHover={{ y: -4 }}
-            className="p-6 sm:p-8 rounded-2xl bg-[#121412]/80 backdrop-blur-md border border-[#0DF205] shadow-[0_0_30px_rgba(13,242,5,0.15)] flex flex-col items-center text-center transition-all"
-          >
+          <div className="p-6 sm:p-8 rounded-2xl bg-[#121412]/80 backdrop-blur-md border border-[#0DF205] shadow-[0_0_30px_rgba(13,242,5,0.15)] flex flex-col items-center text-center transition-transform duration-200 hover:-translate-y-1">
             <div className="font-familjen text-4xl sm:text-5xl font-bold text-[#0DF205] mb-2 tracking-tight">
               10/10
             </div>
@@ -154,13 +140,10 @@ export const Hero: React.FC<HeroProps> = ({
             <p className="text-xs text-white/50 mt-2 font-mono">
               Índice máximo de fidelidade & recomendação
             </p>
-          </motion.div>
+          </div>
 
           {/* Metric 2 */}
-          <motion.div
-            whileHover={{ y: -4 }}
-            className="p-6 sm:p-8 rounded-2xl bg-[#121412]/80 backdrop-blur-md border border-[#0DF205] shadow-[0_0_30px_rgba(13,242,5,0.15)] flex flex-col items-center text-center transition-all"
-          >
+          <div className="p-6 sm:p-8 rounded-2xl bg-[#121412]/80 backdrop-blur-md border border-[#0DF205] shadow-[0_0_30px_rgba(13,242,5,0.15)] flex flex-col items-center text-center transition-transform duration-200 hover:-translate-y-1">
             <div className="font-familjen text-4xl sm:text-5xl font-bold text-[#0DF205] mb-2 tracking-tight">
               5x ROI
             </div>
@@ -170,13 +153,10 @@ export const Hero: React.FC<HeroProps> = ({
             <p className="text-xs text-white/50 mt-2 font-mono">
               Retorno acelerado em conversão e receita
             </p>
-          </motion.div>
+          </div>
 
           {/* Metric 3 */}
-          <motion.div
-            whileHover={{ y: -4 }}
-            className="p-6 sm:p-8 rounded-2xl bg-[#121412]/80 backdrop-blur-md border border-[#0DF205] shadow-[0_0_30px_rgba(13,242,5,0.15)] flex flex-col items-center text-center transition-all"
-          >
+          <div className="p-6 sm:p-8 rounded-2xl bg-[#121412]/80 backdrop-blur-md border border-[#0DF205] shadow-[0_0_30px_rgba(13,242,5,0.15)] flex flex-col items-center text-center transition-transform duration-200 hover:-translate-y-1">
             <div className="font-familjen text-4xl sm:text-5xl font-bold text-[#0DF205] mb-2 tracking-tight">
               +100
             </div>
@@ -186,7 +166,7 @@ export const Hero: React.FC<HeroProps> = ({
             <p className="text-xs text-white/50 mt-2 font-mono">
               E-commerces escalando em escala nacional
             </p>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

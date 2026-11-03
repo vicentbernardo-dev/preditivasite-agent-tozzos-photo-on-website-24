@@ -16,7 +16,7 @@ const SITE_URL = 'https://preditiva.co';
 const BRAND = 'Preditiva';
 const ARTICLE_SCHEMA_ID = 'schema-blog';
 const BREADCRUMB_SCHEMA_ID = 'schema-breadcrumb-list';
-const DEFAULT_SHARE_IMAGE = `${SITE_URL}/og-cover.png`;
+const DEFAULT_SHARE_IMAGE = `${SITE_URL}/og-cover.jpg`;
 const MIN_DESCRIPTION_LENGTH = 140;
 const MAX_DESCRIPTION_LENGTH = 160;
 
@@ -192,15 +192,27 @@ const setMeta = (attribute: 'name' | 'property', key: string, content: string) =
   ensureMeta(attribute, key).content = content;
 };
 
-export const withSanityImageFormat = (imageUrl?: string): string | undefined => {
+// width: largura máxima em px. Sem ela o Sanity devolve o original (ex.: 1376x768),
+// bem maior que os cards onde a imagem aparece.
+export const withSanityImageFormat = (imageUrl?: string, width?: number): string | undefined => {
   if (!imageUrl) return undefined;
   try {
     const url = new URL(imageUrl);
     url.searchParams.set('auto', 'format');
+    if (width && url.hostname.endsWith('cdn.sanity.io')) {
+      url.searchParams.set('w', String(width));
+      url.searchParams.set('fit', 'max');
+      url.searchParams.set('q', '75');
+    }
     return url.toString();
   } catch {
     return imageUrl;
   }
+};
+
+export const sanitySrcSet = (imageUrl: string | undefined, widths: number[]): string | undefined => {
+  if (!imageUrl || !imageUrl.includes('cdn.sanity.io')) return undefined;
+  return widths.map((width) => `${withSanityImageFormat(imageUrl, width)} ${width}w`).join(', ');
 };
 
 export const buildBlogPostSchema = (slug: string | undefined, article: ArticleSeoData) => {

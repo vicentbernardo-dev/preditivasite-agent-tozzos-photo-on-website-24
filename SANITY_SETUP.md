@@ -44,12 +44,9 @@ npx sanity schemas deploy
 This uploads your schema to the Sanity Content Lake.
 
 ### 2. **Set Up Environment Variables**
-Create a `.env.local` file in your app root (not checked in):
-```env
-VITE_SANITY_TOKEN=your_sanity_token_here
-```
-- Generate a token in Sanity Studio settings (Project Settings → API → Tokens)
-- Only needed for authenticated requests or publishing
+The site only reads published content, so the front-end needs **no token** (`src/lib/sanity.ts` uses the public CDN).
+- Never put a Sanity token in a `VITE_*` variable: Vite embeds those in the browser bundle.
+- If a token is ever needed (publishing, drafts), use it only in a Netlify Function via a non-`VITE_` env var.
 
 ### 3. **Add Content in Sanity Studio**
 ```bash

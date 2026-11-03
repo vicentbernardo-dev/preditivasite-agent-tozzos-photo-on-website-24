@@ -183,6 +183,13 @@ O LCP (1,2 s) e o CLS (0,02) estão bons. **O problema é o TBT de 3,3 s**, com 
 | P1.13 | Higiene: remover dependências não usadas no `src` (`@google/genai`, `express`, `dotenv`, `react-gtm-module`, `@types/express`), tirar a pasta `dist/` do git (adicionar ao `.gitignore`) e renomear `"name": "react-example"` | [package.json](package.json), [.gitignore](.gitignore) | Build/manutenção | P |
 | P1.14 | Reduzir o DOM (1.155 elementos): ícones `lucide` decorativos repetidos podem virar sprites/CSS. O carrossel duplica os logos | geral | Estilo/layout | P |
 
+> **Status (03/11/2026): implementado na branch `perf/p1-performance`.**
+> - Feito: P1.1, P1.2, P1.5, P1.6, P1.7, P1.8, P1.9, P1.10, P1.11, P1.12 e P1.13 (exceto tirar `dist/` do git). O H1 do hero deixou de nascer com `opacity: 0`.
+> - P1.3 não era necessário: os `animate={{…}}` das páginas internas são animações de entrada que rodam uma vez, não loops.
+> - Lighthouse 12.6.1, home, build local × produção: tempo de main thread **3,1 s → 1,4 s** no desktop (nota 94 → 99) e **7,6 s → 5,1 s** no mobile (69 → 74). Peso total 1,76 MB → 1,23 MB.
+> - O TBT que sobra no mobile (~650 ms) vem quase todo de **terceiros**: GTM, dois `gtag.js` (Ads + GA4) e o Pixel da Meta, ~1,2 s de tarefas longas. Próximos passos: unificar AW + GA4 numa única Google Tag no GTM (painel) e decidir se as tags passam a carregar só na interação (perde as visitas que não interagem) ou via Partytown.
+> - Pendente: P1.4 (trocar Framer Motion por CSS nas entradas) e P1.14 (DOM).
+
 **Meta após o P1:** TBT < 300 ms e GTmetrix > 90%. Medir também no PageSpeed Insights **mobile**, que é o que o Google usa para ranquear.
 
 ### P2 — SEO on-page e técnico
