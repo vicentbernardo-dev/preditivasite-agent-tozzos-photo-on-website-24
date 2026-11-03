@@ -5,6 +5,8 @@ import { InsightArticle } from '../types';
 import { PageRoute } from './Navbar';
 import { withSanityImageFormat } from '../lib/seo';
 import { isModifiedClick, routeToPath } from '../lib/routes';
+import { RECENT_POSTS_QUERY } from '../lib/queries';
+import { getPreloaded, PRELOADED_KEYS } from '../lib/preloaded';
 
 interface SanityPost {
   _id: string;
@@ -19,19 +21,6 @@ interface SanityPost {
   imageAlt?: string;
 }
 
-const RECENT_POSTS_QUERY = `*[_type == "post" && defined(slug.current) && defined(coalesce(publishedAt, date))] | order(coalesce(publishedAt, date) desc)[0...3] {
-  _id,
-  title,
-  "slug": slug.current,
-  "publishedAt": coalesce(publishedAt, date),
-  category,
-  categoryTag,
-  excerpt,
-  readTime,
-  "imageUrl": coalesce(image.asset->url, mainImage.asset->url),
-  "imageAlt": coalesce(image.alt, mainImage.alt)
-}`;
-
 const formatDate = (dateString?: string) => {
   if (!dateString) return 'DATA DESCONHECIDA';
 
@@ -42,6 +31,8 @@ const formatDate = (dateString?: string) => {
     day: '2-digit',
     month: 'short',
     year: 'numeric',
+    // Fuso fixo: o build (UTC) e o navegador precisam gerar a mesma data na hidratação
+    timeZone: 'America/Sao_Paulo',
   }).format(date).toUpperCase();
 };
 
@@ -54,11 +45,14 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
   onSelectArticle,
   onNavigatePage 
 }) => {
-  const [posts, setPosts] = useState<SanityPost[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Posts embutidos no HTML pelo build (ver lib/preloaded.ts)
+  const [preloadedPosts] = useState(() => getPreloaded<SanityPost[]>(PRELOADED_KEYS.recentPosts));
+  const [posts, setPosts] = useState<SanityPost[]>(preloadedPosts || []);
+  const [loading, setLoading] = useState(!preloadedPosts);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
+    if (preloadedPosts) return;
     let isActive = true;
 
     const fetchRecentPosts = async () => {

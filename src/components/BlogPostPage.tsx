@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, Share2, Bookmark, Check, Copy } from 'lucide-react';
 import { PageRoute } from './Navbar';
 import { RadarNewsletter } from './RadarNewsletter';
@@ -6,6 +6,8 @@ import { client } from '../lib/sanity';
 import { PortableText } from '@portabletext/react';
 import { ArticleSeoData, removeBlogPostSchema, sanitySrcSet, setRobotsNoindex, updateBlogPostSchema, withSanityImageFormat } from '../lib/seo';
 import { SpaLink } from './SpaLink';
+import { LATEST_POST_QUERY, POST_BY_SLUG_QUERY } from '../lib/queries';
+import { getPreloaded, normalizePostSlug, PRELOADED_KEYS } from '../lib/preloaded';
 
 interface BlogPostPageProps {
   onOpenAuditModal: () => void;
@@ -47,6 +49,9 @@ const getRelatedServices = (category?: string): ServicePage[] => {
   const services = SERVICES_BY_CATEGORY[key] || ['frentes-consultoria'];
   return [...services, ...(services.includes('frentes-aceleradora') ? [] : ['frentes-aceleradora' as const])];
 };
+
+// Fuso fixo: o build (UTC) e o navegador precisam gerar a mesma data na hidratação
+const DATE_FORMAT: Intl.DateTimeFormatOptions = { timeZone: 'America/Sao_Paulo' };
 
 // "Atualizado em" só quando a edição veio pelo menos 1 dia depois da publicação
 const wasUpdated = (post: { date?: string; _createdAt?: string; _updatedAt?: string }) => {
@@ -103,25 +108,26 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
   const [sidebarSubscribed, setSidebarSubscribed] = useState(false);
   
   // Estados do Sanity
-  const [post, setPost] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  // Post embutido no HTML pelo build: o corpo do artigo já vem no HTML (indexável) e a
+  // hidratação usa os mesmos dados, sem buscar de novo
+  const [post, setPost] = useState<any>(() => getPreloaded(PRELOADED_KEYS.post(slug)) ?? null);
+  const [loading, setLoading] = useState(() => !post);
+  const skipInitialFetch = useRef(Boolean(post));
 
   useEffect(() => {
+    if (skipInitialFetch.current) {
+      skipInitialFetch.current = false;
+      return;
+    }
     let isActive = true;
     const fetchPost = async () => {
       try {
         setLoading(true);
         setPost(null);
         onSeoDataChange(slug, null);
-        // Normaliza o slug (decodifica %XX e remove barras/espacos das pontas)
-        const normalizedSlug = slug
-          ? decodeURIComponent(slug).replace(/^\/+|\/+$/g, '').trim()
-          : '';
+        const normalizedSlug = normalizePostSlug(slug);
         // Se tiver slug, busca ele. Se não, busca o último post publicado para demonstração.
-        // lower() torna a busca resiliente a variações de caixa.
-        const query = normalizedSlug
-          ? `*[_type in ["post", "blogPost", "article"] && lower(slug.current) == lower($slug)][0]{..., "imageUrl": image.asset->url, "imageAlt": image.alt, "body": body[]{..., _type == "image" => {"asset": asset->{url}, alt, caption}}}`
-          : `*[_type in ["post", "blogPost", "article"]] | order(coalesce(date, publishedAt, _createdAt) desc)[0]{..., "imageUrl": image.asset->url, "imageAlt": image.alt, "body": body[]{..., _type == "image" => {"asset": asset->{url}, alt, caption}}}`;
+        const query = normalizedSlug ? POST_BY_SLUG_QUERY : LATEST_POST_QUERY;
 
         const data = await client.fetch(query, { slug: normalizedSlug });
         if (isActive) setPost(data);
@@ -232,12 +238,12 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
                 </div>
                 <div className="text-xs text-[#84967C] uppercase tracking-wider font-medium">
                   <time dateTime={post.date || post._createdAt}>
-                    {new Date(post.date || post._createdAt).toLocaleDateString('pt-BR')}
+                    {new Date(post.date || post._createdAt).toLocaleDateString('pt-BR', DATE_FORMAT)}
                   </time>
                   {wasUpdated(post) && (
                     <>
                       {' · Atualizado em '}
-                      <time dateTime={post._updatedAt}>{new Date(post._updatedAt).toLocaleDateString('pt-BR')}</time>
+                      <time dateTime={post._updatedAt}>{new Date(post._updatedAt).toLocaleDateString('pt-BR', DATE_FORMAT)}</time>
                     </>
                   )}
                 </div>

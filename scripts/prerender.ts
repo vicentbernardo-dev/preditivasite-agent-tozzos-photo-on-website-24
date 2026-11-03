@@ -1,16 +1,20 @@
-// Pós-build: gera um HTML por rota com <title>, description, canonical, Open Graph
-// e JSON-LD corretos já no HTML cru. Sem isso, toda URL respondia o mesmo
-// index.html com o canonical da home e o Google marcava as páginas como duplicadas.
+// Pós-build: gera um HTML por rota com <title>, description, canonical, Open Graph,
+// JSON-LD e o conteúdo da página (React renderizado no build) já no HTML cru. Sem
+// isso, toda URL respondia o mesmo index.html vazio com o canonical da home e o
+// Google marcava as páginas como duplicadas.
 // Também gera o 404.html, o app-shell.html (fallback de posts novos) e injeta as
 // regras de rewrite no dist/_redirects.
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { createClient } from '@sanity/client';
 import { buildBlogPostSchema, buildBreadcrumbSchema, getPageSeo, schemaPageKey, type ArticleSeoData } from '../src/lib/seo';
 import { STATIC_PAGES, routeToPath } from '../src/lib/routes';
 import { buildCaseSchema, buildFaqSchema, buildServiceSchema } from '../src/lib/schema';
 import { buildLlmsFullTxt, buildLlmsTxt, type LlmsPost } from './llms';
 import type { FaqEntry } from '../src/data/faqs';
+import { PRELOADED_KEYS } from '../src/lib/preloaded';
+import { ALL_POSTS_QUERY, BLOG_POSTS_QUERY, RECENT_POSTS_QUERY } from '../src/lib/queries';
 import type { PageRoute } from '../src/components/Navbar';
 
 const DIST = path.resolve(import.meta.dirname, '..', 'dist');
@@ -93,79 +97,130 @@ const writeFile = (relativePath: string, content: string) => {
   fs.writeFileSync(target, content);
 };
 
+// Corpo da página: HTML gerado pelo React (dist-server/entry-server.js) mais os dados do
+// Sanity usados nele. Sem isso o <body> chegava vazio e Google/IAs só viam o conteúdo
+// depois de executar o JS ("Detectada/Rastreada, mas não indexada").
+type RenderApp = (path: string, preloaded: Record<string, unknown>) => Promise<string>;
+
+const loadRenderer = async (): Promise<RenderApp> => {
+  const entry = path.resolve(import.meta.dirname, '..', 'dist-server', 'entry-server.js');
+  const mod = await import(pathToFileURL(entry).href);
+  return mod.render as RenderApp;
+};
+
+const renderFailures: string[] = [];
+
+const injectBody = async (
+  html: string,
+  renderApp: RenderApp,
+  routePath: string,
+  preloaded: Record<string, unknown> = {},
+) => {
+  let appHtml = '';
+  try {
+    appHtml = await renderApp(routePath, preloaded);
+  } catch (error) {
+    // Uma rota que falhe cai no comportamento antigo (corpo vazio, renderizado pelo JS)
+    renderFailures.push(routePath);
+    console.warn(`[prerender] Falha ao renderizar ${routePath}:`, error);
+    return html;
+  }
+  const data = Object.keys(preloaded).length
+    ? `<script>window.__PRELOADED__=${JSON.stringify(preloaded).replace(/</g, '\\u003c')}</script>`
+    : '';
+  return html.replace('<div id="root"></div>', () => `<div id="root">${appHtml}</div>${data}`);
+};
+
 interface SanityPost {
-  slug: string;
+  slug?: { current?: string };
   title?: string;
   excerpt?: string;
   imageUrl?: string;
+  date?: string;
   publishedAt?: string;
-  modifiedAt?: string;
-  authorName?: string;
+  _createdAt?: string;
+  _updatedAt?: string;
+  author?: { name?: string };
   tldr?: string;
-  faq?: FaqEntry[];
+  faq?: Partial<FaqEntry>[];
 }
 
-// Mesma seleção de tipos e campos que o BlogPostPage usa no navegador
-const fetchPosts = async (): Promise<SanityPost[]> => {
+interface SanityData {
+  posts: SanityPost[];
+  blogPosts?: unknown[];
+  recentPosts?: unknown[];
+}
+
+// Mesmas queries do navegador (src/lib/queries.ts), para o HTML bater com a hidratação
+const fetchSanityData = async (): Promise<SanityData> => {
   const client = createClient({
     projectId: 'ioanix6u',
     dataset: 'production',
     apiVersion: '2025-01-20',
     useCdn: false,
   });
-  return client.fetch(`*[_type in ["post", "blogPost", "article"] && defined(slug.current)]{
-    "slug": slug.current,
-    title,
-    excerpt,
-    "imageUrl": image.asset->url,
-    "publishedAt": coalesce(date, publishedAt, _createdAt),
-    "modifiedAt": _updatedAt,
-    "authorName": author.name,
-    tldr,
-    "faq": faq[defined(question) && defined(answer)]{question, answer}
-  }`);
+  const [posts, blogPosts, recentPosts] = await Promise.all([
+    client.fetch<SanityPost[]>(ALL_POSTS_QUERY),
+    client.fetch<unknown[]>(BLOG_POSTS_QUERY),
+    client.fetch<unknown[]>(RECENT_POSTS_QUERY),
+  ]);
+  return { posts, blogPosts, recentPosts };
 };
 
 const main = async () => {
   const template = fs.readFileSync(path.join(DIST, 'index.html'), 'utf8');
+  const renderApp = await loadRenderer();
   const rules: string[] = [];
 
+  let sanity: SanityData = { posts: [] };
+  try {
+    sanity = await fetchSanityData();
+  } catch (error) {
+    // Sem Sanity o build segue: blog e posts são renderizados pelo JS no navegador
+    console.warn('[prerender] Não foi possível buscar os dados do Sanity:', error);
+  }
+
+  const pagePreloaded = (page: PageRoute): Record<string, unknown> => {
+    if (page === 'home' && sanity.recentPosts) return { [PRELOADED_KEYS.recentPosts]: sanity.recentPosts };
+    if (page === 'blog' && sanity.blogPosts) return { [PRELOADED_KEYS.blogPosts]: sanity.blogPosts };
+    return {};
+  };
+
   for (const page of STATIC_PAGES) {
-    const html = renderHead(template, { page });
+    const routePath = routeToPath(page);
+    const html = await injectBody(renderHead(template, { page }), renderApp, routePath, pagePreloaded(page));
     if (page === 'home') {
       writeFile('index.html', html);
       continue;
     }
     writeFile(`${page}.html`, html);
-    rules.push(`${routeToPath(page)}  /${page}.html  200`);
+    rules.push(`${routePath}  /${page}.html  200`);
   }
 
+  // app-shell (posts publicados depois do último build) continua vazio: o JS renderiza
   writeFile('app-shell.html', renderHead(template, { page: 'blog', shell: true }));
-  writeFile('404.html', renderHead(template, { page: 'not-found' }));
-
-  let posts: SanityPost[] = [];
-  try {
-    posts = await fetchPosts();
-  } catch (error) {
-    // Sem Sanity o build segue: os posts caem no app-shell e o JS completa o SEO
-    console.warn('[prerender] Não foi possível buscar os posts do Sanity:', error);
-  }
+  writeFile('404.html', await injectBody(renderHead(template, { page: 'not-found' }), renderApp, '/404'));
 
   let postCount = 0;
   const publishedPosts: LlmsPost[] = [];
-  for (const post of posts) {
-    if (!post.slug || !SAFE_SLUG.test(post.slug) || !post.title) continue;
+  for (const post of sanity.posts) {
+    const slug = post.slug?.current;
+    if (!slug || !SAFE_SLUG.test(slug) || !post.title) continue;
+    const publishedAt = post.date || post.publishedAt || post._createdAt;
+    const faq = (post.faq || []).filter((item): item is FaqEntry => Boolean(item.question && item.answer));
     const article: ArticleSeoData = {
       title: post.title,
       description: post.excerpt,
       image: post.imageUrl,
-      publishedAt: post.publishedAt,
-      modifiedAt: post.modifiedAt,
-      authorName: post.authorName,
+      publishedAt,
+      modifiedAt: post._updatedAt,
+      authorName: post.author?.name,
     };
-    writeFile(`blog/${post.slug}.html`, renderHead(template, { page: 'blog-post', slug: post.slug, article, faq: post.faq }));
-    rules.push(`${routeToPath('blog-post', post.slug)}  /blog/${post.slug}.html  200`);
-    publishedPosts.push({ slug: post.slug, title: post.title, excerpt: post.excerpt, tldr: post.tldr, publishedAt: post.publishedAt });
+    const routePath = routeToPath('blog-post', slug);
+    const head = renderHead(template, { page: 'blog-post', slug, article, faq });
+    writeFile(`blog/${slug}.html`, await injectBody(head, renderApp, routePath, { [PRELOADED_KEYS.post(slug)]: post }));
+    rules.push(`${routePath}  /blog/${slug}.html  200`);
+    publishedPosts.push({ slug, title: post.title, excerpt: post.excerpt, tldr: post.tldr, publishedAt });
     postCount++;
   }
 
@@ -180,9 +235,15 @@ const main = async () => {
   fs.writeFileSync(redirectsPath, redirects.replace(REDIRECTS_MARKER, rules.join('\n')));
 
   console.log(`[prerender] ${STATIC_PAGES.length} páginas estáticas, ${postCount} posts, 404.html, app-shell.html, llms.txt e llms-full.txt gerados.`);
+  if (renderFailures.length) {
+    console.warn(`[prerender] ${renderFailures.length} rota(s) sem corpo pré-renderizado: ${renderFailures.join(', ')}`);
+  }
 };
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+main()
+  // O build de servidor deixa timers do React/motion pendentes; encerra explicitamente
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

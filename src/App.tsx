@@ -70,15 +70,16 @@ const VALID_PAGES: PageRoute[] = [
 
 // Resolve the initial page from the URL: supports clean paths (/metodologia,
 // /blog, /blog/:slug) and legacy hash routes (#metodologia, #blog, ...).
-const resolveRouteFromLocation = (): { page: PageRoute; slug?: string } => {
+// Recebe pathname/hash como parâmetro para funcionar também na pré-renderização (sem window).
+const resolveRoute = (pathname: string, rawHash = ''): { page: PageRoute; slug?: string } => {
   // 1) Legacy hash-based routes (#blog, #metodologia, ...)
-  const hash = window.location.hash.replace('#', '') as PageRoute;
+  const hash = rawHash.replace('#', '') as PageRoute;
   if (VALID_PAGES.includes(hash)) {
     return { page: hash };
   }
 
   // 2) Clean path-based routes (/metodologia, /blog, /blog/:slug, ...)
-  const path = window.location.pathname.replace(/\/+$/, '') || '/';
+  const path = pathname.replace(/\/+$/, '') || '/';
   if (path === '/') {
     return { page: 'home' };
   }
@@ -100,9 +101,16 @@ const resolveRouteFromLocation = (): { page: PageRoute; slug?: string } => {
   return { page: 'not-found' };
 };
 
-export default function App() {
+const resolveRouteFromLocation = () => resolveRoute(window.location.pathname, window.location.hash);
+
+interface AppProps {
+  // Caminho da rota na pré-renderização do build (src/entry-server.tsx); no navegador vem do window.location
+  initialPath?: string;
+}
+
+export default function App({ initialPath }: AppProps) {
   // Page state: 'home' | 'metodologia' | 'frentes-aceleradora' | 'frentes-consultoria' | 'frentes-especialistas' | 'especialidade-seo' | 'especialidade-midia' | 'especialidade-crm' | 'especialidade-dados' | 'especialidade-dev' | 'especialidade-growth'
-  const initialRoute = resolveRouteFromLocation();
+  const [initialRoute] = useState(() => (initialPath !== undefined ? resolveRoute(initialPath) : resolveRouteFromLocation()));
   const [currentPage, setCurrentPage] = useState<PageRoute>(initialRoute.page);
   const [currentSlug, setCurrentSlug] = useState<string | undefined>(initialRoute.slug);
   const [articleSeo, setArticleSeo] = useState<{ routeKey: string; data: ArticleSeoData } | null>(null);
@@ -133,8 +141,7 @@ export default function App() {
         if (!isActive) return;
 
         const routeKey = `${currentPage}:${currentSlug || ''}`;
-        const pageArticleSeo = articleSeo?.routeKey === routeKey ? articleSeo.data : undefined;
-        updatePageSeo(currentPage, currentSlug, pageArticleSeo);
+        const pageArticleSeo = articleSeo?.routeKey === routeKey ? articleSeo.data : undefined;        updatePageSeo(currentPage, currentSlug, pageArticleSeo);
         updateBreadcrumbSchema(currentPage, pageArticleSeo?.title);
       } catch (error) {
         console.error('Erro ao atualizar os metadados SEO da página:', error);

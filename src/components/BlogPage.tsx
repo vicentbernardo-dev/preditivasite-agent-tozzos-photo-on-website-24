@@ -5,7 +5,9 @@ import {
 } from 'lucide-react';
 import { PageRoute } from './Navbar';
 import { RadarNewsletter } from './RadarNewsletter';
-import { client, postsQuery } from '../lib/sanity';
+import { client } from '../lib/sanity';
+import { BLOG_POSTS_QUERY } from '../lib/queries';
+import { getPreloaded, PRELOADED_KEYS } from '../lib/preloaded';
 import { withSanityImageFormat } from '../lib/seo';
 import { isModifiedClick, routeToPath } from '../lib/routes';
 
@@ -40,7 +42,8 @@ const formatDate = (dateString: string): string => {
   try {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit', month: 'short', year: 'numeric'
+      // Fuso fixo: o build (UTC) e o navegador precisam gerar a mesma data na hidratação
+      day: '2-digit', month: 'short', year: 'numeric', timeZone: 'America/Sao_Paulo'
     }).format(date).toUpperCase();
   } catch (e) {
     return 'DATA INVÁLIDA';
@@ -86,8 +89,10 @@ export const BlogPage: React.FC<BlogPageProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<BlogCategory>('TODOS');
   const [showMore, setShowMore] = useState(false);
-  const [articles, setArticles] = useState<ArticleItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Posts embutidos no HTML pelo build: a lista já nasce renderizada (e indexável)
+  const [preloadedPosts] = useState(() => getPreloaded<any[]>(PRELOADED_KEYS.blogPosts));
+  const [articles, setArticles] = useState<ArticleItem[]>(() => (preloadedPosts || []).map(mapSanityPostToArticle));
+  const [loading, setLoading] = useState(!preloadedPosts);
   const [error, setError] = useState<string | null>(null);
 
   const categories: BlogCategory[] = [
@@ -95,15 +100,14 @@ export const BlogPage: React.FC<BlogPageProps> = ({
   ];
 
   useEffect(() => {
+    // O build gera um deploy novo a cada post publicado, então os dados embutidos já
+    // estão atualizados; buscar de novo só custaria uma requisição.
+    if (preloadedPosts) return;
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        console.log("Buscando posts no Sanity...");
-        
-        // Puxa os dados reais
-        const posts = await client.fetch(postsQuery);
-        console.log("DADOS RECEBIDOS DO SANITY:", posts);
-        
+        const posts = await client.fetch(BLOG_POSTS_QUERY);
+
         if (posts && posts.length > 0) {
           const mappedArticles = posts.map(mapSanityPostToArticle);
           setArticles(mappedArticles);

@@ -2,3 +2,6 @@ node_modules
 
 # Local Netlify folder
 .netlify
+
+# Build de servidor usado só pela pré-renderização
+dist-server

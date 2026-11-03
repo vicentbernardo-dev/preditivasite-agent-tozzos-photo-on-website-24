@@ -239,6 +239,26 @@ O LCP (1,2 s) e o CLS (0,02) estão bons. **O problema é o TBT de 3,3 s**, com 
 > - P3.5: os números dos cases já estavam em HTML; agora também vão no schema `Article` de cada case (com `about` apontando para o cliente) e no `llms.txt`. Fonte única em [src/data/cases.ts](src/data/cases.ts).
 > - P3.6: `sameAs` com Instagram e LinkedIn no schema. Falta replicar nome e descrição no Google Business Profile e no LinkedIn (painel).
 
+### P4 — Conteúdo no HTML e próximos passos (após o P3)
+
+Diagnóstico com 5 relatórios do Search Console (rastreamentos de 11/09 a 14/10, antes do P0): 6 posts como "página alternativa" (versões com barra final, hoje 301), 2 "cópias sem canônica" e 3 em que o Google escolheu a home como canônica (resolvidos pelo P0, falta o recrawl), 1 "rastreada, mas não indexada" e 10 "detectadas, mas não indexadas" (7 páginas de serviço e 3 posts). Baixando cada URL como Googlebot, o `<head>` estava certo, mas o `<body>` tinha **0 palavras**: o conteúdo só existia depois do JavaScript, e o Google adiava a renderização dessas páginas.
+
+| # | Ação | Esforço |
+|---|---|---|
+| P4.1 | Pré-renderizar o corpo de cada rota e post no build (SSG com hidratação) | M/G |
+| P4.2 | Trocar as ~50 fotos do Unsplash por WebP local no tamanho certo, com lazy loading; idealmente por fotos reais (E-E-A-T) | P/M |
+| P4.3 | Acessibilidade: cards do blog com `role="link"` e ordem de headings (h3/h4) | P |
+| P4.4 | TBT mobile: unificar Ads + GA4 numa Google Tag no GTM, cortar ~46 KB de JS sem uso, trocar entradas do Framer Motion por CSS | P/M |
+| P4.5 | Preencher `tldr`, `faq` e `sources` nos posts e reforçar os de notícia | Contínuo |
+| P4.6 | Tirar `dist/` do git | P |
+
+> **Status (03/11/2026): P4.1 implementado na `main`.**
+> - `vite build --ssr src/entry-server.tsx` gera o renderizador; o [scripts/prerender.ts](scripts/prerender.ts) injeta o HTML de cada rota no `<div id="root">` e o navegador hidrata com `hydrateRoot` ([src/main.tsx](src/main.tsx)). O app-shell (posts publicados depois do último build) continua vazio e renderiza no navegador.
+> - Os dados do Sanity usados na página (posts recentes da home, lista do blog, post completo) vão embutidos em `window.__PRELOADED__` ([src/lib/preloaded.ts](src/lib/preloaded.ts)): a hidratação usa os mesmos dados e não busca de novo no Sanity. Queries compartilhadas em [src/lib/queries.ts](src/lib/queries.ts).
+> - Resultado no HTML cru: páginas de serviço com 540 a 870 palavras, home com 1.450, posts com 650 a 1.330, sem nenhum `<div hidden>`. Foi preciso `progressiveChunkSize: Infinity`: por padrão o React 19 separa blocos grandes de Suspense num `<div hidden>` movido por script, invisível para robôs sem JS.
+> - `assetsInlineLimit: 0`: as imagens importadas eram embutidas em base64, e com o HTML pré-renderizado a home chegava a 274 KB. Agora tem 149 KB (24 KB com gzip), e as imagens ficam no cache de 1 ano de `/assets/*`.
+> - Hidratação conferida no navegador (home, serviço, case, blog, post, 404 e navegação SPA) sem erros nem divergências. O Lighthouse local ficou ruidoso demais para comparar (a mesma página de produção variou de TBT 320 ms a 5,3 s); nas mesmas condições, o SSR não ficou pior que a produção e o CLS dos posts caiu de 1 para 0. A medição de referência será o PageSpeed Insights após o deploy.
+
 ---
 
 ## 4. O que não é código (painéis)
