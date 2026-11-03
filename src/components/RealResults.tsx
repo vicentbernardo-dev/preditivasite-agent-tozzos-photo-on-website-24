@@ -138,7 +138,7 @@ export const RealResults: React.FC<RealResultsProps> = ({
               >
                 <img
                   src={brand.logo}
-                  alt={brand.name}
+                  alt={`Logo ${brand.name}`}
                   className="h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-300 max-w-[100px]"
                 />
               </div>

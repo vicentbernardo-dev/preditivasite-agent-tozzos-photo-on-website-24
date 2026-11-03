@@ -1,4 +1,5 @@
 /sitemap.xml  /.netlify/functions/sitemap  200!
+/blog/rss.xml  /.netlify/functions/rss  200!
 
 # Hosts alternativos -> domínio canônico (sem cadeia http://www -> https://www -> https://)
 http://www.preditiva.co/*  https://preditiva.co/:splat  301!

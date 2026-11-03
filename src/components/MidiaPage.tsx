@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
@@ -56,32 +57,7 @@ export const MidiaPage: React.FC<MidiaPageProps> = ({
     }
   };
 
-  const faqItems = [
-    {
-      id: 0,
-      question: 'Qual o ROI esperado para meu nicho?',
-      answer:
-        'O ROI e ROAS variam de acordo com o ticket médio, margem de contribuição e maturidade da marca. Durante a auditoria técnica inicial, modelamos cenários de retorno conservador, moderado e agressivo baseados em benchmarks reais do seu segmento.',
-    },
-    {
-      id: 1,
-      question: 'Vocês criam as peças (vídeos e imagens)?',
-      answer:
-        'Fornecemos direcionamento criativo técnico rigoroso baseado em dados de retenção de visualização, CTR e testes de ângulo, além de roteirização para criativos de alta conversão.',
-    },
-    {
-      id: 2,
-      question: 'Como funcionam os relatórios?',
-      answer:
-        'Acesso 24/7 a dashboards proprietários com modelo de atribuição multitoque e reuniões executivas periódicas com seu Growth Squad para tomada de decisão em tempo real.',
-    },
-    {
-      id: 3,
-      question: 'Quanto tempo para ver os primeiros resultados?',
-      answer:
-        'Com a calibração da CAPI (Conversion API), ajustes de públicos e campanhas Advantage+/Performance Max, as primeiras otimizações de CAC e ROAS são visíveis nos primeiros 14 a 30 dias.',
-    },
-  ];
+  const faqItems = PAGE_FAQS['especialidade-midia'];
 
   return (
     <div className="w-full flex flex-col bg-[#000604] text-white font-familjen">
@@ -626,15 +602,15 @@ export const MidiaPage: React.FC<MidiaPageProps> = ({
           </div>
 
           <div className="space-y-4">
-            {faqItems.map((item) => {
-              const isOpen = openFaqId === item.id;
+            {faqItems.map((item, id) => {
+              const isOpen = openFaqId === id;
               return (
                 <div
-                  key={item.id}
+                  key={id}
                   className="rounded-xl bg-[#1A1C1A]/40 border border-[#3B4B35]/20 backdrop-blur-md overflow-hidden"
                 >
                   <button
-                    onClick={() => setOpenFaqId(isOpen ? null : item.id)}
+                    onClick={() => setOpenFaqId(isOpen ? null : id)}
                     className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02]"
                     aria-expanded={isOpen}
                   >

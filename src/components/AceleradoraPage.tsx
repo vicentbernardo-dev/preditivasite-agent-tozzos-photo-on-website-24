@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, CheckCircle2, ChevronDown, ArrowRight, Quote, Zap, Activity, TrendingUp, Search, Database, Users, ShieldAlert, Cpu, BarChart3, LineChart, Code2, Globe, Layers } from 'lucide-react';
 
@@ -35,32 +36,7 @@ export const AceleradoraPage: React.FC<AceleradoraPageProps> = ({
     }
   };
 
-  const faqItems = [
-    {
-      id: 0,
-      question: 'O que é uma aceleradora de e-commerce?',
-      answer:
-        'Uma aceleradora de e-commerce é uma parceira técnica e estratégica que atua diretamente nos motores de crescimento do negócio (SEO, CRM, Engenharia de Dados, Infraestrutura e Mídia), construindo ativos proprietários e alavancando receita previsível.',
-    },
-    {
-      id: 1,
-      question: 'Qual a diferença entre aceleradora e agência?',
-      answer:
-        'Enquanto agências tradicionais focam em posts criativos, CTR e escopos rígidos de contrato, a Aceleradora Preditiva constrói infraestrutura de dados proprietária, foca em ROAS, LTV e CAC Real, e opera com squads multidisciplinares de especialistas seniores adaptáveis ao growth.',
-    },
-    {
-      id: 2,
-      question: 'A aceleração substitui minha equipe interna?',
-      answer:
-        'Não, nós operamos como a extensão técnica e analítica avançada do seu time interno, destravando gargalos complexos e acelerando o throughput de execução sem atrito.',
-    },
-    {
-      id: 3,
-      question: 'Como os resultados são medidos?',
-      answer:
-        'Medimos o sucesso através de métricas financeiras reais: crescimento de receita orgânica (SEO), taxa de recompra e receita gerada por CRM, eficiência de investimento de mídia (ROAS real) e LTV/CAC.',
-    },
-  ];
+  const faqItems = PAGE_FAQS['frentes-aceleradora'];
 
   const falhas = [
     {
@@ -518,7 +494,7 @@ export const AceleradoraPage: React.FC<AceleradoraPageProps> = ({
                 <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#0DF205]/40 p-0.5 mb-3 shadow-[0_0_15px_rgba(13,242,5,0.2)]">
                   <img
                     src="/clientes/paulo-andre-miami.webp"
-                    alt="Paulo André"
+                    alt="Foto de Paulo André"
                     className="w-full h-full object-cover rounded-full"
                   />
                 </div>
@@ -539,7 +515,7 @@ export const AceleradoraPage: React.FC<AceleradoraPageProps> = ({
                 <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#0DF205]/40 p-0.5 mb-3 shadow-[0_0_15px_rgba(13,242,5,0.2)]">
                   <img
                     src="/clientes/edu-sato-ab-mauri.webp"
-                    alt="Edu Sato"
+                    alt="Foto de Edu Sato"
                     className="w-full h-full object-cover rounded-full"
                   />
                 </div>
@@ -567,15 +543,15 @@ export const AceleradoraPage: React.FC<AceleradoraPageProps> = ({
           </h2>
 
           <div className="space-y-4">
-            {faqItems.map((item) => {
-              const isOpen = openFaqId === item.id;
+            {faqItems.map((item, id) => {
+              const isOpen = openFaqId === id;
               return (
                 <div
-                  key={item.id}
+                  key={id}
                   className="rounded-xl bg-black border border-white/10 overflow-hidden"
                 >
                   <button
-                    onClick={() => setOpenFaqId(isOpen ? null : item.id)}
+                    onClick={() => setOpenFaqId(isOpen ? null : id)}
                     className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02]"
                     aria-expanded={isOpen}
                   >

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, CheckCircle2, ChevronDown, ArrowRight, Search, Code2, Users2, Database, Megaphone, Zap, ShieldCheck, Clock, Layers, Award } from 'lucide-react';
 
@@ -35,32 +36,7 @@ export const EspecialistasPage: React.FC<EspecialistasPageProps> = ({
     }
   };
 
-  const faqItems = [
-    {
-      id: 0,
-      question: 'Como funciona a precificação da alocação?',
-      answer:
-        'Trabalhamos com modelos flexíveis de horas mensais ou alocação integral (part-time ou full-time), com previsibilidade total de custos, sem encargos trabalhistas e sem taxas ocultas.',
-    },
-    {
-      id: 1,
-      question: 'Qual o tempo mínimo de contrato?',
-      answer:
-        'Nossos contratos são estruturados a partir de 3 meses, garantindo tempo hábil para onboarding ágil, execução profunda e entrega de resultados consistentes.',
-    },
-    {
-      id: 2,
-      question: 'O especialista trabalha exclusivamente para minha empresa?',
-      answer:
-        'Sim, durante a franquia de horas contratada ou no modelo full-time, o especialista opera 100% integrado ao seu fluxo diário, ferramentas de comunicação (Slack, Teams) e sprints ágeis.',
-    },
-    {
-      id: 3,
-      question: 'Quanto tempo leva para encontrar um profissional?',
-      answer:
-        'Como possuímos uma base pré-qualificada de talentos seniores, o processo de match e onboarding ocorre tipicamente entre 3 e 7 dias úteis.',
-    },
-  ];
+  const faqItems = PAGE_FAQS['frentes-especialistas'];
 
   const motivos = [
     'Falta de conhecimento técnico interno em áreas críticas.',
@@ -434,15 +410,15 @@ export const EspecialistasPage: React.FC<EspecialistasPageProps> = ({
           </h2>
 
           <div className="space-y-4">
-            {faqItems.map((item) => {
-              const isOpen = openFaqId === item.id;
+            {faqItems.map((item, id) => {
+              const isOpen = openFaqId === id;
               return (
                 <div
-                  key={item.id}
+                  key={id}
                   className="rounded-xl bg-black border border-white/10 overflow-hidden"
                 >
                   <button
-                    onClick={() => setOpenFaqId(isOpen ? null : item.id)}
+                    onClick={() => setOpenFaqId(isOpen ? null : id)}
                     className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02]"
                     aria-expanded={isOpen}
                   >

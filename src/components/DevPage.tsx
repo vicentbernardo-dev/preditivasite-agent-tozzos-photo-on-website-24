@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
@@ -55,32 +56,7 @@ export const DevPage: React.FC<DevPageProps> = ({
     }
   };
 
-  const faqItems = [
-    {
-      id: 0,
-      question: 'Como funciona o processo de otimização em loja ativa?',
-      answer:
-        'Trabalhamos com workspaces isolados e ambientes de homologação estritos, realizando auditorias de código estático, tree-shaking de dependências pesadas e deploy gradual via Canary/Feature Flags para risco zero de instabilidade em produção.',
-    },
-    {
-      id: 1,
-      question: 'Garantia de estabilidade em grandes eventos (Black Friday)?',
-      answer:
-        'Realizamos testes de estresse de carga (Load Testing), otimização de queries GraphQL, cache de borda (CDN / Edge Caching) e plantão técnico dedicado 24/7 com tempo de resposta em minutos.',
-    },
-    {
-      id: 2,
-      question: 'Quais métricas são usadas para medir a eficácia da otimização?',
-      answer:
-        'Acompanhamos métricas reais de campo do Chrome User Experience Report (CrUX): LCP (Largest Contentful Paint), FID/INP (Interaction to Next Paint), CLS (Cumulative Layout Shift) e TTFB (Time to First Byte).',
-    },
-    {
-      id: 3,
-      question: 'Como personalizar a experiência do cliente durante a navegação?',
-      answer:
-        'Desenvolvemos componentes customizados nativos em React e VTEX IO com renderização server-side otimizada para carregar blocos personalizados sem flickering ou bloqueio de thread principal.',
-    },
-  ];
+  const faqItems = PAGE_FAQS['especialidade-dev'];
 
   return (
     <div className="w-full flex flex-col bg-[#000604] text-white font-familjen">
@@ -519,15 +495,15 @@ export const DevPage: React.FC<DevPageProps> = ({
           </div>
 
           <div className="space-y-4">
-            {faqItems.map((item) => {
-              const isOpen = openFaqId === item.id;
+            {faqItems.map((item, id) => {
+              const isOpen = openFaqId === id;
               return (
                 <div
-                  key={item.id}
+                  key={id}
                   className="rounded-xl bg-[#1A1C1A]/40 border border-[#3B4B35]/20 backdrop-blur-md overflow-hidden"
                 >
                   <button
-                    onClick={() => setOpenFaqId(isOpen ? null : item.id)}
+                    onClick={() => setOpenFaqId(isOpen ? null : id)}
                     className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02]"
                     aria-expanded={isOpen}
                   >

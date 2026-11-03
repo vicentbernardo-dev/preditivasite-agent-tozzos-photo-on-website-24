@@ -1,4 +1,4 @@
-import { ServiceCard, FrictionPoint, CaseStudy, Testimonial, Specialty, InsightArticle, FaqItem } from '../types';
+import { ServiceCard, FrictionPoint, CaseStudy, Testimonial, Specialty, InsightArticle } from '../types';
 import { LOGOS, AVATARS } from '../assets/images';
 
 export const SERVICES: ServiceCard[] = [
@@ -249,35 +249,4 @@ export const INSIGHTS: InsightArticle[] = [
   }
 ];
 
-export const FAQS: FaqItem[] = [
-  {
-    id: 'faq-1',
-    question: 'O que faz uma consultoria de SEO para e-commerce?',
-    answer: 'Uma consultoria de SEO para e-commerce analisa toda a estrutura técnica do site (indexação, velocidade, Core Web Vitals, arquitetura de URLs, sitemaps, dados estruturados Schema.org), pesquisa as intenções de busca do seu público consumidor e implementa melhorias contínuas para conquistar as primeiras posições orgânicas do Google sem depender exclusivamente de anúncios pagos.'
-  },
-  {
-    id: 'faq-2',
-    question: 'Como melhorar a performance de uma loja virtual?',
-    answer: 'A melhoria de performance exige um diagnóstico técnico completo dos pontos de lentidão: otimização e compressão de imagens de produtos, eliminação de scripts JavaScript de terceiros bloqueantes, uso de CDNs modernas com caching em Edge, otimização de consultas de banco de dados e refinamento do caminho crítico de renderização.'
-  },
-  {
-    id: 'faq-3',
-    question: 'Quando contratar um especialista dedicado?',
-    answer: 'A alocação de especialistas dedicados é ideal quando a sua empresa possui gargalos técnicos específicos (ex: falta de braço sênior em SEO, atraso em integrações de CRM, problemas crônicos no GA4/GTM ou lentidão no desenvolvimento da loja) e precisa de resultados rápidos sem o custo e a morosidade de contratações CLT tradicionais.'
-  },
-  {
-    id: 'faq-4',
-    question: 'O que é CRO e por que ele é importante para o e-commerce?',
-    answer: 'CRO (Conversion Rate Optimization) é o conjunto de técnicas, testes A/B, análises de mapas de calor e psicologia do consumo aplicadas para aumentar a porcentagem de visitantes que realizam uma compra. Dobrar a taxa de conversão do seu e-commerce significa dobrar sua receita sem gastar um centavo a mais em tráfego.'
-  },
-  {
-    id: 'faq-5',
-    question: 'Como o CRM ajuda no crescimento do e-commerce?',
-    answer: 'O CRM permite segmentar sua base de clientes pelo comportamento real de compra (RFM), enviando mensagens ultra personalizadas no momento exato (como carrinho abandonado, recompra automática, promoções VIP e aniversários), gerando faturamento previsível com margem muito superior à de mídia paga.'
-  },
-  {
-    id: 'faq-6',
-    question: 'Como a Preditiva atua com dados e analytics?',
-    answer: 'Atuamos auditando e configurando o tagueamento completo (GA4, GTM, CAPI do Facebook/TikTok, Enhanced Conversions do Google), corrigindo discrepâncias nos dados de receita e construindo dashboards executivos em tempo real que mostram com clareza o retorno real de cada canal de venda.'
-  }
-];
+

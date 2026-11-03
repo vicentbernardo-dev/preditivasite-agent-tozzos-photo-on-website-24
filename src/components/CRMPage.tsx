@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
@@ -60,32 +61,7 @@ export const CRMPage: React.FC<CRMPageProps> = ({
     }
   };
 
-  const faqItems = [
-    {
-      id: 0,
-      question: 'O que é CRM e como ele pode ajudar meu negócio?',
-      answer:
-        'CRM (Customer Relationship Management) é o motor estratégico de retenção do seu negócio. Ele unifica os dados transacionais e comportamentais dos seus clientes para acionar comunicações personalizadas no momento exato, aumentando a taxa de recompra e o LTV com custo de aquisição marginal.',
-    },
-    {
-      id: 1,
-      question: 'Como funciona a implementação do CRM na minha empresa?',
-      answer:
-        'Iniciamos com a auditoria técnica da base e integração com sua plataforma de e-commerce e ERP. Em seguida, estruturamos os fluxos fundamentais (boas-vindas, carrinho abandonado, pós-venda, reativação de inativos) e modelos de segmentação RFM (Recência, Frequência, Valor).',
-    },
-    {
-      id: 2,
-      question: 'Como o CRM ajuda a aumentar as vendas?',
-      answer:
-        'Ao entregar ofertas altamente personalizadas baseadas no ciclo de vida do cliente e no histórico de compra, o CRM encurta o intervalo entre compras (TBR) e eleva o ticket médio sem depender exclusivamente de anúncios pagos.',
-    },
-    {
-      id: 3,
-      question: 'Quanto tempo leva para ver resultados concretos?',
-      answer:
-        'Os fluxos automatizados essenciais (como abandono de carrinho e régua de boas-vindas) começam a gerar receita recuperada já nos primeiros 15 a 30 dias após o deploy.',
-    },
-  ];
+  const faqItems = PAGE_FAQS['especialidade-crm'];
 
   return (
     <div className="w-full flex flex-col bg-[#000604] text-white font-familjen">
@@ -635,15 +611,15 @@ export const CRMPage: React.FC<CRMPageProps> = ({
           </div>
 
           <div className="space-y-4">
-            {faqItems.map((item) => {
-              const isOpen = openFaqId === item.id;
+            {faqItems.map((item, id) => {
+              const isOpen = openFaqId === id;
               return (
                 <div
-                  key={item.id}
+                  key={id}
                   className="rounded-xl bg-[#1A1C1A]/40 border border-[#3B4B35]/20 backdrop-blur-md overflow-hidden"
                 >
                   <button
-                    onClick={() => setOpenFaqId(isOpen ? null : item.id)}
+                    onClick={() => setOpenFaqId(isOpen ? null : id)}
                     className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02]"
                     aria-expanded={isOpen}
                   >

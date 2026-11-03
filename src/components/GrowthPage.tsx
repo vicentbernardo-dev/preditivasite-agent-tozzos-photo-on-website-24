@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
@@ -57,32 +58,7 @@ export const GrowthPage: React.FC<GrowthPageProps> = ({
     }
   };
 
-  const faqItems = [
-    {
-      id: 0,
-      question: 'Qual a diferença entre Growth Marketing e Marketing Tradicional?',
-      answer:
-        'O Marketing Tradicional baseia-se em campanhas estáticas e orçamentos fixos focados em vaidade (alcance, impressões). O Growth Marketing da Preditiva é científico: roda hipóteses rápidas, testes A/B rigorosos e orquestração de canais com foco estrito em margem de contribuição, taxa de conversão (CRO) e LTV.',
-    },
-    {
-      id: 1,
-      question: 'Quanto tempo leva para ver os primeiros resultados?',
-      answer:
-        'A partir dos primeiros ciclos semanais de teste A/B no checkout e nas páginas de produto, desbloqueamos aumentos incrementais na taxa de conversão já entre a 2ª e a 4ª semana.',
-    },
-    {
-      id: 2,
-      question: 'Quais são as principais métricas utilizadas em Growth Marketing?',
-      answer:
-        'Acompanhamos CAC Blended, LTV, Payback time, Taxa de Conversão por Etapa do Funil, ICE Score do Backlog e Margem de Contribuição por Canal.',
-    },
-    {
-      id: 3,
-      question: 'Como o Growth Marketing pode impactar a fidelização de clientes?',
-      answer:
-        'Ao conectar experimentos de aquisição com jornadas de retenção e recompra no CRM, transformamos a aquisição em relacionamentos de alto valor e compras recorrentes.',
-    },
-  ];
+  const faqItems = PAGE_FAQS['especialidade-growth'];
 
   return (
     <div className="w-full flex flex-col bg-[#000604] text-white font-familjen">
@@ -576,15 +552,15 @@ export const GrowthPage: React.FC<GrowthPageProps> = ({
           </div>
 
           <div className="space-y-4">
-            {faqItems.map((item) => {
-              const isOpen = openFaqId === item.id;
+            {faqItems.map((item, id) => {
+              const isOpen = openFaqId === id;
               return (
                 <div
-                  key={item.id}
+                  key={id}
                   className="rounded-xl bg-[#1A1C1A]/40 border border-[#3B4B35]/20 backdrop-blur-md overflow-hidden"
                 >
                   <button
-                    onClick={() => setOpenFaqId(isOpen ? null : item.id)}
+                    onClick={() => setOpenFaqId(isOpen ? null : id)}
                     className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02]"
                     aria-expanded={isOpen}
                   >

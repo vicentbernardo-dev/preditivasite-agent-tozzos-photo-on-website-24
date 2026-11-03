@@ -8,6 +8,7 @@ import path from 'node:path';
 import { createClient } from '@sanity/client';
 import { buildBlogPostSchema, buildBreadcrumbSchema, getPageSeo, type ArticleSeoData } from '../src/lib/seo';
 import { STATIC_PAGES, routeToPath } from '../src/lib/routes';
+import { buildFaqSchema, buildServiceSchema } from '../src/lib/schema';
 import type { PageRoute } from '../src/components/Navbar';
 
 const DIST = path.resolve(import.meta.dirname, '..', 'dist');
@@ -17,8 +18,9 @@ const SAFE_SLUG = /^[a-z0-9][a-z0-9-]*$/i;
 const escapeAttr = (value: string) =>
   value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-const jsonLd = (id: string, data: unknown) =>
-  `<script type="application/ld+json" id="${id}">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
+// data-page: o SPA remove o schema ao navegar para outra página (ver updatePageSeo)
+const jsonLd = (id: string, data: unknown, page?: PageRoute) =>
+  `<script type="application/ld+json" id="${id}"${page ? ` data-page="${page}"` : ''}>${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 
 const setMetaTag = (html: string, attr: 'name' | 'property', key: string, content: string) => {
   const tag = `<meta ${attr}="${key}" content="${escapeAttr(content)}" />`;
@@ -68,6 +70,10 @@ const renderHead = (template: string, { page, slug, article, shell }: RenderOpti
     const breadcrumb = buildBreadcrumbSchema(page, article?.title);
     if (breadcrumb) schemas.push(jsonLd('schema-breadcrumb-list', breadcrumb));
     if (page === 'blog-post' && article) schemas.push(jsonLd('schema-blog', buildBlogPostSchema(slug, article)));
+    const service = buildServiceSchema(page);
+    if (service) schemas.push(jsonLd('schema-service', service, page));
+    const faq = buildFaqSchema(page);
+    if (faq) schemas.push(jsonLd('schema-faq', faq, page));
   }
   if (schemas.length) {
     html = html.replace('</head>', `  ${schemas.join('\n    ')}\n  </head>`);
@@ -87,6 +93,8 @@ interface SanityPost {
   excerpt?: string;
   imageUrl?: string;
   publishedAt?: string;
+  modifiedAt?: string;
+  authorName?: string;
 }
 
 // Mesma seleção de tipos e campos que o BlogPostPage usa no navegador
@@ -102,7 +110,9 @@ const fetchPosts = async (): Promise<SanityPost[]> => {
     title,
     excerpt,
     "imageUrl": image.asset->url,
-    "publishedAt": coalesce(date, publishedAt, _createdAt)
+    "publishedAt": coalesce(date, publishedAt, _createdAt),
+    "modifiedAt": _updatedAt,
+    "authorName": author.name
   }`);
 };
 
@@ -139,6 +149,8 @@ const main = async () => {
       description: post.excerpt,
       image: post.imageUrl,
       publishedAt: post.publishedAt,
+      modifiedAt: post.modifiedAt,
+      authorName: post.authorName,
     };
     writeFile(`blog/${post.slug}.html`, renderHead(template, { page: 'blog-post', slug: post.slug, article }));
     rules.push(`${routeToPath('blog-post', post.slug)}  /blog/${post.slug}.html  200`);

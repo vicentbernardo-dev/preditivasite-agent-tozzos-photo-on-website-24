@@ -22,7 +22,7 @@ export const ClientSlider: React.FC<ClientSliderProps> = ({
         >
           <img
             src={client.logo}
-            alt={copyIndex === 0 ? client.name : ""}
+            alt={copyIndex === 0 ? `Logo ${client.name}` : ""}
             width={160}
             height={40}
             className="h-10 max-w-full object-contain grayscale hover:grayscale-0 transition-all duration-300"

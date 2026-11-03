@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
@@ -55,26 +56,7 @@ export const DadosPage: React.FC<DadosPageProps> = ({
     }
   };
 
-  const faqItems = [
-    {
-      id: 0,
-      question: 'O que é tagueamento Server-Side?',
-      answer:
-        'O tagueamento Server-Side (via Google Cloud / AWS) processa eventos no servidor em vez do navegador do usuário. Isso contorna bloqueios de adblockers e do Apple ITP (iOS), preserva cookies de primetime por até 2 anos e reduz o peso de scripts no front-end, acelerando a página.',
-    },
-    {
-      id: 1,
-      question: 'Quais fontes de dados podem ser integradas?',
-      answer:
-        'Integramos plataformas de e-commerce (VTEX, Shopify, Magento), CRMs (HubSpot, RD, ActiveCampaign), ERPs (Bling, Tiny, Protheus), ferramentas de mídia (Google, Meta, TikTok, Pinterest) e bancos analíticos (BigQuery, PostgreSQL, Looker Studio).',
-    },
-    {
-      id: 2,
-      question: 'Quanto tempo leva uma implementação padrão?',
-      answer:
-        'Uma auditoria completa e implementação de Server-Side Tracking com GA4 e CAPI leva de 15 a 30 dias, acompanhada de homologação de eventos transacionais e entrega de dashboards executivos.',
-    },
-  ];
+  const faqItems = PAGE_FAQS['especialidade-dados'];
 
   return (
     <div className="w-full flex flex-col bg-[#000604] text-white font-familjen">
@@ -499,15 +481,15 @@ export const DadosPage: React.FC<DadosPageProps> = ({
           </div>
 
           <div className="space-y-4">
-            {faqItems.map((item) => {
-              const isOpen = openFaqId === item.id;
+            {faqItems.map((item, id) => {
+              const isOpen = openFaqId === id;
               return (
                 <div
-                  key={item.id}
+                  key={id}
                   className="rounded-xl bg-[#1A1C1A]/40 border border-[#3B4B35]/20 backdrop-blur-md overflow-hidden"
                 >
                   <button
-                    onClick={() => setOpenFaqId(isOpen ? null : item.id)}
+                    onClick={() => setOpenFaqId(isOpen ? null : id)}
                     className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02]"
                     aria-expanded={isOpen}
                   >

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Check, 
@@ -197,28 +198,7 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({
     { name: 'Performance', icon: Zap },
   ];
 
-  const faqItems = [
-    {
-      question: 'Por que me tornar um Partner?',
-      answer:
-        'Ao se tornar um Partner Preditiva, sua empresa passa a oferecer aos seus clientes soluções avançadas de SEO Técnico, CRM Preditivo, Engenharia de Dados e Growth sem custos operacionais adicionais, além de ser remunerada por cada indicação qualificada.',
-    },
-    {
-      question: 'Como funciona? Quais são os benefícios?',
-      answer:
-        'Você cadastra sua empresa, obtém acesso imediato ao Dashboard de Parceiros e conta com um canal direto com nosso time de negócios. Conforme indica projetos ou executa em conjunto, recebe comissões recorrentes, treinamentos exclusivos e visibilidade no ecossistema.',
-    },
-    {
-      question: 'O que são os Níveis de Parceria?',
-      answer:
-        'A estrutura em 4 níveis (Bronze, Prata, Ouro e Platinum) premia a recorrência e o volume de negócios gerados. A cada nível atingido, você desbloqueia novos benefícios como eventos VIP, co-marketing, página dedicada em nosso diretório e acesso à nossa API.',
-    },
-    {
-      question: 'Como funciona o pagamento?',
-      answer:
-        'As comissões são pagas mensalmente após a confirmação e faturamento do contrato com o cliente indicado, diretamente via transferência bancária com relatório transparente disponível em seu painel.',
-    },
-  ];
+  const faqItems = PAGE_FAQS['partners'];
 
   return (
     <div className="w-full flex flex-col bg-[#000604] text-white font-familjen min-h-screen">

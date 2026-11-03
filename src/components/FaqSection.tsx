@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
-import { FAQS } from '../data/mockData';
+import { PAGE_FAQS } from '../data/faqs';
 
 export const FaqSection: React.FC = () => {
-  const [openId, setOpenId] = useState<string | null>('faq-1');
+  const [openId, setOpenId] = useState<number | null>(0);
 
-  const toggleFaq = (id: string) => {
+  const toggleFaq = (id: number) => {
     setOpenId(openId === id ? null : id);
   };
 
@@ -27,12 +27,12 @@ export const FaqSection: React.FC = () => {
 
         {/* FAQ Accordion List */}
         <div className="space-y-4">
-          {FAQS.map((faq) => {
-            const isOpen = openId === faq.id;
+          {PAGE_FAQS.home.map((faq, id) => {
+            const isOpen = openId === id;
 
             return (
               <div
-                key={faq.id}
+                key={faq.question}
                 className={`rounded-xl border transition-all duration-200 overflow-hidden ${
                   isOpen
                     ? 'bg-[#111815] border-[#0DF205]/40 shadow-[0_0_25px_rgba(13,242,5,0.08)]'
@@ -40,7 +40,7 @@ export const FaqSection: React.FC = () => {
                 }`}
               >
                 <button
-                  onClick={() => toggleFaq(faq.id)}
+                  onClick={() => toggleFaq(id)}
                   className="w-full p-6 sm:p-8 flex items-center justify-between text-left gap-4 cursor-pointer focus:outline-none"
                   aria-expanded={isOpen}
                 >

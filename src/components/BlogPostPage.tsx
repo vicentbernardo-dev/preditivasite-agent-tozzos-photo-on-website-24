@@ -14,6 +14,40 @@ interface BlogPostPageProps {
   onSeoDataChange: (slug: string | undefined, data: ArticleSeoData | null) => void;
 }
 
+// Linkagem interna post -> serviço pela categoria do Sanity: reforça a relevância
+// das páginas de serviço e leva o leitor para a oferta relacionada.
+type ServicePage = 'frentes-aceleradora' | 'frentes-consultoria' | 'especialidade-seo' | 'especialidade-midia'
+  | 'especialidade-crm' | 'especialidade-dados' | 'especialidade-dev' | 'especialidade-growth' | 'ferramentas-vision';
+
+const SERVICE_LABELS: Record<ServicePage, string> = {
+  'frentes-aceleradora': 'Aceleradora de e-commerce',
+  'frentes-consultoria': 'Consultoria estratégica',
+  'especialidade-seo': 'SEO técnico',
+  'especialidade-midia': 'Mídia paga',
+  'especialidade-crm': 'CRM e retenção',
+  'especialidade-dados': 'Dados e analytics',
+  'especialidade-dev': 'Desenvolvimento',
+  'especialidade-growth': 'Growth e CRO',
+  'ferramentas-vision': 'Vision: diagnóstico gratuito',
+};
+
+const SERVICES_BY_CATEGORY: Record<string, ServicePage[]> = {
+  SEO: ['especialidade-seo', 'frentes-consultoria'],
+  'IA SEARCH': ['especialidade-seo', 'ferramentas-vision'],
+  'MIDIA PAGA': ['especialidade-midia', 'especialidade-dados'],
+  CRM: ['especialidade-crm', 'especialidade-growth'],
+  GESTAO: ['frentes-consultoria', 'frentes-aceleradora'],
+  DADOS: ['especialidade-dados', 'frentes-consultoria'],
+  GROWTH: ['especialidade-growth', 'especialidade-crm'],
+  DEV: ['especialidade-dev', 'especialidade-seo'],
+};
+
+const getRelatedServices = (category?: string): ServicePage[] => {
+  const key = (category || '').normalize('NFD').replace(/[̀-ͯ]/g, '').trim().toUpperCase();
+  const services = SERVICES_BY_CATEGORY[key] || ['frentes-consultoria'];
+  return [...services, ...(services.includes('frentes-aceleradora') ? [] : ['frentes-aceleradora' as const])];
+};
+
 // Estilização automática para o texto vindo do Sanity
 const richTextStyles = {
   block: {
@@ -103,6 +137,8 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
       description: post.excerpt,
       image: withSanityImageFormat(post.imageUrl),
       publishedAt: post.date || post.publishedAt || post._createdAt,
+      modifiedAt: post._updatedAt,
+      authorName: post.author?.name,
     };
     onSeoDataChange(slug, articleSeo);
     updateBlogPostSchema(slug, articleSeo);
@@ -233,13 +269,23 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
                 <p className="text-[#B9CCAF]">Conteúdo não disponível.</p>
               )}
               
-              <div className="pt-8 mt-12 border-t border-white/10 flex flex-wrap gap-2">
-                {['#Insights', '#Preditiva', '#Digital'].map((tag) => (
-                  <span key={tag} className="px-3 py-1.5 rounded-lg bg-[#111815] border border-white/10 text-xs font-bold text-[#0DF205] hover:bg-[#0DF205]/10 cursor-pointer transition-colors">
-                    {tag}
-                  </span>
-                ))}
-              </div>
+              <nav aria-label="Serviços relacionados" className="pt-8 mt-12 border-t border-white/10">
+                <div className="text-xs font-bold uppercase tracking-wider text-[#0DF205] mb-3">
+                  Serviços relacionados
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {getRelatedServices(post.category).map((service) => (
+                    <SpaLink
+                      key={service}
+                      to={service}
+                      onNavigate={onNavigatePage}
+                      className="px-3 py-1.5 rounded-lg bg-[#111815] border border-white/10 text-xs font-bold text-[#0DF205] hover:bg-[#0DF205]/10 transition-colors"
+                    >
+                      {SERVICE_LABELS[service]}
+                    </SpaLink>
+                  ))}
+                </div>
+              </nav>
             </div>
 
             {/* SIDEBAR (4 COLS) */}

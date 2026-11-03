@@ -49,19 +49,27 @@ export const Hero: React.FC<HeroProps> = ({
 
             {/* Main Headline */}
             <h1 className="font-familjen text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-bold text-[#EFEFEF] uppercase leading-[1.12] tracking-tight mb-6">
-              A CAMADA TÉCNICA QUE SEU <br className="hidden sm:block" />
-              NEGÓCIO PRECISA, SOMOS SUA <br />
-              <TypewriterText
-                words={[
-                  "ACELERADORA DIGITAL",
-                  "CONSULTORIA ESTRATÉGICA",
-                  "ALOCAÇÃO DE ESPECIALISTAS",
-                ]}
-                className="text-[#0DF205] drop-shadow-[0_0_25px_rgba(13,242,5,0.4)]"
-                typingSpeed={40}
-                deletingSpeed={25}
-                delayBetweenWords={2500}
-              />
+              {/* Texto completo para Google e leitores de tela; a versão animada é só visual,
+                  senão o crawler indexa uma palavra cortada no meio do typewriter */}
+              <span className="sr-only">
+                A camada técnica que seu negócio precisa: somos sua aceleradora digital,
+                consultoria estratégica e alocação de especialistas
+              </span>
+              <span aria-hidden="true">
+                A CAMADA TÉCNICA QUE SEU <br className="hidden sm:block" />
+                NEGÓCIO PRECISA, SOMOS SUA <br />
+                <TypewriterText
+                  words={[
+                    "ACELERADORA DIGITAL",
+                    "CONSULTORIA ESTRATÉGICA",
+                    "ALOCAÇÃO DE ESPECIALISTAS",
+                  ]}
+                  className="text-[#0DF205] drop-shadow-[0_0_25px_rgba(13,242,5,0.4)]"
+                  typingSpeed={40}
+                  deletingSpeed={25}
+                  delayBetweenWords={2500}
+                />
+              </span>
             </h1>
 
             {/* Subheading text */}

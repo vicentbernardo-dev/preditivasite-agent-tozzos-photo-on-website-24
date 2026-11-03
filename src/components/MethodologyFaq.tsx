@@ -1,36 +1,12 @@
 import React, { useState } from 'react';
+import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown } from 'lucide-react';
 
 export const MethodologyFaq: React.FC = () => {
   const [openId, setOpenId] = useState<number | null>(0); // First one open by default
 
-  const faqItems = [
-    {
-      id: 0,
-      question: 'O que é a Metodologia Preditiva?',
-      answer:
-        'A Metodologia Preditiva é um modelo integrado de aceleração e consultoria técnica digital que conecta SEO avançado, CRM automatizado, governança de dados e desenvolvimento ágil em ciclos contínuos de crescimento e retenção de receita.',
-    },
-    {
-      id: 1,
-      question: 'Como a metodologia funciona na prática?',
-      answer:
-        'Iniciamos com um diagnóstico profundo dos pontos de fricção e gargalos técnicos da sua operação. A partir disso, construímos um roadmap priorizado por impacto financeiro e alocamos squads de especialistas seniores para execução direta ou governança consultiva.',
-    },
-    {
-      id: 2,
-      question: 'Quanto tempo leva para implementar a metodologia?',
-      answer:
-        'O diagnóstico inicial é estruturado nos primeiros dias e as primeiras otimizações de infraestrutura, tagueamento e funis de CRM são executadas já nas duas primeiras semanas de atuação, gerando melhorias mensuráveis no primeiro mês.',
-    },
-    {
-      id: 3,
-      question: 'A Preditiva substitui minha equipe interna?',
-      answer:
-        'Não, nós potencializamos sua equipe. Atuamos como a camada de inteligência e execução técnica avançada, transferindo maturidade digital para o seu time ou executando frentes complexas que exigem especialistas dedicados.',
-    },
-  ];
+  const faqItems = PAGE_FAQS['metodologia'];
 
   const toggleAccordion = (id: number) => {
     setOpenId(openId === id ? null : id);
@@ -49,15 +25,15 @@ export const MethodologyFaq: React.FC = () => {
 
         {/* Accordion list */}
         <div className="space-y-4">
-          {faqItems.map((item) => {
-            const isOpen = openId === item.id;
+          {faqItems.map((item, id) => {
+            const isOpen = openId === id;
             return (
               <div
-                key={item.id}
+                key={id}
                 className="rounded-xl bg-black border border-white/10 overflow-hidden transition-colors"
               >
                 <button
-                  onClick={() => toggleAccordion(item.id)}
+                  onClick={() => toggleAccordion(id)}
                   className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-4 cursor-pointer focus:outline-none hover:bg-white/[0.02]"
                   aria-expanded={isOpen}
                 >

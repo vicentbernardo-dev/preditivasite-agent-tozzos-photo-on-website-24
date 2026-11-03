@@ -207,6 +207,17 @@ O LCP (1,2 s) e o CLS (0,02) estão bons. **O problema é o TBT de 3,3 s**, com 
 | P2.9 | Feed RSS `/blog/rss.xml` (Netlify Function, como o sitemap). Ajuda na descoberta por agregadores e LLMs | `netlify/functions/` | P |
 | P2.10 | Revisar `alt` de todas as imagens (logos de clientes devem ter `alt="Logo <cliente>"`; decorativas, `alt=""`) | componentes | P |
 
+> **Status (03/11/2026): implementado na `main`.**
+> - P2.1: H1 da home com o texto completo em `sr-only`; o typewriter virou `aria-hidden`.
+> - P2.2: `index.html` alinhado ao `PAGE_SEO.home`. Corrigido também um bug que cortava a description no meio da palavra (home, consultoria e 404 saíam com "dig…"): agora usa a versão mais completa que cabe em 160 caracteres.
+> - P2.4: `Organization` (endereço, telefone, fundador, `knowsAbout`) + `WebSite` em `@graph`. **Falta `sameAs`:** os links de Instagram, LinkedIn e YouTube no rodapé e o LinkedIn do Ademar apontam para a home das redes, não para os perfis reais.
+> - P2.5: `BlogPosting` com `dateModified`, autor `Person`, `publisher` com logo, `ImageObject` e `inLanguage`.
+> - P2.6: `Service` nas 9 páginas de frente/especialidade e `FAQPage` em 12 páginas. As FAQs saíram dos componentes para [src/data/faqs.ts](src/data/faqs.ts), que alimenta a tela e o schema.
+> - P2.8 (parcial): bloco "Serviços relacionados" em cada post, escolhido pela categoria do Sanity. Falta o caminho inverso (posts nas páginas de serviço).
+> - P2.9: feed em `/blog/rss.xml` ([netlify/functions/rss.js](netlify/functions/rss.js)) com `<link rel="alternate">` no head.
+> - P2.10: todas as imagens já tinham `alt`; logos e fotos de depoimentos ficaram mais descritivos.
+> - Pendente: P2.3 (URLs com intenção de busca, junto com o SSG completo) e P2.7 (páginas de autor, quando houver bio e mais de um autor).
+
 ### P3 — GEO (Generative Engine Optimization)
 
 **Pré-requisito: P0.4.** Sem HTML pré-renderizado, nada abaixo é lido pelos motores de IA.

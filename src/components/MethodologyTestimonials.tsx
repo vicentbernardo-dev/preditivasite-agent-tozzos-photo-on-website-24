@@ -52,7 +52,7 @@ export const MethodologyTestimonials: React.FC = () => {
                 <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-[#0DF205]/40 p-0.5 mb-3 shadow-[0_0_15px_rgba(13,242,5,0.2)]">
                   <img
                     src={t.avatar}
-                    alt={t.name}
+                    alt={`Foto de ${t.name}`}
                     className="w-full h-full object-cover rounded-full"
                   />
                 </div>

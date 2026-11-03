@@ -64,7 +64,7 @@ export const Testimonials: React.FC = () => {
               <div className="flex items-center gap-4 pt-4 border-t border-white/10">
                 <img
                   src={item.avatar}
-                  alt={item.name}
+                  alt={`Foto de ${item.name}`}
                   className="w-14 h-14 rounded-full object-cover border-2 border-[#0DF205]/60 shadow-md"
                 />
                 <div>

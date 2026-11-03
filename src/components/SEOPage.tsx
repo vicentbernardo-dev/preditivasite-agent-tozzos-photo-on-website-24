@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Sparkles, 
@@ -57,32 +58,7 @@ export const SEOPage: React.FC<SEOPageProps> = ({
     }
   };
 
-  const faqItems = [
-    {
-      id: 0,
-      question: 'Qual a diferença entre SEO On-page e Off-page?',
-      answer:
-        'SEO On-page engloba todas as otimizações técnicas e semânticas feitas diretamente dentro do seu site (Core Web Vitals, estrutura de tags, categorização, Schema Markup, velocidade e intenção de busca). O SEO Off-page abrange a autoridade externa e relevância do domínio, incluindo Link Building estratégico, citações de marca e autoridade setorial.',
-    },
-    {
-      id: 1,
-      question: 'Quanto tempo leva para ver resultados reais?',
-      answer:
-        'Correções de indexação crítica e Core Web Vitals costumam gerar impactos nos primeiros 30 a 60 dias. Ganhos de autoridade e tráfego orgânico exponencial em categorias de alta concorrência atingem maturação entre 3 a 6 meses de execução consistente.',
-    },
-    {
-      id: 2,
-      question: 'Como funcionam os relatórios de performance?',
-      answer:
-        'Disponibilizamos dashboards proprietários em tempo real integrando Google Search Console, Google Analytics 4 e rankings de palavras-chave, além de relatórios executivos mensais focados em receita orgânica, conversão e share of search.',
-    },
-    {
-      id: 3,
-      question: 'Quais são os termos de contrato e permanência?',
-      answer:
-        'Nossos contratos são estruturados em ciclos trimestrais ou semestrais de aceleração com roadmaps transparentes priorizados pelo impacto no faturamento e LTV da loja.',
-    },
-  ];
+  const faqItems = PAGE_FAQS['especialidade-seo'];
 
   return (
     <div className="w-full flex flex-col bg-[#000604] text-white font-familjen">
@@ -703,15 +679,15 @@ export const SEOPage: React.FC<SEOPageProps> = ({
           </div>
 
           <div className="space-y-4">
-            {faqItems.map((item) => {
-              const isOpen = openFaqId === item.id;
+            {faqItems.map((item, id) => {
+              const isOpen = openFaqId === id;
               return (
                 <div
-                  key={item.id}
+                  key={id}
                   className="rounded-xl bg-[#1A1C1A]/40 border border-[#3B4B35]/20 backdrop-blur-md overflow-hidden"
                 >
                   <button
-                    onClick={() => setOpenFaqId(isOpen ? null : item.id)}
+                    onClick={() => setOpenFaqId(isOpen ? null : id)}
                     className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02]"
                     aria-expanded={isOpen}
                   >

@@ -5,6 +5,8 @@ export interface ArticleSeoData {
   description?: string;
   image?: string;
   publishedAt?: string;
+  modifiedAt?: string;
+  authorName?: string;
 }
 
 interface PageSeo {
@@ -12,7 +14,8 @@ interface PageSeo {
   description: string;
 }
 
-const SITE_URL = 'https://preditiva.co';
+export const SITE_URL = 'https://preditiva.co';
+export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 const BRAND = 'Preditiva';
 const ARTICLE_SCHEMA_ID = 'schema-blog';
 const BREADCRUMB_SCHEMA_ID = 'schema-breadcrumb-list';
@@ -220,20 +223,36 @@ export const buildBlogPostSchema = (slug: string | undefined, article: ArticleSe
   const image = article.image
     ? getSocialImageUrl(withSanityImageFormat(article.image) || DEFAULT_SHARE_IMAGE)
     : DEFAULT_SHARE_IMAGE;
-  const publishedAt = article.publishedAt ? new Date(article.publishedAt) : null;
+  const datePublished = toIsoDate(article.publishedAt);
+  const dateModified = toIsoDate(article.modifiedAt) || datePublished;
+  const authorName = article.authorName?.trim();
   return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: article.title,
     description: buildArticleDescription(article.description),
-    image,
-    mainEntityOfPage: canonicalUrl,
-    ...(publishedAt && !Number.isNaN(publishedAt.getTime()) ? { datePublished: publishedAt.toISOString() } : {}),
-    author: {
+    image: { '@type': 'ImageObject', url: image, width: 1200, height: 630 },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+    url: canonicalUrl,
+    inLanguage: 'pt-BR',
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
+    author: authorName
+      ? { '@type': 'Person', name: authorName, worksFor: { '@id': ORGANIZATION_ID } }
+      : { '@type': 'Organization', '@id': ORGANIZATION_ID, name: BRAND },
+    publisher: {
       '@type': 'Organization',
+      '@id': ORGANIZATION_ID,
       name: BRAND,
+      logo: { '@type': 'ImageObject', url: `${SITE_URL}/LOGO.png` },
     },
   };
+};
+
+const toIsoDate = (value?: string) => {
+  if (!value) return undefined;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
 };
 
 export const updateBlogPostSchema = (slug: string | undefined, article: ArticleSeoData) => {
@@ -274,16 +293,18 @@ const buildArticleTitle = (title: string) => {
   return `${cleanTitle.length > maxTitleLength ? `${cleanTitle.slice(0, maxTitleLength - 1).trimEnd()}…` : cleanTitle}${suffix}`;
 };
 
+// Escolhe a versão mais completa que cabe em 160 caracteres, sem cortar palavra no
+// meio (antes a home saía "resultados dig… Fale com a Preditiva").
 const fitDescription = (summary: string, callToAction: string, expansion: string) => {
-  let descriptionSummary = summary;
-  if (descriptionSummary.length + callToAction.length < MIN_DESCRIPTION_LENGTH) {
-    descriptionSummary = `${descriptionSummary}${expansion}`;
-  }
-  const maxSummaryLength = MAX_DESCRIPTION_LENGTH - callToAction.length;
-  if (descriptionSummary.length > maxSummaryLength) {
-    descriptionSummary = `${descriptionSummary.slice(0, maxSummaryLength - 1).trimEnd()}…`;
-  }
-  return `${descriptionSummary}${callToAction}`;
+  const candidates = [
+    ...(summary.length + callToAction.length < MIN_DESCRIPTION_LENGTH ? [`${summary}${expansion}${callToAction}`] : []),
+    `${summary}${callToAction}`,
+    summary,
+  ];
+  const fitting = candidates.find((candidate) => candidate.length <= MAX_DESCRIPTION_LENGTH);
+  if (fitting) return fitting;
+  const cut = summary.slice(0, MAX_DESCRIPTION_LENGTH - 1);
+  return `${cut.slice(0, cut.lastIndexOf(' ')).replace(/[\s,;:.-]+$/, '')}…`;
 };
 
 const buildArticleDescription = (excerpt?: string) => {
@@ -382,6 +403,12 @@ export const updatePageSeo = (
   setMeta('name', 'twitter:image', socialImage);
 
   setRobotsNoindex(noindex);
+
+  // FAQPage/Service vêm no HTML pré-renderizado de cada rota; ao navegar no SPA
+  // para outra página, remove os da página inicial para o head não ficar incoerente.
+  document.head.querySelectorAll<HTMLScriptElement>('script[data-page]').forEach((script) => {
+    if (script.dataset.page !== page) script.remove();
+  });
 
   let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
   if (!canonicalUrl) {

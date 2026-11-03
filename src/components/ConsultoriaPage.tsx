@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, CheckCircle2, ChevronDown, ArrowRight, Activity, LineChart, Search, Target, Database, Cpu, Zap, Layers, Globe, ShieldCheck, Users, BarChart3 } from 'lucide-react';
 
@@ -35,32 +36,7 @@ export const ConsultoriaPage: React.FC<ConsultoriaPageProps> = ({
     }
   };
 
-  const faqItems = [
-    {
-      id: 0,
-      question: 'O que é uma consultoria estratégica para e-commerce?',
-      answer:
-        'É uma atuação consultiva sênior que audita a maturidade técnica da sua operação digital (SEO, CRM, Dados, Performance e CRO), mapeia gargalos invisíveis e desenha um plano de ação orientado a aumento de margem e faturamento previsível.',
-    },
-    {
-      id: 1,
-      question: 'Qual a diferença entre consultoria e aceleração?',
-      answer:
-        'Na consultoria estratégica, orientamos, auditamos e direcionamos a liderança e os times internos com roadmaps técnicos e validações contínuas. Na aceleração, nossa squad assume a execução ponta a ponta da operação e do growth engineering.',
-    },
-    {
-      id: 2,
-      question: 'A consultoria substitui minha equipe interna?',
-      answer:
-        'Não. Nossa consultoria empodera e eleva a maturidade do seu time técnico e de marketing, atuando como braço estratégico sênior para validações complexas, governança e tomadas de decisão.',
-    },
-    {
-      id: 3,
-      question: 'Quais áreas são avaliadas?',
-      answer:
-        'Avaliamos SEO Técnico (Core Web Vitals, indexação, arquitetura), CRM & Ciclo de Vida (RFM, automações, retenção), Engenharia de Dados (GA4, GTM, CAPI, Data Warehouse), Performance de Mídia e Otimização de Conversão (CRO).',
-    },
-  ];
+  const faqItems = PAGE_FAQS['frentes-consultoria'];
 
   const desafios = [
     'Falta de Visibilidade dos Dados',
@@ -421,15 +397,15 @@ export const ConsultoriaPage: React.FC<ConsultoriaPageProps> = ({
           </h2>
 
           <div className="space-y-4">
-            {faqItems.map((item) => {
-              const isOpen = openFaqId === item.id;
+            {faqItems.map((item, id) => {
+              const isOpen = openFaqId === id;
               return (
                 <div
-                  key={item.id}
+                  key={id}
                   className="rounded-xl bg-black border border-white/10 overflow-hidden"
                 >
                   <button
-                    onClick={() => setOpenFaqId(isOpen ? null : item.id)}
+                    onClick={() => setOpenFaqId(isOpen ? null : id)}
                     className="w-full p-6 sm:p-7 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-white/[0.02]"
                     aria-expanded={isOpen}
                   >
