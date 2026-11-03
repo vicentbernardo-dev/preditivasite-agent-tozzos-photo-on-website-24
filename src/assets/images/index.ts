@@ -19,8 +19,8 @@ import swarovskiLogo from '/logo/swarovski_logo_1x.webp';
 import vakinhaLogo from '/logo/vakinha_logo_1x.webp';
 
 // Cliente Avatars
-import pauloAndreAvatar from '/clientes/paulo-andré-miami.jpg';
-import eduSatoAvatar from '/clientes/edu-sato-ab-mauri.jpg';
+import pauloAndreAvatar from '/clientes/paulo-andre-miami.webp';
+import eduSatoAvatar from '/clientes/edu-sato-ab-mauri.webp';
 
 export const LOGOS = {
   reflorestar: reflorestarLogo,

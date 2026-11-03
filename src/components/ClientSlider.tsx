@@ -1,5 +1,4 @@
 import React from "react";
-import { motion, useReducedMotion } from "motion/react";
 import { CLIENT_LOGOS } from "../data/clientLogos";
 
 interface ClientSliderProps {
@@ -10,10 +9,10 @@ interface ClientSliderProps {
 export const ClientSlider: React.FC<ClientSliderProps> = ({
   duration = 30,
 }) => {
-  const shouldReduceMotion = useReducedMotion() ?? true;
-
   // The list is rendered twice and the track moves by exactly one copy's width,
   // so the loop restarts without a visible jump and never ends.
+  // A animação é CSS (.marquee-track em src/index.css): roda no compositor e
+  // para sozinha com prefers-reduced-motion.
   const renderCopy = (copyIndex: number) => (
     <div key={copyIndex} className="flex shrink-0" aria-hidden={copyIndex > 0}>
       {CLIENT_LOGOS.map((client) => (
@@ -37,14 +36,13 @@ export const ClientSlider: React.FC<ClientSliderProps> = ({
 
   return (
     <div className="relative w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent)]">
-      <motion.div
-        className="flex w-max"
-        animate={shouldReduceMotion ? undefined : { x: ["0%", "-50%"] }}
-        transition={shouldReduceMotion ? undefined : { duration, ease: "linear", repeat: Infinity }}
+      <div
+        className="marquee-track flex w-max"
+        style={{ "--marquee-duration": `${duration}s` } as React.CSSProperties}
       >
         {renderCopy(0)}
-        {!shouldReduceMotion && renderCopy(1)}
-      </motion.div>
+        {renderCopy(1)}
+      </div>
     </div>
   );
 };

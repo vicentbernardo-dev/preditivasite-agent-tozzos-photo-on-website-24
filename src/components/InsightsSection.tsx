@@ -87,7 +87,7 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
     summary: post.excerpt || 'Resumo não disponível.',
     readTime: `${post.readTime || 5} min de leitura`,
     date: formatDate(post.publishedAt),
-    image: withSanityImageFormat(post.imageUrl) || '',
+    image: withSanityImageFormat(post.imageUrl, 800) || '',
     content: post.excerpt || '',
   }));
 
@@ -178,6 +178,10 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
                     <img
                       src={article.image}
                       alt={posts[index].imageAlt || article.title || 'Imagem de capa do artigo'}
+                      width={800}
+                      height={448}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
                     />
                   )}

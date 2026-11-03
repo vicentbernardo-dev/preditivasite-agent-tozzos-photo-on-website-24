@@ -4,14 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Preditiva | Aceleradora de E-commerce &amp; SEO Técnico</title>
-    <link rel="icon" href="/favicon.png" type="image/png" />
-    <link rel="apple-touch-icon" href="/favicon.png" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="description" content="Acelere seu e-commerce com SEO técnico, growth e dados. Fale com a Preditiva e transforme performance em crescimento." />
     <link rel="canonical" href="https://preditiva.co/" />
     <meta property="og:title" content="Preditiva | Aceleradora de E-commerce &amp; SEO Técnico" />
     <meta property="og:site_name" content="Preditiva" />
     <meta property="og:description" content="Acelere seu e-commerce com SEO técnico, growth e dados. Fale com a Preditiva e transforme performance em crescimento." />
-    <meta property="og:image" content="https://preditiva.co/og-cover.png" />
+    <meta property="og:image" content="https://preditiva.co/og-cover.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Preditiva: aceleradora de e-commerce, SEO técnico e growth" />
@@ -20,7 +21,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Preditiva | Aceleradora de E-commerce &amp; SEO Técnico" />
     <meta name="twitter:description" content="Acelere seu e-commerce com SEO técnico, growth e dados. Fale com a Preditiva e transforme performance em crescimento." />
-    <meta name="twitter:image" content="https://preditiva.co/og-cover.png" />
+    <meta name="twitter:image" content="https://preditiva.co/og-cover.jpg" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -32,25 +33,15 @@
       }
     </script>
 
+    <!-- Fonte principal servida pelo próprio domínio (@font-face em src/index.css) -->
+    <link rel="preload" href="/fonts/familjen-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+
     <!-- Preconnect & DNS-Prefetch (Reduz latência de rede) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://ioanix6u.api.sanity.io" crossorigin />
-    <link rel="dns-prefetch" href="https://ioanix6u.api.sanity.io" />
+    <link rel="preconnect" href="https://ioanix6u.apicdn.sanity.io" crossorigin />
+    <link rel="preconnect" href="https://cdn.sanity.io" />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="dns-prefetch" href="https://connect.facebook.net">
     <link rel="dns-prefetch" href="https://scripts.clarity.ms">
-
-    <!-- Google Fonts carregado via CSS com font-display: swap -->
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap"
-      media="print"
-      onload="this.media='all'"
-    >
-    <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap">
-    </noscript>
 
     <!-- Google Tag Manager (Lazy Load) -->
     <script>
@@ -66,11 +57,21 @@
           })(window,document,'script','dataLayer','GTM-KSRNCH5G');
         }
         // Carrega apos interagir com a pagina
-        ['scroll', 'mousemove', 'touchstart'].forEach(function(e) {
+        ['scroll', 'pointerdown', 'mousemove', 'touchstart', 'keydown'].forEach(function(e) {
           window.addEventListener(e, loadGTM, { once: true, passive: true });
         });
-        // Ou apos 3.5 segundos de inatividade
-        setTimeout(loadGTM, 3500);
+        // Sem interacao: so depois do load e com o main thread ocioso, para que
+        // GTM + gtag + Pixel (~600 KB) nao disputem CPU com a renderizacao inicial.
+        // O timeout garante que visitas sem interacao continuam sendo medidas.
+        window.addEventListener('load', function() {
+          setTimeout(function() {
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(loadGTM, { timeout: 2000 });
+            } else {
+              loadGTM();
+            }
+          }, 4000);
+        });
       })();
     </script>
   </head>

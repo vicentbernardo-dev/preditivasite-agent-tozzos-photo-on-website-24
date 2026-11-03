@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, MessageCircle } from 'lucide-react';
-import ademarPhoto from '../assets/FOTO-ADEMAR.png';
+import ademarPhoto from '../assets/FOTO-ADEMAR.webp';
 
 interface MethodologyLeadershipProps {
   onOpenContact: () => void;

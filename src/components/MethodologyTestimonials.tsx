@@ -7,7 +7,7 @@ export const MethodologyTestimonials: React.FC = () => {
     {
       name: 'PAULO ANDRÉ',
       role: 'CEO DA MIAMI AD SCHOOL',
-      avatar: '/clientes/paulo-andré-miami.jpg',
+      avatar: '/clientes/paulo-andre-miami.webp',
       headline: 'Melhoria radical',
       quote:
         'Nossa performance site melhorou radicalmente no curto prazo, a experiência do user melhorou e a jornada ficou muito mais fluída, melhorando a conversão final de nossas vendas.',
@@ -15,7 +15,7 @@ export const MethodologyTestimonials: React.FC = () => {
     {
       name: 'EDU SATO',
       role: 'DIRETOR MKT GTEX',
-      avatar: '/clientes/edu-sato-ab-mauri.jpg',
+      avatar: '/clientes/edu-sato-ab-mauri.webp',
       headline: 'Satisfação e crescimento!',
       quote:
         'Estou muito satisfeito com o trabalho realizado. Nosso canal orgânico hoje cresceu em receita e qualidade!',
