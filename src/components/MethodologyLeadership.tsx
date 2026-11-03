@@ -82,7 +82,7 @@ export const MethodologyLeadership: React.FC<MethodologyLeadershipProps> = ({ on
               </a>
 
               <a
-                href="https://linkedin.com"
+                href="https://br.linkedin.com/in/ademar-tozzo"
                 target="_blank"
                 rel="noreferrer"
                 className="p-3 bg-white/10 hover:bg-[#0DF205] hover:text-[#000604] text-white rounded-lg transition-colors font-bold text-xs"

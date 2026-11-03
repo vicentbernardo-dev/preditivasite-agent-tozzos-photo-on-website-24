@@ -46,35 +46,24 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
 
                 {/* Instagram */}
                 <a
-                  href="https://instagram.com"
+                  href="https://www.instagram.com/preditiva.co/"
                   target="_blank"
                   rel="noreferrer"
                   className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#0DF205] hover:text-black text-white flex items-center justify-center transition-all duration-200 font-bold text-sm"
-                  aria-label="Instagram"
+                  aria-label="Instagram da Preditiva"
                 >
                   IG
                 </a>
 
                 {/* LinkedIn */}
                 <a
-                  href="https://linkedin.com"
+                  href="https://br.linkedin.com/company/preditiva-co"
                   target="_blank"
                   rel="noreferrer"
                   className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#0DF205] hover:text-black text-white flex items-center justify-center transition-all duration-200 font-bold text-sm"
-                  aria-label="LinkedIn"
+                  aria-label="LinkedIn da Preditiva"
                 >
                   in
-                </a>
-
-                {/* YouTube */}
-                <a
-                  href="https://youtube.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-10 h-10 rounded-full bg-white/10 hover:bg-[#0DF205] hover:text-black text-white flex items-center justify-center transition-all duration-200 font-bold text-sm"
-                  aria-label="YouTube"
-                >
-                  YT
                 </a>
               </div>
             </div>

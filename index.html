@@ -25,7 +25,7 @@
     <meta name="twitter:image" content="https://preditiva.co/og-cover.jpg" />
     <!-- Entidade da empresa em todas as páginas. O head por rota (title, description,
          canonical) é gerado a partir de src/lib/seo.ts no build (scripts/prerender.ts).
-         sameAs: incluir as URLs reais de LinkedIn/Instagram/YouTube quando definidas. -->
+         sameAs: mesmos perfis linkados no Footer. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -43,6 +43,10 @@
               "height": 77
             },
             "image": "https://preditiva.co/og-cover.jpg",
+            "sameAs": [
+              "https://www.instagram.com/preditiva.co/",
+              "https://br.linkedin.com/company/preditiva-co"
+            ],
             "description": "Aceleradora de e-commerce e camada técnica especializada em SEO, CRM, mídia, dados, desenvolvimento e growth.",
             "address": {
               "@type": "PostalAddress",
@@ -63,7 +67,8 @@
               "@type": "Person",
               "@id": "https://preditiva.co/#ademar-tozzo",
               "name": "Ademar Tozzo",
-              "jobTitle": "CEO & Co-founder"
+              "jobTitle": "CEO & Co-founder",
+              "sameAs": ["https://br.linkedin.com/in/ademar-tozzo"]
             },
             "knowsAbout": ["SEO técnico", "E-commerce", "CRM", "Mídia paga", "Analytics", "Growth marketing", "GEO"]
           },
