@@ -7,6 +7,7 @@ import { PageRoute } from './Navbar';
 import { RadarNewsletter } from './RadarNewsletter';
 import { client, postsQuery } from '../lib/sanity';
 import { withSanityImageFormat } from '../lib/seo';
+import { isModifiedClick, routeToPath } from '../lib/routes';
 
 interface BlogPageProps {
   onOpenAuditModal: () => void;
@@ -243,7 +244,16 @@ export const BlogPage: React.FC<BlogPageProps> = ({
 
                     <div className="p-7 sm:p-8 space-y-3">
                       <h3 className="text-xl sm:text-2xl font-bold text-[#E3E3DF] group-hover:text-[#0DF205] transition-colors leading-snug">
-                        {article.title}
+                        <a
+                          href={routeToPath('blog-post', article.id)}
+                          onClick={(e) => {
+                            // Clique normal: o card cuida da navegação SPA; com modificador abre nova aba
+                            if (isModifiedClick(e)) e.stopPropagation();
+                            else e.preventDefault();
+                          }}
+                        >
+                          {article.title}
+                        </a>
                       </h3>
                       <p className="text-sm text-[#B9CCAF] leading-relaxed opacity-80 line-clamp-3">
                         {article.excerpt}

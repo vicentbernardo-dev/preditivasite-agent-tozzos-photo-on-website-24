@@ -13,7 +13,7 @@ exports.handler = async function () {
       apiVersion: '2025-01-20',
     });
 
-    // Rotas reais do app (devem refletir VALID_PAGES em src/App.tsx)
+    // Rotas reais do app (devem refletir STATIC_PAGES em src/lib/routes.ts)
     const staticPages = [
       '',
       '/metodologia',
@@ -45,29 +45,25 @@ exports.handler = async function () {
 
     const posts = await client.fetch(query);
 
+    // Sem lastmod nas páginas estáticas: uma data "agora" a cada request faz o
+    // Google passar a ignorar o lastmod do sitemap inteiro.
     const staticXml = staticPages
       .map(
         (route) => `
   <url>
-    <loc>${baseUrl}${route}</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>${route === '' ? 'daily' : 'weekly'}</changefreq>
-    <priority>${route === '' ? '1.0' : route === '/blog' ? '0.8' : '0.7'}</priority>
+    <loc>${baseUrl}${route || '/'}</loc>
   </url>`
       )
       .join('');
 
     const postXml = posts
       .map((post) => {
-        const lastMod = post._updatedAt
-          ? new Date(post._updatedAt).toISOString()
-          : new Date().toISOString();
+        // Mesmo formato do canonical (src/lib/seo.ts): sem barra final
+        const lastMod = post._updatedAt ? `
+    <lastmod>${new Date(post._updatedAt).toISOString()}</lastmod>` : '';
         return `
   <url>
-    <loc>${baseUrl}/blog/${encodeURIComponent(post.slug)}/</loc>
-    <lastmod>${lastMod}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>${baseUrl}/blog/${encodeURIComponent(post.slug)}</loc>${lastMod}
   </url>`;
       })
       .join('');
@@ -95,7 +91,7 @@ ${postXml}
 ${fallbackPages
   .map(
     (route) => `  <url>
-    <loc>${baseUrl}${route}/</loc>
+    <loc>${baseUrl}${route || '/'}</loc>
   </url>`,
   )
   .join('\n')}

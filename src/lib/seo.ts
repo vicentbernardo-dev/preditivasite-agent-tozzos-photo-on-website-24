@@ -101,6 +101,10 @@ const PAGE_SEO: Record<Exclude<PageRoute, 'blog-post'>, PageSeo> = {
     title: 'Alfredo: Inteligência para E-commerce | Preditiva',
     description: 'Descubra como o Alfredo pode apoiar decisões e rotinas da sua operação de e-commerce com inteligência.',
   },
+  'not-found': {
+    title: 'Página não encontrada | Preditiva',
+    description: 'A página que você procura não existe ou foi movida para outro endereço.',
+  },
 };
 
 const PAGE_BREADCRUMB_NAMES: Partial<Record<PageRoute, string>> = {
@@ -125,12 +129,9 @@ const PAGE_BREADCRUMB_NAMES: Partial<Record<PageRoute, string>> = {
   'ferramentas-alfredo': 'Alfredo',
 };
 
-export const updateBreadcrumbSchema = (page: PageRoute, articleTitle?: string) => {
+export const buildBreadcrumbSchema = (page: PageRoute, articleTitle?: string) => {
   const pageName = page === 'blog-post' ? articleTitle : PAGE_BREADCRUMB_NAMES[page];
-  if (!pageName || page === 'home') {
-    document.head.querySelector(`#${BREADCRUMB_SCHEMA_ID}`)?.remove();
-    return;
-  }
+  if (!pageName || page === 'home') return null;
 
   const itemListElement = [
     {
@@ -153,11 +154,19 @@ export const updateBreadcrumbSchema = (page: PageRoute, articleTitle?: string) =
         }]
       : []),
   ];
-  const schema = {
+  return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement,
   };
+};
+
+export const updateBreadcrumbSchema = (page: PageRoute, articleTitle?: string) => {
+  const schema = buildBreadcrumbSchema(page, articleTitle);
+  if (!schema) {
+    document.head.querySelector(`#${BREADCRUMB_SCHEMA_ID}`)?.remove();
+    return;
+  }
 
   let script = document.head.querySelector<HTMLScriptElement>(`#${BREADCRUMB_SCHEMA_ID}`);
   if (!script) {
@@ -194,13 +203,13 @@ export const withSanityImageFormat = (imageUrl?: string): string | undefined => 
   }
 };
 
-export const updateBlogPostSchema = (slug: string | undefined, article: ArticleSeoData) => {
+export const buildBlogPostSchema = (slug: string | undefined, article: ArticleSeoData) => {
   const canonicalUrl = `${SITE_URL}/blog/${encodeURIComponent(slug || '')}`;
   const image = article.image
     ? getSocialImageUrl(withSanityImageFormat(article.image) || DEFAULT_SHARE_IMAGE)
     : DEFAULT_SHARE_IMAGE;
   const publishedAt = article.publishedAt ? new Date(article.publishedAt) : null;
-  const schema = {
+  return {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: article.title,
@@ -213,7 +222,10 @@ export const updateBlogPostSchema = (slug: string | undefined, article: ArticleS
       name: BRAND,
     },
   };
+};
 
+export const updateBlogPostSchema = (slug: string | undefined, article: ArticleSeoData) => {
+  const schema = buildBlogPostSchema(slug, article);
   let script = document.head.querySelector<HTMLScriptElement>('#schema-blog');
   if (!script) {
     script = document.createElement('script');
@@ -278,11 +290,22 @@ const buildPageDescription = (summary: string) => fitDescription(
   ' Encontre estratégias práticas de SEO, growth e tecnologia para evoluir sua operação digital.',
 );
 
-export const updatePageSeo = (
+export interface ResolvedPageSeo {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  socialImage: string;
+  imageAlt: string;
+  ogType: 'website' | 'article';
+  noindex: boolean;
+}
+
+// Fonte única dos metadados: usada no navegador e na pré-renderização do build.
+export const getPageSeo = (
   page: PageRoute,
   slug?: string,
   article?: ArticleSeoData,
-) => {
+): ResolvedPageSeo => {
   const isArticle = page === 'blog-post' && Boolean(article?.title);
   const route = isArticle && slug
     ? `/blog/${encodeURIComponent(slug)}`
@@ -304,6 +327,33 @@ export const updatePageSeo = (
     : DEFAULT_SHARE_IMAGE;
   const socialImage = image ? getSocialImageUrl(image) : DEFAULT_SHARE_IMAGE;
 
+  return {
+    title,
+    description,
+    canonicalUrl: page === 'not-found' ? undefined : canonicalUrl,
+    socialImage,
+    imageAlt: isArticle ? article.title : 'Preditiva: aceleradora de e-commerce, SEO técnico e growth',
+    ogType: isArticle ? 'article' : 'website',
+    noindex: page === 'not-found',
+  };
+};
+
+export const setRobotsNoindex = (noindex: boolean) => {
+  const robots = document.head.querySelector<HTMLMetaElement>('meta[name="robots"]');
+  if (noindex) {
+    setMeta('name', 'robots', 'noindex, follow');
+  } else {
+    robots?.remove();
+  }
+};
+
+export const updatePageSeo = (
+  page: PageRoute,
+  slug?: string,
+  article?: ArticleSeoData,
+) => {
+  const { title, description, canonicalUrl, socialImage, imageAlt, ogType, noindex } = getPageSeo(page, slug, article);
+
   document.title = title;
   setMeta('name', 'description', description);
   setMeta('property', 'og:title', title);
@@ -312,15 +362,22 @@ export const updatePageSeo = (
   setMeta('property', 'og:image', socialImage);
   setMeta('property', 'og:image:width', '1200');
   setMeta('property', 'og:image:height', '630');
-  setMeta('property', 'og:image:alt', isArticle ? article.title : 'Preditiva: aceleradora de e-commerce, SEO técnico e growth');
-  setMeta('property', 'og:url', canonicalUrl);
-  setMeta('property', 'og:type', isArticle ? 'article' : 'website');
+  setMeta('property', 'og:image:alt', imageAlt);
+  setMeta('property', 'og:type', ogType);
   setMeta('name', 'twitter:card', 'summary_large_image');
   setMeta('name', 'twitter:title', title);
   setMeta('name', 'twitter:description', description);
   setMeta('name', 'twitter:image', socialImage);
 
+  setRobotsNoindex(noindex);
+
   let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (!canonicalUrl) {
+    canonical?.remove();
+    document.head.querySelector('meta[property="og:url"]')?.remove();
+    return;
+  }
+  setMeta('property', 'og:url', canonicalUrl);
   if (!canonical) {
     canonical = document.createElement('link');
     canonical.rel = 'canonical';

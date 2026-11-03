@@ -28,6 +28,7 @@ const CaseMasterPage = lazy(() => import('./components/CaseMasterPage').then(({ 
 const BlogPage = lazy(() => import('./components/BlogPage').then(({ BlogPage }) => ({ default: BlogPage })));
 const BlogPostPage = lazy(() => import('./components/BlogPostPage').then(({ BlogPostPage }) => ({ default: BlogPostPage })));
 const PartnersPage = lazy(() => import('./components/PartnersPage').then(({ PartnersPage }) => ({ default: PartnersPage })));
+const NotFoundPage = lazy(() => import('./components/NotFoundPage').then(({ NotFoundPage }) => ({ default: NotFoundPage })));
 const ToolsPage = lazy(() => import('./components/ToolsPage').then(({ ToolsPage }) => ({ default: ToolsPage })));
 const ToolsSection = lazy(() => import('./components/ToolsSection').then(m => ({ default: m.ToolsSection })));
 const LiveAuditModal = lazy(() => import('./components/LiveAuditModal').then(m => ({ default: m.LiveAuditModal })));
@@ -41,6 +42,7 @@ import type { CaseStudy, InsightArticle, ServiceCard } from './types';
 import { Sparkles, MessageCircle } from 'lucide-react';
 import { MotionConfig } from 'motion/react';
 import type { ArticleSeoData } from './lib/seo';
+import { isStaticPage, routeToPath } from './lib/routes';
 
 const VALID_PAGES: PageRoute[] = [
   'home',
@@ -88,11 +90,14 @@ const resolveRouteFromLocation = (): { page: PageRoute; slug?: string } => {
     return { page: 'blog-post', slug: decodeURIComponent(segments[1]) };
   }
 
-  if (VALID_PAGES.includes(first as PageRoute)) {
-    return { page: first as PageRoute };
+  // Só aceita rotas de um segmento (/metodologia). Qualquer outro caminho
+  // (URLs antigas do WordPress, /blog-post, /metodologia/x) vira 404 em vez de
+  // renderizar a home, que o Google tratava como página duplicada.
+  if (segments.length === 1 && isStaticPage(first)) {
+    return { page: first };
   }
 
-  return { page: 'home' };
+  return { page: 'not-found' };
 };
 
 export default function App() {
@@ -159,16 +164,12 @@ export default function App() {
       isFirstRender.current = false;
       return;
     }
-    // '/blog-post' não é uma URL real: sem slug não há o que sincronizar
-    if (currentPage === 'blog-post' && !currentSlug) {
+    // '/blog-post' não é uma URL real: sem slug não há o que sincronizar.
+    // A página 404 mantém a URL que o usuário digitou.
+    if ((currentPage === 'blog-post' && !currentSlug) || currentPage === 'not-found') {
       return;
     }
-    const target =
-      currentPage === 'blog-post' && currentSlug
-        ? `/blog/${encodeURIComponent(currentSlug)}`
-        : currentPage === 'home'
-          ? '/'
-          : `/${currentPage}`;
+    const target = routeToPath(currentPage, currentSlug);
     if (window.location.pathname !== target) {
       window.history.pushState({}, '', target);
     }
@@ -402,6 +403,10 @@ export default function App() {
             onOpenAuditModal={() => handleOpenAuditModal()}
             onNavigatePage={navigate}
           />
+        )}
+
+        {currentPage === 'not-found' && (
+          <NotFoundPage onNavigatePage={navigate} />
         )}
 
         {currentPage === 'home' && (
