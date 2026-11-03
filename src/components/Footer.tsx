@@ -3,6 +3,7 @@ import { Logo } from './Logo';
 import { Phone, MapPin, ArrowUpRight, Send, MessageCircle } from 'lucide-react';
 
 import { PageRoute } from './Navbar';
+import { SpaLink } from './SpaLink';
 
 interface FooterProps {
   onNavigateSection: (sectionId: string) => void;
@@ -86,29 +87,23 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
             </h4>
             <ul className="space-y-2.5 text-sm sm:text-base text-white/90">
               <li>
-                <button 
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('ferramentas');
-                    else onNavigateSection('preditiva-tools-ecosystem');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }} 
+                <SpaLink
+                  to="ferramentas"
+                  onNavigate={onNavigatePage}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer flex items-center gap-1.5"
                 >
                   <span>Ferramentas</span>
                   <span className="text-[10px] bg-[#0DF205]/20 text-[#0DF205] px-1.5 py-0.2 rounded font-bold">NOVO</span>
-                </button>
+                </SpaLink>
               </li>
               <li>
-                <button 
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('blog');
-                    else onNavigateSection('insights');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }} 
+                <SpaLink
+                  to="blog"
+                  onNavigate={onNavigatePage}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   Blog
-                </button>
+                </SpaLink>
               </li>
               <li>
                 <button onClick={() => onNavigateSection('contato')} className="hover:text-[#0DF205] transition-colors cursor-pointer">
@@ -116,27 +111,22 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
                 </button>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('metodologia');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <SpaLink
+                  to="metodologia"
+                  onNavigate={onNavigatePage}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   Metodologia
-                </button>
+                </SpaLink>
               </li>
               <li>
-                <button 
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('partners');
-                    else onNavigateSection('parceiros');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }} 
+                <SpaLink
+                  to="partners"
+                  onNavigate={onNavigatePage}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   Nossos Parceiros
-                </button>
+                </SpaLink>
               </li>
               <li>
                 <a href="#cookies" onClick={(e) => { e.preventDefault(); alert('Política de Cookies atualizada conforme LGPD.'); }} className="hover:text-[#0DF205] transition-colors">
@@ -149,16 +139,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
                 </a>
               </li>
               <li>
-                <button 
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('partners');
-                    else onOpenAuditModal();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }} 
+                <SpaLink
+                  to="partners"
+                  onNavigate={onNavigatePage}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   Seja um parceiro
-                </button>
+                </SpaLink>
               </li>
               <li>
                 <button onClick={() => onNavigateSection('contato')} className="hover:text-[#0DF205] transition-colors cursor-pointer">
@@ -176,37 +163,31 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
               </h4>
               <ul className="space-y-2.5 text-sm sm:text-base text-white/90">
                 <li>
-                  <button
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('frentes-aceleradora');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
+                  <SpaLink
+                    to="frentes-aceleradora"
+                    onNavigate={onNavigatePage}
                     className="hover:text-[#0DF205] transition-colors text-left cursor-pointer"
                   >
                     Aceleradora de E-commerce
-                  </button>
+                  </SpaLink>
                 </li>
                 <li>
-                  <button
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('frentes-consultoria');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
+                  <SpaLink
+                    to="frentes-consultoria"
+                    onNavigate={onNavigatePage}
                     className="hover:text-[#0DF205] transition-colors text-left cursor-pointer"
                   >
                     Consultoria Estratégica
-                  </button>
+                  </SpaLink>
                 </li>
                 <li>
-                  <button
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('frentes-especialistas');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
+                  <SpaLink
+                    to="frentes-especialistas"
+                    onNavigate={onNavigatePage}
                     className="hover:text-[#0DF205] transition-colors text-left cursor-pointer"
                   >
                     Especialistas Dedicados
-                  </button>
+                  </SpaLink>
                 </li>
               </ul>
             </div>
@@ -217,52 +198,40 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
               </h4>
               <ul className="space-y-2 text-sm sm:text-base text-white/90">
                 <li>
-                  <button 
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('case-gtex');
-                      else onNavigateSection('cases');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
+                  <SpaLink
+                    to="case-gtex"
+                    onNavigate={onNavigatePage}
                     className="hover:text-[#0DF205] transition-colors cursor-pointer"
                   >
                     GTEX
-                  </button>
+                  </SpaLink>
                 </li>
                 <li>
-                  <button 
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('case-miami');
-                      else onNavigateSection('cases');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
+                  <SpaLink
+                    to="case-miami"
+                    onNavigate={onNavigatePage}
                     className="hover:text-[#0DF205] transition-colors cursor-pointer"
                   >
                     Miami Ad School
-                  </button>
+                  </SpaLink>
                 </li>
                 <li>
-                  <button 
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('case-master');
-                      else onNavigateSection('cases');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
+                  <SpaLink
+                    to="case-master"
+                    onNavigate={onNavigatePage}
                     className="hover:text-[#0DF205] transition-colors cursor-pointer"
                   >
                     Master Cidadania
-                  </button>
+                  </SpaLink>
                 </li>
                 <li>
-                  <button 
-                    onClick={() => {
-                      if (onNavigatePage) onNavigatePage('cases');
-                      else onNavigateSection('cases');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }} 
+                  <SpaLink
+                    to="cases"
+                    onNavigate={onNavigatePage}
                     className="text-[#0DF205] underline hover:text-white transition-colors cursor-pointer"
                   >
                     ver todos &gt;
-                  </button>
+                  </SpaLink>
                 </li>
               </ul>
             </div>
@@ -275,76 +244,58 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
             </h4>
             <ul className="space-y-2.5 text-sm sm:text-base text-white/90 uppercase font-semibold">
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-seo');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <SpaLink
+                  to="especialidade-seo"
+                  onNavigate={onNavigatePage}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   SEO TÉCNICO
-                </button>
+                </SpaLink>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-crm');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <SpaLink
+                  to="especialidade-crm"
+                  onNavigate={onNavigatePage}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   CRM & RETENÇÃO
-                </button>
+                </SpaLink>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-midia');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <SpaLink
+                  to="especialidade-midia"
+                  onNavigate={onNavigatePage}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   MÍDIA PAGA & CAPI
-                </button>
+                </SpaLink>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-dados');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <SpaLink
+                  to="especialidade-dados"
+                  onNavigate={onNavigatePage}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   DADOS & GA4
-                </button>
+                </SpaLink>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-dev');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <SpaLink
+                  to="especialidade-dev"
+                  onNavigate={onNavigatePage}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   DEV & INFRA
-                </button>
+                </SpaLink>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    if (onNavigatePage) onNavigatePage('especialidade-growth');
-                    else onNavigateSection('especialidades');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
+                <SpaLink
+                  to="especialidade-growth"
+                  onNavigate={onNavigatePage}
                   className="hover:text-[#0DF205] transition-colors cursor-pointer"
                 >
                   CRO & GROWTH
-                </button>
+                </SpaLink>
               </li>
             </ul>
           </div>

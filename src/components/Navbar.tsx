@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Logo } from './Logo';
 import { Menu, X, ChevronDown, Sparkles, Phone, ArrowUpRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { isModifiedClick, routeToPath } from '../lib/routes';
 
 export type PageRoute = 
   | 'home' 
@@ -24,7 +25,8 @@ export type PageRoute =
   | 'partners'
   | 'ferramentas'
   | 'ferramentas-vision'
-  | 'ferramentas-alfredo';
+  | 'ferramentas-alfredo'
+  | 'not-found';
 
 interface NavbarProps {
   currentPage?: PageRoute;
@@ -103,6 +105,16 @@ export const Navbar: React.FC<NavbarProps> = ({
     onNavigateSection(target);
   };
 
+  // href real para o Google rastrear; clique normal continua navegando via SPA
+  const pageLinkProps = (target: string) => ({
+    href: routeToPath(target as PageRoute),
+    onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
+      if (isModifiedClick(e)) return;
+      e.preventDefault();
+      handleLinkClick(target);
+    },
+  });
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -115,11 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              handleLinkClick('home');
-            }}
+            {...pageLinkProps('home')}
             className="group flex items-center focus:outline-none"
             aria-label="Preditiva Home"
           >
@@ -128,8 +136,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2 font-familjen text-[15px] xl:text-[16px]">
-            <button
-              onClick={() => handleLinkClick('home')}
+            <a
+              {...pageLinkProps('home')}
               className={`px-3 py-2 transition-colors cursor-pointer ${
                 currentPage === 'home'
                   ? 'text-[#0DF205] font-bold'
@@ -137,10 +145,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               Home
-            </button>
+            </a>
 
-            <button
-              onClick={() => handleLinkClick('metodologia')}
+            <a
+              {...pageLinkProps('metodologia')}
               className={`px-3 py-2 transition-colors cursor-pointer ${
                 currentPage === 'metodologia'
                   ? 'text-[#0DF205] font-bold'
@@ -148,7 +156,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               Metodologia
-            </button>
+            </a>
 
             {/* Dropdown: Frentes */}
             <div
@@ -156,8 +164,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={() => setActiveDropdown('frentes')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button
-                onClick={() => handleLinkClick('frentes-consultoria')}
+              <a
+                {...pageLinkProps('frentes-consultoria')}
                 className={`flex items-center gap-1 px-3 py-2 tracking-wide transition-colors cursor-pointer ${
                   currentPage?.startsWith('frentes-')
                     ? 'text-[#0DF205] font-bold'
@@ -166,7 +174,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <span>Frentes</span>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'frentes' ? 'rotate-180 text-[#0DF205]' : ''}`} />
-              </button>
+              </a>
 
               <AnimatePresence>
                 {activeDropdown === 'frentes' && (
@@ -178,11 +186,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className="absolute top-full left-0 w-64 mt-1 bg-[#111815] border border-white/10 rounded-xl p-2 shadow-2xl backdrop-blur-xl z-50"
                   >
                     <a
-                      href="#frentes-aceleradora"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLinkClick('frentes-aceleradora');
-                      }}
+                      {...pageLinkProps('frentes-aceleradora')}
                       className={`block p-2.5 rounded-lg hover:bg-white/5 group transition-colors ${
                         currentPage === 'frentes-aceleradora' ? 'bg-white/10 border border-[#0DF205]/30' : ''
                       }`}
@@ -194,11 +198,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <p className="text-xs text-white/60 mt-0.5">Operação completa de ponta a ponta</p>
                     </a>
                     <a
-                      href="#frentes-consultoria"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLinkClick('frentes-consultoria');
-                      }}
+                      {...pageLinkProps('frentes-consultoria')}
                       className={`block p-2.5 rounded-lg hover:bg-white/5 group transition-colors ${
                         currentPage === 'frentes-consultoria' ? 'bg-white/10 border border-[#0DF205]/30' : ''
                       }`}
@@ -210,11 +210,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       <p className="text-xs text-white/60 mt-0.5">Direção técnica e governança de dados</p>
                     </a>
                     <a
-                      href="#frentes-especialistas"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLinkClick('frentes-especialistas');
-                      }}
+                      {...pageLinkProps('frentes-especialistas')}
                       className={`block p-2.5 rounded-lg hover:bg-white/5 group transition-colors ${
                         currentPage === 'frentes-especialistas' ? 'bg-white/10 border border-[#0DF205]/30' : ''
                       }`}
@@ -236,8 +232,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={() => setActiveDropdown('especialidade')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button
-                onClick={() => handleLinkClick('especialidade-seo')}
+              <a
+                {...pageLinkProps('especialidade-seo')}
                 className={`flex items-center gap-1 px-3 py-2 tracking-wide transition-colors cursor-pointer ${
                   currentPage?.startsWith('especialidade-')
                     ? 'text-[#0DF205] font-bold'
@@ -246,7 +242,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               >
                 <span>Especialidade</span>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'especialidade' ? 'rotate-180 text-[#0DF205]' : ''}`} />
-              </button>
+              </a>
 
               <AnimatePresence>
                 {activeDropdown === 'especialidade' && (
@@ -267,11 +263,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     ].map((item) => (
                       <a
                         key={item.name}
-                        href={`#${item.id}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleLinkClick(item.id);
-                        }}
+                        {...pageLinkProps(item.id)}
                         className={`p-2 rounded-lg hover:bg-white/5 transition-colors group ${
                           currentPage === item.id ? 'bg-white/10 border border-[#0DF205]/30' : ''
                         }`}
@@ -293,8 +285,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseEnter={() => setActiveDropdown('ferramentas')}
               onMouseLeave={() => setActiveDropdown(null)}
             >
-              <button
-                onClick={() => handleLinkClick('ferramentas')}
+              <a
+                {...pageLinkProps('ferramentas')}
                 className={`flex items-center gap-1 px-3 py-2 tracking-wide transition-colors cursor-pointer ${
                   currentPage?.startsWith('ferramentas')
                     ? 'text-[#0DF205] font-bold'
@@ -306,7 +298,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span className="w-1.5 h-1.5 rounded-full bg-[#0DF205] animate-pulse" />
                 </span>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'ferramentas' ? 'rotate-180 text-[#0DF205]' : ''}`} />
-              </button>
+              </a>
 
               <AnimatePresence>
                 {activeDropdown === 'ferramentas' && (
@@ -318,11 +310,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     className="absolute top-full left-0 w-80 mt-1 bg-[#111815] border border-[#0DF205]/30 rounded-xl p-3 shadow-2xl backdrop-blur-xl z-50 flex flex-col gap-1.5"
                   >
                     <a
-                      href="#ferramentas-vision"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLinkClick('ferramentas-vision');
-                      }}
+                      {...pageLinkProps('ferramentas-vision')}
                       className="block p-2.5 rounded-lg hover:bg-white/5 group transition-colors"
                     >
                       <div className="text-white font-medium group-hover:text-[#0DF205] text-sm flex items-center justify-between">
@@ -336,11 +324,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </a>
 
                     <a
-                      href="#ferramentas-alfredo"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleLinkClick('ferramentas-alfredo');
-                      }}
+                      {...pageLinkProps('ferramentas-alfredo')}
                       className="block p-2.5 rounded-lg hover:bg-white/5 group transition-colors"
                     >
                       <div className="text-white font-medium group-hover:text-[#0DF205] text-sm flex items-center justify-between">
@@ -354,27 +338,27 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </a>
 
                     <div className="pt-2 border-t border-white/10 mt-1">
-                      <button
-                        onClick={() => handleLinkClick('ferramentas')}
+                      <a
+                        {...pageLinkProps('ferramentas')}
                         className="w-full py-1.5 text-center text-xs font-bold text-[#0DF205] hover:underline"
                       >
                         Ver Ecossistema Completo →
-                      </button>
+                      </a>
                     </div>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
 
-            <button
-              onClick={() => handleLinkClick('cases')}
+            <a
+              {...pageLinkProps('cases')}
               className="px-3 py-2 text-white/90 font-normal tracking-wide hover:text-[#0DF205] transition-colors cursor-pointer"
             >
               Cases
-            </button>
+            </a>
 
-            <button
-              onClick={() => handleLinkClick('blog')}
+            <a
+              {...pageLinkProps('blog')}
               className={`px-3 py-2 transition-colors cursor-pointer ${
                 currentPage === 'blog' || currentPage === 'blog-post'
                   ? 'text-[#0DF205] font-bold'
@@ -382,10 +366,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               Blog
-            </button>
+            </a>
 
-            <button
-              onClick={() => handleLinkClick('partners')}
+            <a
+              {...pageLinkProps('partners')}
               className={`px-3 py-2 transition-colors cursor-pointer ${
                 currentPage === 'partners'
                   ? 'text-[#0DF205] font-bold'
@@ -393,7 +377,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               Partners
-            </button>
+            </a>
           </nav>
 
           {/* Action CTA Button */}
@@ -443,41 +427,41 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="lg:hidden bg-[#000604]/98 border-b border-white/10 px-6 py-6 font-familjen space-y-4"
           >
             <div className="flex flex-col space-y-3 text-lg">
-              <button
-                onClick={() => handleLinkClick('home')}
+              <a
+                {...pageLinkProps('home')}
                 className={`text-left font-medium py-1 ${currentPage === 'home' ? 'text-[#0DF205]' : 'text-white/90 hover:text-[#0DF205]'}`}
               >
                 Home
-              </button>
-              <button
-                onClick={() => handleLinkClick('metodologia')}
+              </a>
+              <a
+                {...pageLinkProps('metodologia')}
                 className={`text-left font-medium py-1 ${currentPage === 'metodologia' ? 'text-[#0DF205]' : 'text-white/90 hover:text-[#0DF205]'}`}
               >
                 Metodologia
-              </button>
+              </a>
               
               <div className="pt-1 pb-1 border-y border-white/5 space-y-1.5 pl-2">
                 <div className="text-xs uppercase text-[#0DF205] font-bold tracking-wider pt-1">
                   Frentes de Atuação
                 </div>
-                <button
-                  onClick={() => handleLinkClick('frentes-aceleradora')}
+                <a
+                  {...pageLinkProps('frentes-aceleradora')}
                   className={`text-left text-sm block w-full py-1 ${currentPage === 'frentes-aceleradora' ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
                 >
                   • Aceleradora de E-commerce
-                </button>
-                <button
-                  onClick={() => handleLinkClick('frentes-consultoria')}
+                </a>
+                <a
+                  {...pageLinkProps('frentes-consultoria')}
                   className={`text-left text-sm block w-full py-1 ${currentPage === 'frentes-consultoria' ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
                 >
                   • Consultoria Estratégica
-                </button>
-                <button
-                  onClick={() => handleLinkClick('frentes-especialistas')}
+                </a>
+                <a
+                  {...pageLinkProps('frentes-especialistas')}
                   className={`text-left text-sm block w-full py-1 ${currentPage === 'frentes-especialistas' ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
                 >
                   • Especialistas Dedicados
-                </button>
+                </a>
               </div>
 
               <div className="pt-1 pb-1 border-b border-white/5 space-y-1.5 pl-2">
@@ -492,48 +476,48 @@ export const Navbar: React.FC<NavbarProps> = ({
                   { name: 'Dev & Infraestrutura', id: 'especialidade-dev' },
                   { name: 'CRO & Growth', id: 'especialidade-growth' },
                 ].map((esp) => (
-                  <button
+                  <a
                     key={esp.id}
-                    onClick={() => handleLinkClick(esp.id)}
+                    {...pageLinkProps(esp.id)}
                     className={`text-left text-sm block w-full py-1 ${currentPage === esp.id ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
                   >
                     • {esp.name}
-                  </button>
+                  </a>
                 ))}
               </div>
               <div className="py-2 border-y border-white/5 space-y-1">
                 <div className="text-xs font-mono text-[#0DF205] uppercase tracking-wider font-bold">
                   Ferramentas (Ecosistema)
                 </div>
-                <button
-                  onClick={() => handleLinkClick('ferramentas-vision')}
+                <a
+                  {...pageLinkProps('ferramentas-vision')}
                   className={`text-left text-sm block w-full py-1 flex items-center justify-between ${currentPage === 'ferramentas-vision' ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
                 >
                   <span>• Vision (AI Search Readiness)</span>
                   <span className="text-[10px] bg-[#0DF205]/20 text-[#0DF205] px-1.5 py-0.5 rounded font-bold">ATIVO</span>
-                </button>
-                <button
-                  onClick={() => handleLinkClick('ferramentas-alfredo')}
+                </a>
+                <a
+                  {...pageLinkProps('ferramentas-alfredo')}
                   className={`text-left text-sm block w-full py-1 flex items-center justify-between ${currentPage === 'ferramentas-alfredo' ? 'text-[#0DF205] font-bold' : 'text-white/80 hover:text-[#0DF205]'}`}
                 >
                   <span>• Alfredo (Gestão com IA)</span>
                   <span className="text-[10px] bg-[#0DF205]/20 text-[#0DF205] px-1.5 py-0.5 rounded font-bold">EM BREVE</span>
-                </button>
-                <button
-                  onClick={() => handleLinkClick('ferramentas')}
+                </a>
+                <a
+                  {...pageLinkProps('ferramentas')}
                   className="text-left text-xs text-[#0DF205] font-bold py-1 hover:underline block"
                 >
                   Ver Todas as Ferramentas →
-                </button>
+                </a>
               </div>
-              <button
-                onClick={() => handleLinkClick('cases')}
+              <a
+                {...pageLinkProps('cases')}
                 className="text-left text-white/90 hover:text-[#0DF205] py-1"
               >
                 Cases de Sucesso
-              </button>
-              <button
-                onClick={() => handleLinkClick('blog')}
+              </a>
+              <a
+                {...pageLinkProps('blog')}
                 className={`text-left py-1 transition-colors ${
                   currentPage === 'blog' || currentPage === 'blog-post'
                     ? 'text-[#0DF205] font-bold'
@@ -541,9 +525,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }`}
               >
                 Blog & Insights
-              </button>
-              <button
-                onClick={() => handleLinkClick('partners')}
+              </a>
+              <a
+                {...pageLinkProps('partners')}
                 className={`text-left py-1 transition-colors ${
                   currentPage === 'partners'
                     ? 'text-[#0DF205] font-bold'
@@ -551,7 +535,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }`}
               >
                 Partners
-              </button>
+              </a>
               <button
                 onClick={() => handleLinkClick('faq')}
                 className="text-left text-white/90 hover:text-[#0DF205] py-1"

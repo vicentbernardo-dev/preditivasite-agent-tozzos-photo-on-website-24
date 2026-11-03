@@ -1,3 +1,49 @@
 /sitemap.xml  /.netlify/functions/sitemap  200!
+
+# Hosts alternativos -> domínio canônico (sem cadeia http://www -> https://www -> https://)
+http://www.preditiva.co/*  https://preditiva.co/:splat  301!
+https://www.preditiva.co/*  https://preditiva.co/:splat  301!
 https://preditivacosite.netlify.app/*  https://preditiva.co/:splat  301!
-/*  /index.html  200
+
+# URLs do WordPress antigo -> páginas equivalentes (Search Console: "cópia sem canônica")
+/especialidades/midia/*  /especialidade-midia  301!
+/especialidades/dados/*  /especialidade-dados  301!
+/especialidades/crm/*  /especialidade-crm  301!
+/especialidades/growth/*  /especialidade-growth  301!
+/especialidades/seo/*  /especialidade-seo  301!
+/especialidades/*  /metodologia  301!
+/especialistas-dedicados/*  /frentes-especialistas  301!
+/consultoria-estrategica/*  /frentes-consultoria  301!
+/servicos-midia-paga/*  /especialidade-midia  301!
+/parceiros/*  /partners  301!
+/cases/master-cidadania/*  /case-master  301!
+/cases/miami-ad-school/*  /case-miami  301!
+/miami-ad-school/*  /case-miami  301!
+/case-de-sucesso-vegete/*  /cases  301!
+/fale-conosco/*  /  301!
+/tag/*  /blog  301!
+/category/*  /blog  301!
+/author/*  /blog  301!
+/como-usar-ia-no-crm-2/*  /blog  301!
+/atlas-chat-gpt/*  /blog  301!
+/hiper-personalizacao-no-ecommerce/*  /blog  301!
+/pesquisa-comportamento-do-consumidor/*  /blog  301!
+/google-ia-overview/*  /blog  301!
+
+# Arquivos internos do WordPress: 410 tira do índice mais rápido que 404
+/wp-content/*  /404.html  410!
+/wp-admin/*  /404.html  410!
+/wp-includes/*  /404.html  410!
+/wp-json/*  /404.html  410!
+/wp-login.php  /404.html  410!
+/xmlrpc.php  /404.html  410!
+/feed/*  /404.html  410!
+
+# Rotas do app com HTML pré-renderizado (preenchido por scripts/prerender.ts no build)
+# @prerender-rules
+
+# Posts publicados depois do último deploy: shell do app sem canonical fixo
+/blog/*  /app-shell.html  200
+
+# Qualquer outra URL: 404 de verdade (antes respondia 200 com a home)
+/*  /404.html  404

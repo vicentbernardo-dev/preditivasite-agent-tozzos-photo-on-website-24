@@ -4,7 +4,8 @@ import { PageRoute } from './Navbar';
 import { RadarNewsletter } from './RadarNewsletter';
 import { client } from '../lib/sanity';
 import { PortableText } from '@portabletext/react';
-import { ArticleSeoData, removeBlogPostSchema, updateBlogPostSchema, withSanityImageFormat } from '../lib/seo';
+import { ArticleSeoData, removeBlogPostSchema, setRobotsNoindex, updateBlogPostSchema, withSanityImageFormat } from '../lib/seo';
+import { SpaLink } from './SpaLink';
 
 interface BlogPostPageProps {
   onOpenAuditModal: () => void;
@@ -106,6 +107,14 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
     return removeBlogPostSchema;
   }, [post, slug, onSeoDataChange]);
 
+  // Slug inexistente: a URL responde 200 (fallback do SPA), então avisa o Google para não indexar
+  const isNotFound = !loading && !post;
+  useEffect(() => {
+    if (!isNotFound) return;
+    setRobotsNoindex(true);
+    return () => setRobotsNoindex(false);
+  }, [isNotFound]);
+
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     setCopied(true);
@@ -130,7 +139,7 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
     return (
       <div className="w-full min-h-screen bg-[#000604] flex flex-col items-center justify-center text-[#B9CCAF]">
         <p className="mb-4">Artigo não encontrado.</p>
-        <button onClick={() => onNavigatePage('blog')} className="text-[#0DF205] underline">Voltar para o blog</button>
+        <SpaLink to="blog" onNavigate={onNavigatePage} className="text-[#0DF205] underline">Voltar para o blog</SpaLink>
       </div>
     );
   }
@@ -140,13 +149,14 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
       {/* TOP NAVIGATION / BREADCRUMB */}
       <div className="bg-[#0D0F0D] border-b border-white/10 pt-28 pb-4">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <button
-            onClick={() => onNavigatePage('blog')}
+          <SpaLink
+            to="blog"
+            onNavigate={onNavigatePage}
             className="inline-flex items-center gap-2 text-sm text-[#D9D9D9] hover:text-[#0DF205] transition-colors cursor-pointer"
           >
             <ChevronLeft className="w-4 h-4" />
             <span>Voltar para o Blog</span>
-          </button>
+          </SpaLink>
           
           <div className="flex items-center gap-2">
             <span className="px-2.5 py-1 bg-[#0DF205]/10 border border-[#0DF205]/30 rounded text-[#0DF205] text-[10px] font-bold uppercase tracking-wider">

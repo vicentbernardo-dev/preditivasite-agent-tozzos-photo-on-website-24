@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, Clock, Calendar } from 'lucide-react';
 import { InsightArticle } from '../types';
 import { PageRoute } from './Navbar';
 import { withSanityImageFormat } from '../lib/seo';
+import { isModifiedClick, routeToPath } from '../lib/routes';
 
 interface SanityPost {
   _id: string;
@@ -208,7 +209,17 @@ export const InsightsSection: React.FC<InsightsSectionProps> = ({
 
                   {/* Title from Figma */}
                   <h3 className="font-familjen text-2xl sm:text-[26px] font-bold text-[#EFEFEF] group-hover:text-[#0DF205] transition-colors leading-snug mb-3">
-                    {article.title}
+                    <a
+                      href={routeToPath('blog-post', posts[index].slug)}
+                      tabIndex={-1}
+                      onClick={(e) => {
+                        // Clique normal: o card cuida da navegação SPA; com modificador abre nova aba
+                        if (isModifiedClick(e)) e.stopPropagation();
+                        else e.preventDefault();
+                      }}
+                    >
+                      {article.title}
+                    </a>
                   </h3>
 
                   <p className="font-familjen text-sm text-[#EFEFEF]/70 line-clamp-2 leading-relaxed">
