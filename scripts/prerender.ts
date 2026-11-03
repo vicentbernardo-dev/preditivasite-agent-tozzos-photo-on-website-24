@@ -6,9 +6,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createClient } from '@sanity/client';
-import { buildBlogPostSchema, buildBreadcrumbSchema, getPageSeo, type ArticleSeoData } from '../src/lib/seo';
+import { buildBlogPostSchema, buildBreadcrumbSchema, getPageSeo, schemaPageKey, type ArticleSeoData } from '../src/lib/seo';
 import { STATIC_PAGES, routeToPath } from '../src/lib/routes';
-import { buildFaqSchema, buildServiceSchema } from '../src/lib/schema';
+import { buildCaseSchema, buildFaqSchema, buildServiceSchema } from '../src/lib/schema';
+import { buildLlmsFullTxt, buildLlmsTxt, type LlmsPost } from './llms';
+import type { FaqEntry } from '../src/data/faqs';
 import type { PageRoute } from '../src/components/Navbar';
 
 const DIST = path.resolve(import.meta.dirname, '..', 'dist');
@@ -19,7 +21,7 @@ const escapeAttr = (value: string) =>
   value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 // data-page: o SPA remove o schema ao navegar para outra página (ver updatePageSeo)
-const jsonLd = (id: string, data: unknown, page?: PageRoute) =>
+const jsonLd = (id: string, data: unknown, page?: string) =>
   `<script type="application/ld+json" id="${id}"${page ? ` data-page="${page}"` : ''}>${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 
 const setMetaTag = (html: string, attr: 'name' | 'property', key: string, content: string) => {
@@ -34,11 +36,13 @@ interface RenderOptions {
   page: PageRoute;
   slug?: string;
   article?: ArticleSeoData;
+  // FAQ do post (campo faq do Sanity); páginas estáticas usam PAGE_FAQS
+  faq?: FaqEntry[];
   // Fallback genérico: sem canonical, para não apontar posts novos para a home
   shell?: boolean;
 }
 
-const renderHead = (template: string, { page, slug, article, shell }: RenderOptions) => {
+const renderHead = (template: string, { page, slug, article, faq, shell }: RenderOptions) => {
   const seo = getPageSeo(page, slug, article);
   let html = template.replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeAttr(seo.title)}</title>`);
 
@@ -71,9 +75,11 @@ const renderHead = (template: string, { page, slug, article, shell }: RenderOpti
     if (breadcrumb) schemas.push(jsonLd('schema-breadcrumb-list', breadcrumb));
     if (page === 'blog-post' && article) schemas.push(jsonLd('schema-blog', buildBlogPostSchema(slug, article)));
     const service = buildServiceSchema(page);
-    if (service) schemas.push(jsonLd('schema-service', service, page));
-    const faq = buildFaqSchema(page);
-    if (faq) schemas.push(jsonLd('schema-faq', faq, page));
+    if (service) schemas.push(jsonLd('schema-service', service, schemaPageKey(page)));
+    const caseStudy = buildCaseSchema(page);
+    if (caseStudy) schemas.push(jsonLd('schema-case', caseStudy, schemaPageKey(page)));
+    const faqSchema = buildFaqSchema(page, faq);
+    if (faqSchema) schemas.push(jsonLd('schema-faq', faqSchema, schemaPageKey(page, slug)));
   }
   if (schemas.length) {
     html = html.replace('</head>', `  ${schemas.join('\n    ')}\n  </head>`);
@@ -95,6 +101,8 @@ interface SanityPost {
   publishedAt?: string;
   modifiedAt?: string;
   authorName?: string;
+  tldr?: string;
+  faq?: FaqEntry[];
 }
 
 // Mesma seleção de tipos e campos que o BlogPostPage usa no navegador
@@ -112,7 +120,9 @@ const fetchPosts = async (): Promise<SanityPost[]> => {
     "imageUrl": image.asset->url,
     "publishedAt": coalesce(date, publishedAt, _createdAt),
     "modifiedAt": _updatedAt,
-    "authorName": author.name
+    "authorName": author.name,
+    tldr,
+    "faq": faq[defined(question) && defined(answer)]{question, answer}
   }`);
 };
 
@@ -142,6 +152,7 @@ const main = async () => {
   }
 
   let postCount = 0;
+  const publishedPosts: LlmsPost[] = [];
   for (const post of posts) {
     if (!post.slug || !SAFE_SLUG.test(post.slug) || !post.title) continue;
     const article: ArticleSeoData = {
@@ -152,10 +163,14 @@ const main = async () => {
       modifiedAt: post.modifiedAt,
       authorName: post.authorName,
     };
-    writeFile(`blog/${post.slug}.html`, renderHead(template, { page: 'blog-post', slug: post.slug, article }));
+    writeFile(`blog/${post.slug}.html`, renderHead(template, { page: 'blog-post', slug: post.slug, article, faq: post.faq }));
     rules.push(`${routeToPath('blog-post', post.slug)}  /blog/${post.slug}.html  200`);
+    publishedPosts.push({ slug: post.slug, title: post.title, excerpt: post.excerpt, tldr: post.tldr, publishedAt: post.publishedAt });
     postCount++;
   }
+
+  writeFile('llms.txt', buildLlmsTxt(publishedPosts));
+  writeFile('llms-full.txt', buildLlmsFullTxt(publishedPosts));
 
   const redirectsPath = path.join(DIST, '_redirects');
   const redirects = fs.readFileSync(redirectsPath, 'utf8');
@@ -164,7 +179,7 @@ const main = async () => {
   }
   fs.writeFileSync(redirectsPath, redirects.replace(REDIRECTS_MARKER, rules.join('\n')));
 
-  console.log(`[prerender] ${STATIC_PAGES.length} páginas estáticas, ${postCount} posts, 404.html e app-shell.html gerados.`);
+  console.log(`[prerender] ${STATIC_PAGES.length} páginas estáticas, ${postCount} posts, 404.html, app-shell.html, llms.txt e llms-full.txt gerados.`);
 };
 
 main().catch((error) => {

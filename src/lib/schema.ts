@@ -1,7 +1,8 @@
 // Schemas por página gerados só no build (scripts/prerender.ts): ficam fora do
 // bundle do navegador porque os crawlers leem o HTML pré-renderizado.
 import type { PageRoute } from '../components/Navbar';
-import { PAGE_FAQS } from '../data/faqs';
+import { CASES } from '../data/cases';
+import { PAGE_FAQS, type FaqEntry } from '../data/faqs';
 import { routeToPath } from './routes';
 import { ORGANIZATION_ID, SITE_URL, getPageSeo } from './seo';
 
@@ -35,8 +36,29 @@ export const buildServiceSchema = (page: PageRoute) => {
   };
 };
 
-export const buildFaqSchema = (page: PageRoute) => {
-  const faqs = PAGE_FAQS[page as keyof typeof PAGE_FAQS];
+export const buildCaseSchema = (page: PageRoute) => {
+  const caseStudy = CASES.find((item) => item.page === page);
+  if (!caseStudy) return null;
+  const url = `${SITE_URL}${routeToPath(page)}`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: caseStudy.headline,
+    description: `${caseStudy.summary} Resultados: ${caseStudy.metrics.map((metric) => `${metric.value} ${metric.label}`).join('; ')}.`,
+    url,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    inLanguage: 'pt-BR',
+    articleSection: 'Cases',
+    image: `${SITE_URL}/og-cover.jpg`,
+    author: { '@id': ORGANIZATION_ID },
+    publisher: { '@id': ORGANIZATION_ID },
+    about: { '@type': 'Organization', name: caseStudy.client, description: caseStudy.sector },
+    keywords: caseStudy.services.join(', '),
+  };
+};
+
+export const buildFaqSchema = (page: PageRoute, override?: FaqEntry[]) => {
+  const faqs = override?.length ? override : PAGE_FAQS[page as keyof typeof PAGE_FAQS];
   if (!faqs?.length) return null;
   return {
     '@context': 'https://schema.org',

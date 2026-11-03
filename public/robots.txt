@@ -1,20 +1,46 @@
 User-agent: *
 Allow: /
 
-# Permissão para Robôs e Agentes de Inteligência Artificial
+# Robôs e agentes de IA: liberados para treinar, indexar e buscar em tempo real.
+# Cada empresa usa robôs diferentes para cada finalidade; todos precisam estar aqui.
+
+# OpenAI: treino, índice do ChatGPT Search e navegação a pedido do usuário
 User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
+# Anthropic (Claude): treino, índice de busca e navegação a pedido do usuário
 User-agent: ClaudeBot
 Allow: /
 
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+# Perplexity: índice e navegação a pedido do usuário
 User-agent: PerplexityBot
 Allow: /
 
+User-agent: Perplexity-User
+Allow: /
+
+# Google: o Google-Extended controla só o uso no Gemini; o AI Overviews usa o Googlebot
 User-agent: Google-Extended
 Allow: /
 
+# Apple Intelligence e Microsoft (Bing alimenta o Copilot e o ChatGPT Search)
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Resumo da empresa para LLMs: https://preditiva.co/llms.txt
 Sitemap: https://preditiva.co/sitemap.xml

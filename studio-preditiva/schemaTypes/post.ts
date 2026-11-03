@@ -27,6 +27,15 @@ export const post = defineType({
       description: 'Brief summary of the post',
     }),
     defineField({
+      name: 'tldr',
+      title: 'Resumo em 1 parágrafo (TL;DR)',
+      type: 'text',
+      rows: 3,
+      description:
+        'Resposta direta à pergunta do título, em 2 ou 3 frases. Aparece no topo do post e é o trecho que IAs e o Google mais citam.',
+      validation: (rule) => rule.max(400),
+    }),
+    defineField({
       name: 'category',
       title: 'Category',
       type: 'string',
@@ -83,6 +92,40 @@ export const post = defineType({
               validation: (rule) => rule.required(),
             }),
           ],
+        }),
+      ],
+    }),
+    defineField({
+      name: 'faq',
+      title: 'Perguntas frequentes',
+      type: 'array',
+      description: 'Perguntas que o leitor faria ao Google ou ao ChatGPT sobre o tema. Viram o schema FAQPage do post.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'faqItem',
+          fields: [
+            defineField({ name: 'question', title: 'Pergunta', type: 'string', validation: (rule) => rule.required() }),
+            defineField({ name: 'answer', title: 'Resposta', type: 'text', rows: 3, validation: (rule) => rule.required() }),
+          ],
+          preview: { select: { title: 'question', subtitle: 'answer' } },
+        }),
+      ],
+    }),
+    defineField({
+      name: 'sources',
+      title: 'Fontes',
+      type: 'array',
+      description: 'Estudos, dados e documentação citados no texto. Fontes com data aumentam a chance de o post ser citado por IAs.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'source',
+          fields: [
+            defineField({ name: 'title', title: 'Título', type: 'string', validation: (rule) => rule.required() }),
+            defineField({ name: 'url', title: 'URL', type: 'url', validation: (rule) => rule.required() }),
+          ],
+          preview: { select: { title: 'title', subtitle: 'url' } },
         }),
       ],
     }),

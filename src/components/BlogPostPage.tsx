@@ -48,6 +48,13 @@ const getRelatedServices = (category?: string): ServicePage[] => {
   return [...services, ...(services.includes('frentes-aceleradora') ? [] : ['frentes-aceleradora' as const])];
 };
 
+// "Atualizado em" só quando a edição veio pelo menos 1 dia depois da publicação
+const wasUpdated = (post: { date?: string; _createdAt?: string; _updatedAt?: string }) => {
+  const published = new Date(post.date || post._createdAt || '').getTime();
+  const updated = new Date(post._updatedAt || '').getTime();
+  return Number.isFinite(published) && Number.isFinite(updated) && updated - published > 24 * 60 * 60 * 1000;
+};
+
 // Estilização automática para o texto vindo do Sanity
 const richTextStyles = {
   block: {
@@ -224,7 +231,15 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
                   {post.author?.name || 'Redação Preditiva'}
                 </div>
                 <div className="text-xs text-[#84967C] uppercase tracking-wider font-medium">
-                  {new Date(post.date || post._createdAt).toLocaleDateString('pt-BR')}
+                  <time dateTime={post.date || post._createdAt}>
+                    {new Date(post.date || post._createdAt).toLocaleDateString('pt-BR')}
+                  </time>
+                  {wasUpdated(post) && (
+                    <>
+                      {' · Atualizado em '}
+                      <time dateTime={post._updatedAt}>{new Date(post._updatedAt).toLocaleDateString('pt-BR')}</time>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -263,10 +278,46 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({
             
             {/* MAIN ARTICLE BODY (8 COLS) */}
             <div className="lg:col-span-8 text-[#E3E3DF]">
+              {post.tldr && (
+                <aside aria-label="Resumo" className="mb-10 p-6 rounded-2xl bg-[#111815] border border-[#0DF205]/30">
+                  <div className="text-xs font-bold uppercase tracking-wider text-[#0DF205] mb-2">Resumo</div>
+                  <p className="text-base sm:text-lg text-[#E3E3DF] leading-relaxed">{post.tldr}</p>
+                </aside>
+              )}
+
               {post.body ? (
                 <PortableText value={post.body} components={richTextStyles} />
               ) : (
                 <p className="text-[#B9CCAF]">Conteúdo não disponível.</p>
+              )}
+
+              {post.faq?.length > 0 && (
+                <section className="mt-12">
+                  <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-[#E3E3DF] tracking-tight">Perguntas frequentes</h2>
+                  <div className="space-y-6">
+                    {post.faq.map((item: { question: string; answer: string }) => (
+                      <div key={item.question}>
+                        <h3 className="text-lg font-bold text-[#E3E3DF] mb-2">{item.question}</h3>
+                        <p className="text-base text-[#B9CCAF] leading-relaxed">{item.answer}</p>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+
+              {post.sources?.length > 0 && (
+                <section className="mt-12">
+                  <h2 className="text-xl font-bold mb-4 text-[#E3E3DF]">Fontes</h2>
+                  <ol className="list-decimal pl-5 space-y-2 text-sm text-[#B9CCAF]">
+                    {post.sources.map((source: { title: string; url: string }) => (
+                      <li key={source.url}>
+                        <a href={source.url} target="_blank" rel="noopener" className="underline hover:text-[#0DF205]">
+                          {source.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </section>
               )}
               
               <nav aria-label="Serviços relacionados" className="pt-8 mt-12 border-t border-white/10">

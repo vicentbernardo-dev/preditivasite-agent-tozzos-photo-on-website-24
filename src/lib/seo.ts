@@ -380,6 +380,10 @@ export const setRobotsNoindex = (noindex: boolean) => {
   }
 };
 
+// Identifica de qual página (e post) é um schema pré-renderizado, via data-page
+export const schemaPageKey = (page: PageRoute, slug?: string) =>
+  page === 'blog-post' && slug ? `blog-post:${slug}` : page;
+
 export const updatePageSeo = (
   page: PageRoute,
   slug?: string,
@@ -404,10 +408,11 @@ export const updatePageSeo = (
 
   setRobotsNoindex(noindex);
 
-  // FAQPage/Service vêm no HTML pré-renderizado de cada rota; ao navegar no SPA
-  // para outra página, remove os da página inicial para o head não ficar incoerente.
+  // FAQPage/Service/Article vêm no HTML pré-renderizado de cada rota; ao navegar no
+  // SPA para outra página, remove os da página inicial para o head não ficar incoerente.
+  const pageKey = schemaPageKey(page, slug);
   document.head.querySelectorAll<HTMLScriptElement>('script[data-page]').forEach((script) => {
-    if (script.dataset.page !== page) script.remove();
+    if (script.dataset.page !== pageKey) script.remove();
   });
 
   let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');

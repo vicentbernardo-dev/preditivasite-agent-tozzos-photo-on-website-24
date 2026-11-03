@@ -231,6 +231,14 @@ O LCP (1,2 s) e o CLS (0,02) estão bons. **O problema é o TBT de 3,3 s**, com 
 | P3.5 | Cases com números verificáveis (% de crescimento, período, métrica) em HTML, não só em imagem, com schema `Article` + `about` (Organization do cliente). LLMs citam números concretos | `Case*Page.tsx` | P |
 | P3.6 | Entidade consistente: mesmo nome, descrição e `sameAs` em todo lugar (site, LinkedIn, Google Business Profile, Crunchbase). Ajuda os modelos a resolver "Preditiva" como entidade | schema + perfis externos | P |
 
+> **Status (03/11/2026): implementado na `main`.**
+> - P3.1: `/llms.txt` e `/llms-full.txt` gerados no build ([scripts/llms.ts](scripts/llms.ts)) a partir das mesmas fontes do site (PAGE_SEO, FAQs, cases e posts do Sanity), em vez de uma Netlify Function: ficam sempre em sincronia e não custam execução.
+> - P3.2: `robots.txt` com OAI-SearchBot, Claude-SearchBot, Claude-User, Perplexity-User, Applebot-Extended e Bingbot.
+> - P3.3: IndexNow como função de evento `deploy-succeeded` ([netlify/functions/deploy-succeeded.js](netlify/functions/deploy-succeeded.js)): a cada deploy de produção envia home, blog, llms.txt e os posts editados nas últimas 72 h. Não precisa de webhook nem segredo; com o build hook do Sanity, publicar um post já dispara o envio.
+> - P3.4: campos `tldr`, `faq[]` e `sources[]` no schema do Sanity; o post mostra o resumo no topo, FAQ (com schema `FAQPage`), fontes e "Atualizado em". **Precisa fazer o deploy do Studio** (`npx sanity deploy` em `studio-preditiva/`) para os campos aparecerem no editor.
+> - P3.5: os números dos cases já estavam em HTML; agora também vão no schema `Article` de cada case (com `about` apontando para o cliente) e no `llms.txt`. Fonte única em [src/data/cases.ts](src/data/cases.ts).
+> - P3.6: `sameAs` com Instagram e LinkedIn no schema. Falta replicar nome e descrição no Google Business Profile e no LinkedIn (painel).
+
 ---
 
 ## 4. O que não é código (painéis)
