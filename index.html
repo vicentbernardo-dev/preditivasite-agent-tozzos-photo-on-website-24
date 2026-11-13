@@ -127,6 +127,14 @@
     </script>
   </head>
   <body class="bg-[#000604] text-white antialiased selection:bg-[#0DF205] selection:text-black overflow-x-hidden">
+  <!-- Netlify Forms (rede de segurança): declaração estática dos formulários que o site envia por fetch; a Netlify lê estes campos no deploy. -->
+  <form name="lead" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input name="bot-field" /><input name="name" /><input name="email" /><input name="phone" /><input name="company" /><input name="site" /><textarea name="message"></textarea><input name="source" /><input name="page" /><input name="extra" />
+  </form>
+  <form name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input name="bot-field" /><input name="email" /><input name="page" />
+  </form>
+
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KSRNCH5G"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

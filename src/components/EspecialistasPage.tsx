@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, CheckCircle2, ChevronDown, ArrowRight, Search, Code2, Users2, Database, Megaphone, Zap, ShieldCheck, Clock, Layers, Award } from 'lucide-react';
+import { submitLead } from '../lib/lead';
 
 interface EspecialistasPageProps {
   onOpenAuditModal: () => void;
@@ -22,9 +23,11 @@ export const EspecialistasPage: React.FC<EspecialistasPageProps> = ({
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
+    const sent = await submitLead('especialistas', formData);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
     setIsSubmitted(true);
     if (onLeadSuccess) {
       onLeadSuccess({
