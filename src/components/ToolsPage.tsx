@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { PageRoute } from './Navbar';
 import { TOOLS_ECOSYSTEM_DATA } from '../data/toolsData';
+import { submitLead } from '../lib/lead';
 
 interface ToolsPageProps {
   initialTab?: 'all' | 'vision' | 'alfredo';
@@ -55,9 +56,11 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({
   const visionTool = tools_grid.find((t) => t.id === 'vision')!;
   const alfredoTool = tools_grid.find((t) => t.id === 'alfredo')!;
 
-  const handleAlfredoSubmit = (e: React.FormEvent) => {
+  const handleAlfredoSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!alfredoForm.name || !alfredoForm.email) return;
+    const sent = await submitLead('alfredo-espera', alfredoForm);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
     setAlfredoSubmitted(true);
   };
 

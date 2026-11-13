@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
+import { submitLead } from '../lib/lead';
 
 interface MethodologyCtaProps {
   onSuccessSubmit?: (data: { name: string; email: string; company: string; role: string }) => void;
@@ -15,9 +16,11 @@ export const MethodologyCta: React.FC<MethodologyCtaProps> = ({ onSuccessSubmit 
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
+    const sent = await submitLead('metodologia', formData);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
 
     setIsSubmitted(true);
     if (onSuccessSubmit) {

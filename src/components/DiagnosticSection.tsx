@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, Sparkles, Globe, Mail, User, ShieldCheck, ArrowRight, Loader2, CheckCircle2 } from 'lucide-react';
+import { submitLead } from '../lib/lead';
 
 interface DiagnosticSectionProps {
   onRunAudit: (data: { name: string; email: string; url: string }) => void;
@@ -13,7 +14,7 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onRunAudit
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email || !url) {
       window.open('https://vision.preditiva.co/', '_blank', 'noopener,noreferrer');
@@ -21,12 +22,12 @@ export const DiagnosticSection: React.FC<DiagnosticSectionProps> = ({ onRunAudit
     }
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSuccess(true);
-      onRunAudit({ name, email, url });
-      window.open(`https://vision.preditiva.co/`, '_blank', 'noopener,noreferrer');
-    }, 700);
+    const sent = await submitLead('diagnostico-vision', { name, email, website: url });
+    setIsSubmitting(false);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
+    setIsSuccess(true);
+    onRunAudit({ name, email, url });
+    window.open(`https://vision.preditiva.co/`, '_blank', 'noopener,noreferrer');
   };
 
   const checklistItems = [

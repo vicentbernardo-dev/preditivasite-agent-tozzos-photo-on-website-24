@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, Send, CheckCircle2, ShieldCheck, ArrowRight, Loader2 } from 'lucide-react';
+import { submitLead } from '../lib/lead';
 
 interface CtaBottomSectionProps {
   onSuccessSubmit: (lead: { name: string; email: string; company: string; role: string }) => void;
@@ -16,16 +17,16 @@ export const CtaBottomSection: React.FC<CtaBottomSectionProps> = ({ onSuccessSub
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
 
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-      onSuccessSubmit(formData);
-    }, 800);
+    const sent = await submitLead('cta-home', formData);
+    setIsSubmitting(false);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
+    setSubmitted(true);
+    onSuccessSubmit(formData);
   };
 
   return (
