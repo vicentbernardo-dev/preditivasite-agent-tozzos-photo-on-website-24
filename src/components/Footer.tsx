@@ -215,6 +215,33 @@ export const Footer: React.FC<FooterProps> = ({ onNavigateSection, onOpenAuditMo
                 </li>
                 <li>
                   <SpaLink
+                    to="case-monte-carlo"
+                    onNavigate={onNavigatePage}
+                    className="hover:text-[#0DF205] transition-colors cursor-pointer"
+                  >
+                    Monte Carlo Joias
+                  </SpaLink>
+                </li>
+                <li>
+                  <SpaLink
+                    to="case-vhita"
+                    onNavigate={onNavigatePage}
+                    className="hover:text-[#0DF205] transition-colors cursor-pointer"
+                  >
+                    Vhita
+                  </SpaLink>
+                </li>
+                <li>
+                  <SpaLink
+                    to="case-esthera"
+                    onNavigate={onNavigatePage}
+                    className="hover:text-[#0DF205] transition-colors cursor-pointer"
+                  >
+                    Esthera
+                  </SpaLink>
+                </li>
+                <li>
+                  <SpaLink
                     to="cases"
                     onNavigate={onNavigatePage}
                     className="text-[#0DF205] underline hover:text-white transition-colors cursor-pointer"

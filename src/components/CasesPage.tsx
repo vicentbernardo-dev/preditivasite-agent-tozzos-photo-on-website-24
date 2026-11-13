@@ -13,6 +13,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { PageRoute } from './Navbar';
+import { SpaLink } from './SpaLink';
 
 interface CasesPageProps {
   onOpenAuditModal: () => void;
@@ -157,13 +158,14 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                 </div>
 
                 <div>
-                  <button
-                    onClick={() => onNavigatePage('case-miami')}
-                    className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex items-center justify-center gap-2 cursor-pointer"
+                  <SpaLink
+                    to="case-miami"
+                    onNavigate={onNavigatePage}
+                    className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex sm:inline-flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>VER DETALHES</span>
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </SpaLink>
                 </div>
               </div>
             </div>
@@ -204,13 +206,14 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                 </p>
 
                 <div>
-                  <button
-                    onClick={() => onNavigatePage('case-gtex')}
-                    className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex items-center justify-center gap-2 cursor-pointer"
+                  <SpaLink
+                    to="case-gtex"
+                    onNavigate={onNavigatePage}
+                    className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex sm:inline-flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>VER DETALHES</span>
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </SpaLink>
                 </div>
               </div>
             </div>
@@ -243,13 +246,14 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                     Reposicionamento global e automação de leads qualificados para processos de cidadania europeia em 12 países.
                   </p>
 
-                  <button
-                    onClick={() => onNavigatePage('case-master')}
-                    className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex items-center justify-center gap-2 cursor-pointer"
+                  <SpaLink
+                    to="case-master"
+                    onNavigate={onNavigatePage}
+                    className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex sm:inline-flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>VER DETALHES</span>
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </SpaLink>
                 </div>
 
                 <div className="lg:col-span-5 flex items-center justify-start lg:justify-end gap-10 sm:gap-14 pt-4 lg:pt-0">
@@ -268,6 +272,175 @@ export const CasesPage: React.FC<CasesPageProps> = ({
                     </div>
                     <div className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#0DF205]">
                       5k+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Case 4: Monte Carlo Joias (lg:col-span-5) */}
+            <div className="lg:col-span-5 rounded-2xl bg-[#000604] text-white overflow-hidden border border-[#3B4B35]/20 shadow-2xl relative flex flex-col justify-between min-h-[460px] p-8 sm:p-12 group hover:border-[#0DF205]/40 transition-all">
+              {/* Background with overlay */}
+              <div className="absolute inset-0 z-0">
+                <img
+                  src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80"
+                  alt="Monte Carlo Joias"
+                  className="w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#000604] via-[#000604]/80 to-transparent" />
+              </div>
+
+              <div className="relative z-10 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-lg bg-[#0DF205] flex items-center justify-center text-black font-bold text-lg">
+                  MC
+                </div>
+                <h3 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+                  Monte Carlo Joias
+                </h3>
+              </div>
+
+              <div className="relative z-10 space-y-5 pt-8">
+                <div>
+                  <div className="text-xs font-bold text-[#D9D9D9] uppercase tracking-wider">
+                    SCORE PERFORMANCE
+                  </div>
+                  <div className="text-5xl sm:text-6xl font-bold text-[#0DF205]">
+                    16 → 62
+                  </div>
+                </div>
+
+                <p className="text-sm sm:text-base text-[#D9D9D9] leading-relaxed">
+                  Transformação de performance (-91% TBT e -83% Speed Index), SEO técnico 100/100 e IA Indexing para ouro 18k e relógios.
+                </p>
+
+                <div>
+                  <SpaLink
+                    to="case-monte-carlo"
+                    onNavigate={onNavigatePage}
+                    className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex sm:inline-flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <span>VER DETALHES</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </SpaLink>
+                </div>
+              </div>
+            </div>
+
+            {/* Case 5: Vhita (lg:col-span-7) */}
+            <div className="lg:col-span-7 rounded-2xl bg-[#000604] text-white overflow-hidden border border-[#3B4B35]/20 shadow-2xl relative flex flex-col justify-between min-h-[460px] p-8 sm:p-12 group hover:border-[#0DF205]/40 transition-all">
+              {/* Background with overlay */}
+              <div className="absolute inset-0 z-0">
+                <img
+                  src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1200&q=80"
+                  alt="Vhita"
+                  className="w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#000604] via-[#000604]/80 to-transparent" />
+              </div>
+
+              <div className="relative z-10 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-lg bg-[#0DF205] flex items-center justify-center text-black font-bold text-lg">
+                  V
+                </div>
+                <h3 className="text-3xl sm:text-4xl font-bold text-white tracking-tight">
+                  Vhita
+                </h3>
+              </div>
+
+              <div className="relative z-10 space-y-6 pt-12">
+                <div className="pl-6 border-l-2 border-[#0DF205]/40 space-y-4">
+                  <div>
+                    <div className="text-xs font-bold text-[#D9D9D9] uppercase tracking-wider">
+                      RECEITA MAPEADA EM RECOMPRA
+                    </div>
+                    <div className="text-4xl sm:text-5xl font-bold text-[#0DF205]">
+                      R$ 277 mil
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-[#D9D9D9] uppercase tracking-wider">
+                      CLIENTES RECORRENTES
+                    </div>
+                    <div className="text-4xl sm:text-5xl font-bold text-[#0DF205]">
+                      +56,5%
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <SpaLink
+                    to="case-vhita"
+                    onNavigate={onNavigatePage}
+                    className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex sm:inline-flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <span>VER DETALHES</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </SpaLink>
+                </div>
+              </div>
+            </div>
+
+            {/* Case 6: Esthera (Full Width 12 cols) */}
+            <div className="lg:col-span-12 rounded-2xl bg-[#000604] text-white overflow-hidden border border-[#3B4B35]/20 shadow-2xl relative p-8 sm:p-14 group hover:border-[#0DF205]/40 transition-all">
+              {/* Background with overlay */}
+              <div className="absolute inset-0 z-0">
+                <img
+                  src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=1400&q=80"
+                  alt="Esthera"
+                  className="w-full h-full object-cover opacity-25 group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#000604] via-[#000604]/90 to-transparent" />
+              </div>
+
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <div className="lg:col-span-7 space-y-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-[#0DF205] flex items-center justify-center text-black font-bold text-lg">
+                      E
+                    </div>
+                    <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+                      Esthera
+                    </h3>
+                  </div>
+
+                  <p className="text-base sm:text-lg text-[#D9D9D9] max-w-xl leading-relaxed">
+                    Estruturação de mídia paga (Google + Meta) e otimização mobile para escalar a receita mensal de R$ 3,4 mil para R$ 88,2 mil em moda e acessórios.
+                  </p>
+
+                  <SpaLink
+                    to="case-esthera"
+                    onNavigate={onNavigatePage}
+                    className="w-full sm:w-auto px-8 py-4 bg-[#0DF205] hover:bg-[#0be004] text-[#000604] font-bold text-sm uppercase tracking-wider rounded transition-all shadow-[0_0_20px_rgba(13,242,5,0.3)] flex sm:inline-flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <span>VER DETALHES</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </SpaLink>
+                </div>
+
+                <div className="lg:col-span-5 flex items-center justify-start lg:justify-end gap-10 sm:gap-14 pt-4 lg:pt-0">
+                  <div className="text-center lg:text-right space-y-1">
+                    <div className="text-xs font-bold text-[#D9D9D9] uppercase tracking-wider">
+                      CUSTO POR VENDA
+                    </div>
+                    <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0DF205]">
+                      R$ 219
+                    </div>
+                    <div className="text-[11px] font-bold text-[#D9D9D9]/70">
+                      antes R$ 4.996 (-95,6%)
+                    </div>
+                  </div>
+
+                  <div className="text-center lg:text-right space-y-1">
+                    <div className="text-xs font-bold text-[#D9D9D9] uppercase tracking-wider">
+                      RECEITA MENSAL
+                    </div>
+                    <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0DF205]">
+                      R$ 88,2k
+                    </div>
+                    <div className="text-[11px] font-bold text-[#D9D9D9]/70">
+                      antes R$ 3,4k/mês
                     </div>
                   </div>
                 </div>

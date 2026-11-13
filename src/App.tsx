@@ -25,6 +25,9 @@ const CasesPage = lazy(() => import('./components/CasesPage').then(({ CasesPage 
 const CaseMiamiPage = lazy(() => import('./components/CaseMiamiPage').then(({ CaseMiamiPage }) => ({ default: CaseMiamiPage })));
 const CaseGtexPage = lazy(() => import('./components/CaseGtexPage').then(({ CaseGtexPage }) => ({ default: CaseGtexPage })));
 const CaseMasterPage = lazy(() => import('./components/CaseMasterPage').then(({ CaseMasterPage }) => ({ default: CaseMasterPage })));
+const CaseMonteCarloPage = lazy(() => import('./components/CaseMonteCarloPage').then(({ CaseMonteCarloPage }) => ({ default: CaseMonteCarloPage })));
+const CaseVhitaPage = lazy(() => import('./components/CaseVhitaPage').then(({ CaseVhitaPage }) => ({ default: CaseVhitaPage })));
+const CaseEstheraPage = lazy(() => import('./components/CaseEstheraPage').then(({ CaseEstheraPage }) => ({ default: CaseEstheraPage })));
 const BlogPage = lazy(() => import('./components/BlogPage').then(({ BlogPage }) => ({ default: BlogPage })));
 const BlogPostPage = lazy(() => import('./components/BlogPostPage').then(({ BlogPostPage }) => ({ default: BlogPostPage })));
 const PartnersPage = lazy(() => import('./components/PartnersPage').then(({ PartnersPage }) => ({ default: PartnersPage })));
@@ -60,6 +63,9 @@ const VALID_PAGES: PageRoute[] = [
   'case-miami',
   'case-gtex',
   'case-master',
+  'case-monte-carlo',
+  'case-vhita',
+  'case-esthera',
   'blog',
   'blog-post',
   'partners',
@@ -370,6 +376,27 @@ export default function App({ initialPath }: AppProps) {
 
         {currentPage === 'case-master' && (
           <CaseMasterPage
+            onOpenAuditModal={() => handleOpenAuditModal()}
+            onNavigatePage={navigate}
+          />
+        )}
+
+        {currentPage === 'case-monte-carlo' && (
+          <CaseMonteCarloPage
+            onOpenAuditModal={() => handleOpenAuditModal()}
+            onNavigatePage={navigate}
+          />
+        )}
+
+        {currentPage === 'case-vhita' && (
+          <CaseVhitaPage
+            onOpenAuditModal={() => handleOpenAuditModal()}
+            onNavigatePage={navigate}
+          />
+        )}
+
+        {currentPage === 'case-esthera' && (
+          <CaseEstheraPage
             onOpenAuditModal={() => handleOpenAuditModal()}
             onNavigatePage={navigate}
           />

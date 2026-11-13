@@ -1,0 +1,1 @@
+import{j as e}from"./motion-vendor-C5LRgutb.js";import{i as p,r as m}from"./index--sKSchvF.js";const x=({to:i,slug:o,onNavigate:s,onClick:t,children:a,...f})=>e.jsx("a",{...f,href:m(i,o),onClick:r=>{t?.(r),!(r.defaultPrevented||p(r)||!s)&&(r.preventDefault(),s(i,o))},children:a});export{x as S};

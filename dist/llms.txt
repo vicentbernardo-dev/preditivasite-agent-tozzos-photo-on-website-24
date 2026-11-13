@@ -1,0 +1,64 @@
+# Preditiva
+
+> A Preditiva (Preditiva.Co) é uma aceleradora de e-commerce e camada técnica para negócios digitais no Brasil. Atua em SEO técnico, GEO (otimização para motores de IA), CRM e retenção, mídia paga, dados e analytics, desenvolvimento e growth, em três modelos: aceleração, consultoria estratégica e alocação de especialistas dedicados.
+
+- Site: https://preditiva.co
+- Sede: Av. Paulista, 1636 - Sala 1504, Bela Vista, São Paulo/SP, CEP 01310-200
+- Contato comercial: WhatsApp +55 11 97594-4739
+- Fundador e CEO: Ademar Tozzo (https://br.linkedin.com/in/ademar-tozzo)
+- LinkedIn: https://br.linkedin.com/company/preditiva-co
+- Instagram: https://www.instagram.com/preditiva.co/
+
+## Frentes de atuação
+
+- [Aceleradora de E-commerce](https://preditiva.co/frentes-aceleradora): Acelere seu e-commerce com estratégia, tecnologia e especialistas dedicados às metas do seu negócio.
+- [Consultoria de E-commerce e Growth](https://preditiva.co/frentes-consultoria): Transforme desafios digitais em oportunidades com consultoria especializada em e-commerce, growth e performance.
+- [Especialistas em E-commerce e Performance](https://preditiva.co/frentes-especialistas): Conecte seu negócio a especialistas em SEO, CRM, mídia, dados e tecnologia para crescer com consistência.
+
+## Especialidades
+
+- [SEO Técnico para E-commerce](https://preditiva.co/especialidade-seo): Aumente tráfego orgânico e visibilidade com SEO técnico, conteúdo estratégico e otimização para e-commerce.
+- [Mídia Paga e Performance Digital](https://preditiva.co/especialidade-midia): Melhore o retorno das campanhas com mídia paga orientada por dados, performance e objetivos de negócio.
+- [CRM e Retenção de Clientes](https://preditiva.co/especialidade-crm): Fortaleça relacionamento e retenção com estratégias de CRM, automação e comunicação para e-commerce.
+- [Dados e Analytics para E-commerce](https://preditiva.co/especialidade-dados): Transforme dados em decisões melhores com analytics, mensuração e inteligência para seu e-commerce.
+- [Desenvolvimento e Infraestrutura Digital](https://preditiva.co/especialidade-dev): Evolua sua operação digital com desenvolvimento, infraestrutura e soluções técnicas para e-commerce.
+- [Growth Marketing para E-commerce](https://preditiva.co/especialidade-growth): Desbloqueie crescimento sustentável com experimentação, otimização de conversão e estratégia de growth.
+
+## Cases com resultados
+
+- [GTEX Brasil](https://preditiva.co/case-gtex) (Indústria e bens de consumo, linha de limpeza): +342% crescimento de ROAS, +180% tráfego orgânico, -45% custo por lead.
+- [Miami Ad School Brasil](https://preditiva.co/case-miami) (Educação em design, redação e criatividade): +142% tráfego orgânico médio, -45% taxa de rejeição, +68% conversão de leads qualificados.
+- [Master Cidadania](https://preditiva.co/case-master) (Assessoria de cidadania europeia): +214% impacto no LTV, -45% custo de aquisição (CAC) com automação de leads, 92% engajamento nas réguas de automação.
+- [Esthera](https://preditiva.co/case-esthera) (E-commerce de moda e acessórios (bolsas)): R$ 3,4 mil → R$ 88,2 mil receita mensal (janeiro → setembro), R$ 4.996 → R$ 219 custo por venda (CPV), 2 → 46 vendas por mês no período (pico de 92 em julho).
+- [Vhita](https://preditiva.co/case-vhita) (E-commerce de suplementos e nutracêuticos): +45% crescimento da base de clientes (2023 vs. 2022), +56,5% aumento no volume de clientes recorrentes, R$ 277 mil potencial de receita mapeado nas ações de recuperação e recompra.
+- [Monte Carlo Joias](https://preditiva.co/case-monte-carlo) (Joalheria & E-commerce · Ouro 18k e Relógios): 16 → 62 score de performance mobile (+288%, e 77 no desktop), 310 ms Total Blocking Time (-91% vs. 3.650 ms iniciais), 4,4 s Speed Index (-83% vs. 26,2 s iniciais).
+
+## Ferramentas
+
+- [Vision: Diagnóstico Digital](https://preditiva.co/ferramentas-vision): Use o Vision para analisar sua presença digital e identificar oportunidades técnicas para o e-commerce.
+- [Alfredo: Inteligência para E-commerce](https://preditiva.co/ferramentas-alfredo): Descubra como o Alfredo pode apoiar decisões e rotinas da sua operação de e-commerce com inteligência.
+
+## Blog
+
+- [Estratégias de CRM para acelerar a segunda compra em até 30 dias](https://preditiva.co/blog/estrategia-crm-recompra-post-black-friday): O verdadeiro lucro da Black Friday não está no primeiro pedido, mas na capacidade de gerar recompra rápida. Estruturar réguas automáticas de CRM no WhatsApp e e-mail reduz o Custo de Aquisição de Clientes acumulado e recupera as margens de lucro. Descubra como transformar compradores de ocasião em clientes recorrentes em até 30 dias.
+- [Black Friday: Por que o seu e-commerce não precisa de mais tráfego, mas de uma estrutura técnica de recompra](https://preditiva.co/blog/black-friday-por-que-o-seu-e-commerce-nao-precisa-de-mais-trafego-mas-de-uma-estrutura-tecnica-de-recompra): Durante a Black Friday, a dependência do tráfego pago encarece o Custo de Aquisição de Clientes e reduz margens do e-commerce. Para garantir lucratividade sustentável, operações maduras focam na construção de uma infraestrutura técnica de recompra e retenção de LTV. Entenda como automação de CRM, inteligência de dados e CRO transformam compradores de ocasião em receita previsível.
+- [O que é o Vision da Preditiva.co e por que ele é essencial para o seu e-commerce?](https://preditiva.co/blog/o-que-e-o-vision-da-preditiva-co-e-por-que-ele-e-essencial-para-o-seu-e-commerce): A Preditiva lançou em 2026 o Vision, ferramenta gratuita que audita a visibilidade do e-commerce em IAs como ChatGPT, Gemini e Perplexity. Saiba o que é o Vision e veja como proteger seu tráfego.
+- [O que é GEO (Generative Engine Optimization) e por que o marketing precisa entender agora](https://preditiva.co/blog/o-que-e-geo-generative-engine-optimization-e-por-que-o-marketing-precisa-entender-agora): GEO, AEO, AI Search: entenda de vez os termos que estão redefinindo o marketing digital em 2026 e o que fazer com cada um.
+- [Checkout lento é a nova causa nº1 de carrinho abandonado: o que a Copa de 2026 escancarou](https://preditiva.co/blog/checkout-lento-e-a-nova-causa-no1-de-carrinho-abandonado-o-que-a-copa-de-2026-escancarou): A Copa de 2026 expôs o que a Black Friday vai testar em escala maior: checkout que trava é venda perdida. Veja como blindar o seu.
+- [Target CPA e Target ROAS mudaram no Google Ads: veja o que revisar antes de perder dinheiro](https://preditiva.co/blog/target-cpa-e-target-roas-mudaram-no-google-ads-veja-o-que-revisar-antes-de-perder-dinheiro): Desde 17 de agosto, o Google Ads passou a seguir à risca a meta de CPA/ROAS configurada. Veja o que revisar antes de pagar mais caro.
+- [AI Mode do Google chegou a 1 bilhão de usuários: seu produto aparece nas respostas?](https://preditiva.co/blog/ai-mode-do-google-chegou-a-1-bilhao-de-usuarios-seu-produto-aparece-nas-respostas): No Google I/O 2026, Google anunciou o AI Mode com 1 bilhão de usuários mensais, agora com Gemini 3.5 Flash como modelo padrão globalmente desde 19/05/2026.
+- [Black Friday 2026: Cronograma Completo de Preparação Técnica](https://preditiva.co/blog/black-friday-2026-cronograma-completo-de-preparacao-tecnica): Black Friday 2026 confirmada para 27/11; especialistas apontam que o planejamento de infraestrutura de TI precisa começar com meses de antecedência, e a Copa do Mundo de 2026 já funcionou como teste de estresse real para o e-commerce brasileiro.
+- [Resumo da semana: as 5 notícias que todo gestor de e-commerce precisa saber](https://preditiva.co/blog/resumo-da-semana-as-5-noticias-que-todo-gestor-de-e-commerce-precisa-saber): Formato de curadoria semanal, reunindo os principais desdobramentos dos posts publicados de terça a sábado.
+- [5 Sinais de que Seu E-commerce Está Perdendo Dinheiro com Lentidão de Site](https://preditiva.co/blog/5-sinais-de-que-seu-e-commerce-esta-perdendo-dinheiro-com-lentidao-de-site): Estudos de mercado (Salesforce, Linx e outros) reforçam que tempo de carregamento impacta diretamente a taxa de conversão, especialmente em mobile.
+- [Seu site está pronto para o checkout por IA? Faça o diagnóstico gratuito com o Vision](https://preditiva.co/blog/seu-site-esta-pronto-para-o-checkout-por-ia-faca-o-diagnostico-gratuito-com-o-vision): ChatGPT, Perplexity e Google já vendem dentro do chat. Descubra gratuitamente se sua loja está pronta para o checkout por IA com o Vision.
+- [Google I/O 2026: o que muda para sua loja aparecer nas buscas por IA](https://preditiva.co/blog/google-i-o-2026-o-que-muda-para-sua-loja-aparecer-nas-buscas-por-ia): Google I/O 2026 redesenhou a busca com IA. Entenda o que muda para o seu e-commerce e como se preparar para aparecer no AI Mode.
+- [WhatsApp Business API vai cobrar mais a partir de outubro: como preparar seu CRM agora](https://preditiva.co/blog/whatsapp-business-api-vai-cobrar-mais-a-partir-de-outubro-como-preparar-seu-crm-agora): A partir de outubro de 2026 a Meta cobra mensagens de serviço na API do WhatsApp Business. Veja como reorganizar seu CRM antes do prazo.
+- [Google Ads migra campanhas para o AI Max for Search: o que muda no seu orçamento](https://preditiva.co/blog/google-ads-migra-campanhas-para-o-ai-max-for-search-o-que-muda-no-seu-orcamento): Google migra campanhas de busca para o AI Max for Search em setembro. Entenda o que muda no controle de palavras-chave e orçamento.
+- [Gargalos Invisíveis na Operação que Impedem o Seu Negócio de Faturar](https://preditiva.co/blog/gargalos-invisiveis-na-operacao-que-impedem-o-seu-negocio-de-faturar): Escalar uma operação digital acima dos seis ou sete dígitos mensais não depende apenas de aumentar o orçamento de mídia paga. Na maioria dos casos em que uma empresa estagna, o problema não está no topo do funil, mas sim em gargalos invisíveis na infraestrutura técnica e na arquitetura de conversão.
+
+## Opcional
+
+- [Metodologia](https://preditiva.co/metodologia): Conheça a metodologia Preditiva para integrar estratégia, tecnologia e dados na aceleração de e-commerces.
+- [Conteúdo completo em texto](https://preditiva.co/llms-full.txt)
+- [Feed RSS do blog](https://preditiva.co/blog/rss.xml)
+- [Sitemap](https://preditiva.co/sitemap.xml)

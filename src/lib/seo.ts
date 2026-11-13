@@ -84,6 +84,18 @@ const PAGE_SEO: Record<Exclude<PageRoute, 'blog-post'>, PageSeo> = {
     title: 'Case Master: Estratégia Digital | Preditiva',
     description: 'Explore o trabalho da Preditiva com a Master e os resultados conquistados com estratégia e tecnologia.',
   },
+  'case-monte-carlo': {
+    title: 'Case Monte Carlo: SEO Técnico e Performance | Preditiva',
+    description: 'Veja como a Monte Carlo Joias elevou a performance de 16 para 62 e reduziu o TBT em 91% no e-commerce.',
+  },
+  'case-vhita': {
+    title: 'Case Vhita: CRM, Dados e Receita Recorrente | Preditiva',
+    description: 'Conheça o case da Vhita: R$ 277 mil mapeados em recompra e +56,5% em clientes recorrentes com CRM.',
+  },
+  'case-esthera': {
+    title: 'Case Esthera: Mídia de Performance e E-commerce | Preditiva',
+    description: 'Veja como a Esthera reduziu o CPV de R$ 4.996 para R$ 219 e escalou a receita para R$ 88,2 mil/mês.',
+  },
   blog: {
     title: 'Blog de E-commerce, SEO e Growth | Preditiva',
     description: 'Acesse insights sobre e-commerce, SEO, growth, dados e performance para fortalecer sua estratégia digital.',
@@ -125,6 +137,9 @@ const PAGE_BREADCRUMB_NAMES: Partial<Record<PageRoute, string>> = {
   'case-miami': 'Case Miami',
   'case-gtex': 'Case GTEX',
   'case-master': 'Case Master',
+  'case-monte-carlo': 'Case Monte Carlo',
+  'case-vhita': 'Case Vhita',
+  'case-esthera': 'Case Esthera',
   blog: 'Blog',
   partners: 'Parceiros',
   ferramentas: 'Ferramentas',
@@ -132,9 +147,26 @@ const PAGE_BREADCRUMB_NAMES: Partial<Record<PageRoute, string>> = {
   'ferramentas-alfredo': 'Alfredo',
 };
 
+const CASE_CHILD_PAGES: PageRoute[] = [
+  'case-miami',
+  'case-gtex',
+  'case-master',
+  'case-monte-carlo',
+  'case-vhita',
+  'case-esthera',
+];
+
+const TOOL_CHILD_PAGES: PageRoute[] = [
+  'ferramentas-vision',
+  'ferramentas-alfredo',
+];
+
 export const buildBreadcrumbSchema = (page: PageRoute, articleTitle?: string) => {
   const pageName = page === 'blog-post' ? articleTitle : PAGE_BREADCRUMB_NAMES[page];
   if (!pageName || page === 'home') return null;
+
+  const isCaseChild = CASE_CHILD_PAGES.includes(page);
+  const isToolChild = TOOL_CHILD_PAGES.includes(page);
 
   const itemListElement = [
     {
@@ -143,19 +175,53 @@ export const buildBreadcrumbSchema = (page: PageRoute, articleTitle?: string) =>
       name: 'Home',
       item: SITE_URL,
     },
-    {
-      '@type': 'ListItem',
-      position: 2,
-      name: page === 'blog-post' ? 'Blog' : pageName,
-      ...(page === 'blog' || page === 'blog-post' ? { item: `${SITE_URL}/blog` } : {}),
-    },
-    ...(page === 'blog-post'
-      ? [{
-          '@type': 'ListItem',
-          position: 3,
-          name: pageName,
-        }]
-      : []),
+    ...(isCaseChild
+      ? [
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Casos de Sucesso',
+            item: `${SITE_URL}/cases`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: pageName,
+            item: `${SITE_URL}/${page}`,
+          },
+        ]
+      : isToolChild
+      ? [
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: 'Ferramentas',
+            item: `${SITE_URL}/ferramentas`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 3,
+            name: pageName,
+            item: `${SITE_URL}/${page}`,
+          },
+        ]
+      : [
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: page === 'blog-post' ? 'Blog' : pageName,
+            item: page === 'blog' || page === 'blog-post' ? `${SITE_URL}/blog` : `${SITE_URL}/${page}`,
+          },
+          ...(page === 'blog-post'
+            ? [
+                {
+                  '@type': 'ListItem',
+                  position: 3,
+                  name: pageName,
+                },
+              ]
+            : []),
+        ]),
   ];
   return {
     '@context': 'https://schema.org',

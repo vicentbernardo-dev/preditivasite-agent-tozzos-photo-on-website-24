@@ -2,6 +2,33 @@ exports.handler = async function () {
   const baseUrl = 'https://preditiva.co';
   const cacheControl = 'public, max-age=3600, s-maxage=86400, stale-while-revalidate=86400';
 
+  // Rotas reais do app (devem refletir STATIC_PAGES em src/lib/routes.ts)
+  const staticPages = [
+    '',
+    '/metodologia',
+    '/frentes-aceleradora',
+    '/frentes-consultoria',
+    '/frentes-especialistas',
+    '/especialidade-seo',
+    '/especialidade-midia',
+    '/especialidade-crm',
+    '/especialidade-dados',
+    '/especialidade-dev',
+    '/especialidade-growth',
+    '/cases',
+    '/case-miami',
+    '/case-gtex',
+    '/case-master',
+    '/case-monte-carlo',
+    '/case-vhita',
+    '/case-esthera',
+    '/blog',
+    '/partners',
+    '/ferramentas',
+    '/ferramentas-vision',
+    '/ferramentas-alfredo',
+  ];
+
   try {
     // Importação dinâmica dentro do handler para evitar erro ERR_REQUIRE_ESM
     const { createClient } = await import('@sanity/client');
@@ -12,30 +39,6 @@ exports.handler = async function () {
       useCdn: false,
       apiVersion: '2025-01-20',
     });
-
-    // Rotas reais do app (devem refletir STATIC_PAGES em src/lib/routes.ts)
-    const staticPages = [
-      '',
-      '/metodologia',
-      '/frentes-aceleradora',
-      '/frentes-consultoria',
-      '/frentes-especialistas',
-      '/especialidade-seo',
-      '/especialidade-midia',
-      '/especialidade-crm',
-      '/especialidade-dados',
-      '/especialidade-dev',
-      '/especialidade-growth',
-      '/cases',
-      '/case-miami',
-      '/case-gtex',
-      '/case-master',
-      '/blog',
-      '/partners',
-      '/ferramentas',
-      '/ferramentas-vision',
-      '/ferramentas-alfredo',
-    ];
 
     // Busca os slugs reais cadastrados no Sanity
     const query = `*[_type in ["post", "blogPost", "article"] && defined(slug.current)] {
@@ -84,11 +87,10 @@ ${postXml}
     };
   } catch (error) {
     console.error('Erro na Serverless Function do Sitemap:', error);
-    // Nunca derruba o sitemap: devolve XML válido apenas com as rotas estáticas
-    const fallbackPages = ['', '/metodologia', '/blog', '/cases', '/partners', '/ferramentas'];
+    // Nunca derruba o sitemap: devolve XML válido com todas as rotas estáticas
     const fallbackXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${fallbackPages
+${staticPages
   .map(
     (route) => `  <url>
     <loc>${baseUrl}${route || '/'}</loc>

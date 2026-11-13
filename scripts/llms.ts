@@ -99,9 +99,22 @@ ${CASES.map((item) => `### ${item.headline}
 
 URL: ${pageUrl(item.page)}
 Cliente: ${item.client} (${item.sector})
+Onda de ICP: ${item.icpWave}
 Frentes: ${item.services.join(', ')}
 
 ${item.summary}
+
+01. Qual problema chegou?
+${item.fourQuestions.problem}
+
+02. Qual solução pensamos?
+${item.fourQuestions.solution}
+
+03. Como fizemos?
+${item.fourQuestions.execution.map((step) => `- ${step}`).join('\n')}
+
+04. Qual resultado gerou?
+${item.fourQuestions.result}
 
 Resultados:
 ${item.metrics.map((m) => `- ${m.value}: ${m.label}`).join('\n')}`).join('\n\n')}

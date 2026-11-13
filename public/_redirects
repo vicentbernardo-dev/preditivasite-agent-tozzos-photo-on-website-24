@@ -6,30 +6,59 @@ http://www.preditiva.co/*  https://preditiva.co/:splat  301!
 https://www.preditiva.co/*  https://preditiva.co/:splat  301!
 https://preditivacosite.netlify.app/*  https://preditiva.co/:splat  301!
 
-# URLs do WordPress antigo -> páginas equivalentes (Search Console: "cópia sem canônica")
+# URLs do WordPress antigo -> páginas equivalentes (Search Console: "cópia sem canônica" + CSV de performance)
 /especialidades/midia/*  /especialidade-midia  301!
 /especialidades/dados/*  /especialidade-dados  301!
 /especialidades/crm/*  /especialidade-crm  301!
 /especialidades/growth/*  /especialidade-growth  301!
 /especialidades/seo/*  /especialidade-seo  301!
+/especialidades/dev/*  /especialidade-dev  301!
+/especialidade/seo/*  /especialidade-seo  301!
 /especialidades/*  /metodologia  301!
 /especialistas-dedicados/*  /frentes-especialistas  301!
 /consultoria-estrategica/*  /frentes-consultoria  301!
+/aceleradora-ecommerce/*  /frentes-aceleradora  301!
+/aceleradora-de-ecommerce/*  /frentes-aceleradora  301!
 /servicos-midia-paga/*  /especialidade-midia  301!
+/gestor-trafego-midia/*  /especialidade-midia  301!
+/servicos-crm/*  /especialidade-crm  301!
+/servicos-seo/*  /especialidade-seo  301!
+/seo-e-dados/*  /especialidade-seo  301!
 /parceiros/*  /partners  301!
+/quem-somos/*  /metodologia  301!
+/nosso-blog/*  /blog  301!
+/cases-de-sucesso/*  /cases  301!
 /cases/master-cidadania/*  /case-master  301!
+/cases/master/*  /case-master  301!
+/master-cidadania/*  /case-master  301!
 /cases/miami-ad-school/*  /case-miami  301!
+/cases/miami/*  /case-miami  301!
 /miami-ad-school/*  /case-miami  301!
+/cases/gtex/*  /case-gtex  301!
+/gtex/*  /case-gtex  301!
+/cases/monte-carlo-joias/*  /case-monte-carlo  301!
+/cases/monte-carlo/*  /case-monte-carlo  301!
+/monte-carlo-joias/*  /case-monte-carlo  301!
+/monte-carlo/*  /case-monte-carlo  301!
+/cases/vhita/*  /case-vhita  301!
+/vhita/*  /case-vhita  301!
+/cases/esthera/*  /case-esthera  301!
+/esthera/*  /case-esthera  301!
 /case-de-sucesso-vegete/*  /cases  301!
 /fale-conosco/*  /  301!
 /tag/*  /blog  301!
 /category/*  /blog  301!
 /author/*  /blog  301!
-/como-usar-ia-no-crm-2/*  /blog  301!
+/compras-no-chat-gpt/*  /blog/seu-site-esta-pronto-para-o-checkout-por-ia-faca-o-diagnostico-gratuito-com-o-vision  301!
+/google-ia-overview/*  /blog/google-i-o-2026-o-que-muda-para-sua-loja-aparecer-nas-buscas-por-ia  301!
+/o-que-sao-llms/*  /blog/o-que-e-geo-generative-engine-optimization-e-por-que-o-marketing-precisa-entender-agora  301!
+/como-usar-ia-no-crm/*  /blog/estrategia-crm-recompra-post-black-friday  301!
+/como-usar-ia-no-crm-2/*  /blog/estrategia-crm-recompra-post-black-friday  301!
+/as-melhores-ferramentas-de-inteligencia-artificial-para-gerar-imagens-de-produtos-de-alta-performance/*  /blog  301!
+/google-core-update-junho-2025/*  /especialidade-seo  301!
 /atlas-chat-gpt/*  /blog  301!
 /hiper-personalizacao-no-ecommerce/*  /blog  301!
 /pesquisa-comportamento-do-consumidor/*  /blog  301!
-/google-ia-overview/*  /blog  301!
 
 # Arquivos internos do WordPress: 410 tira do índice mais rápido que 404
 /wp-content/*  /404.html  410!

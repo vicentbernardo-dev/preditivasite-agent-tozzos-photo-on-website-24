@@ -109,7 +109,11 @@ export const ToolsPage: React.FC<ToolsPageProps> = ({
               <span className="text-[#0DF205]">Ferramentas</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold uppercase tracking-tight text-white">
-              Ecossistema Preditiva.co
+              {selectedTab === 'vision'
+                ? 'Vision: Diagnóstico de SEO Técnico & IA Search'
+                : selectedTab === 'alfredo'
+                ? 'Alfredo: Inteligência para Operações de E-commerce'
+                : 'Ecossistema Preditiva.co'}
             </h1>
           </div>
 
