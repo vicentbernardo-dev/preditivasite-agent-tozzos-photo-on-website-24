@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { CheckCircle2, Send, Sparkles } from 'lucide-react';
+import { submitNewsletter } from '../lib/lead';
 
 interface RadarNewsletterProps {
   onSuccess?: () => void;
@@ -12,16 +13,16 @@ export const RadarNewsletter: React.FC<RadarNewsletterProps> = ({ onSuccess }) =
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-    
+
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setIsSubmitted(true);
-      if (onSuccess) onSuccess();
-    }, 600);
+    const ok = await submitNewsletter(email);
+    setLoading(false);
+    if (!ok) { alert('Não foi possível concluir a inscrição agora. Tente novamente em instantes.'); return; }
+    setIsSubmitted(true);
+    if (onSuccess) onSuccess();
   };
 
   return (

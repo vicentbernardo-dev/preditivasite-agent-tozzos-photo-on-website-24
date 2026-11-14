@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PAGE_FAQS } from '../data/faqs';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, CheckCircle2, ChevronDown, ArrowRight, Quote, Zap, Activity, TrendingUp, Search, Database, Users, ShieldAlert, Cpu, BarChart3, LineChart, Code2, Globe, Layers } from 'lucide-react';
+import { submitLead } from '../lib/lead';
 
 interface AceleradoraPageProps {
   onOpenAuditModal: () => void;
@@ -22,9 +23,11 @@ export const AceleradoraPage: React.FC<AceleradoraPageProps> = ({
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
+    const sent = await submitLead('aceleradora', formData);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
     setIsSubmitted(true);
     if (onLeadSuccess) {
       onLeadSuccess({

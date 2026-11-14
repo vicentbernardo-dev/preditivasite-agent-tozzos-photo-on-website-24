@@ -21,6 +21,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { PageRoute } from './Navbar';
+import { submitLead } from '../lib/lead';
 
 interface DevPageProps {
   onOpenAuditModal: () => void;
@@ -42,9 +43,11 @@ export const DevPage: React.FC<DevPageProps> = ({
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
+    const sent = await submitLead('dev', formData);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
     setIsSubmitted(true);
     if (onLeadSuccess) {
       onLeadSuccess({

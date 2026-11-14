@@ -23,6 +23,7 @@ import {
   Server
 } from 'lucide-react';
 import { PageRoute } from './Navbar';
+import { submitLead } from '../lib/lead';
 
 interface SEOPageProps {
   onOpenAuditModal: () => void;
@@ -44,9 +45,11 @@ export const SEOPage: React.FC<SEOPageProps> = ({
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
+    const sent = await submitLead('seo', formData);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
     setIsSubmitted(true);
     if (onLeadSuccess) {
       onLeadSuccess({

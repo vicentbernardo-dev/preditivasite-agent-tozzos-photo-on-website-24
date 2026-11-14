@@ -23,6 +23,7 @@ import {
   HelpCircle
 } from 'lucide-react';
 import { PageRoute } from './Navbar';
+import { submitLead } from '../lib/lead';
 
 interface PartnersPageProps {
   onOpenAuditModal: () => void;
@@ -61,15 +62,19 @@ export const PartnersPage: React.FC<PartnersPageProps> = ({
   // FAQ Accordion State
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
-  const handleHeroSubmit = (e: React.FormEvent) => {
+  const handleHeroSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!heroForm.nome || !heroForm.email) return;
+    const sent = await submitLead('parceiros', heroForm);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
     setHeroSubmitted(true);
   };
 
-  const handleBottomSubmit = (e: React.FormEvent) => {
+  const handleBottomSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!bottomForm.nome || !bottomForm.email) return;
+    const sent = await submitLead('parceiros', bottomForm);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
     setBottomSubmitted(true);
   };
 

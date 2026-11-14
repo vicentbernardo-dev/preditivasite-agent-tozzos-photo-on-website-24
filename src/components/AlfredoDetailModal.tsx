@@ -17,6 +17,7 @@ import {
   Clock
 } from 'lucide-react';
 import { TOOLS_ECOSYSTEM_DATA } from '../data/toolsData';
+import { submitLead } from '../lib/lead';
 
 interface AlfredoDetailModalProps {
   isOpen: boolean;
@@ -49,9 +50,11 @@ export const AlfredoDetailModal: React.FC<AlfredoDetailModalProps> = ({
     MessageSquare, // Chat e Colaboração Centralizada
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email) return;
+    const sent = await submitLead('alfredo-espera', form);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
     setSubmitted(true);
     if (onSuccessWaitlist) {
       onSuccessWaitlist(form.name);

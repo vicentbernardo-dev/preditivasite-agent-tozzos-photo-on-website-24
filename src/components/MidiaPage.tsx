@@ -22,6 +22,7 @@ import {
   Eye
 } from 'lucide-react';
 import { PageRoute } from './Navbar';
+import { submitLead } from '../lib/lead';
 
 interface MidiaPageProps {
   onOpenAuditModal: () => void;
@@ -43,9 +44,11 @@ export const MidiaPage: React.FC<MidiaPageProps> = ({
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email) return;
+    const sent = await submitLead('midia', formData);
+    if (!sent.ok) { alert('Não foi possível enviar agora. Verifique sua conexão e tente novamente em instantes.'); return; }
     setIsSubmitted(true);
     if (onLeadSuccess) {
       onLeadSuccess({
