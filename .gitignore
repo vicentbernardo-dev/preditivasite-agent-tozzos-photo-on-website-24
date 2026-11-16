@@ -5,3 +5,9 @@ node_modules
 
 # Build de servidor usado só pela pré-renderização
 dist-server
+
+
+# Variáveis de ambiente e tokens secretos
+.env
+.env.*
+!.env.example

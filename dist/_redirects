@@ -92,6 +92,7 @@ https://preditivacosite.netlify.app/*  https://preditiva.co/:splat  301!
 /ferramentas  /ferramentas.html  200
 /ferramentas-vision  /ferramentas-vision.html  200
 /ferramentas-alfredo  /ferramentas-alfredo.html  200
+/blog/frete-gratis-supera-preco-baixo-otimizacao-checkout-cro  /blog/frete-gratis-supera-preco-baixo-otimizacao-checkout-cro.html  200
 /blog/estrategia-crm-recompra-post-black-friday  /blog/estrategia-crm-recompra-post-black-friday.html  200
 /blog/seu-site-esta-pronto-para-o-checkout-por-ia-faca-o-diagnostico-gratuito-com-o-vision  /blog/seu-site-esta-pronto-para-o-checkout-por-ia-faca-o-diagnostico-gratuito-com-o-vision.html  200
 /blog/target-cpa-e-target-roas-mudaram-no-google-ads-veja-o-que-revisar-antes-de-perder-dinheiro  /blog/target-cpa-e-target-roas-mudaram-no-google-ads-veja-o-que-revisar-antes-de-perder-dinheiro.html  200
@@ -107,6 +108,7 @@ https://preditivacosite.netlify.app/*  https://preditiva.co/:splat  301!
 /blog/ai-mode-do-google-chegou-a-1-bilhao-de-usuarios-seu-produto-aparece-nas-respostas  /blog/ai-mode-do-google-chegou-a-1-bilhao-de-usuarios-seu-produto-aparece-nas-respostas.html  200
 /blog/black-friday-por-que-o-seu-e-commerce-nao-precisa-de-mais-trafego-mas-de-uma-estrutura-tecnica-de-recompra  /blog/black-friday-por-que-o-seu-e-commerce-nao-precisa-de-mais-trafego-mas-de-uma-estrutura-tecnica-de-recompra.html  200
 /blog/black-friday-2026-cronograma-completo-de-preparacao-tecnica  /blog/black-friday-2026-cronograma-completo-de-preparacao-tecnica.html  200
+/blog/comercio-agentico-black-friday-2026-agentes-de-ia-ecommerce  /blog/comercio-agentico-black-friday-2026-agentes-de-ia-ecommerce.html  200
 
 # Posts publicados depois do último deploy: shell do app sem canonical fixo
 /blog/*  /app-shell.html  200

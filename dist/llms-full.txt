@@ -409,6 +409,22 @@ Resultados:
 
 ## Artigos do blog
 
+### Comércio Agêntico na Black Friday 2026: por que agentes de IA já decidem quem vende no seu nicho
+
+URL: https://preditiva.co/blog/comercio-agentico-black-friday-2026-agentes-de-ia-ecommerce
+Publicado em: 2026-11-16
+
+Na Black Friday 2026, a jornada de compra deixou de depender apenas de cliques em buscadores tradicionais: agentes de IA (ChatGPT Shopping, Perplexity e Google AI Mode) cruzam preços, estoque, avaliações e atributos técnicos em tempo real. Lojas sem dados estruturados (Schema.org), feeds limpos e baixa latência ficam invisíveis nas recomendações algorítmicas.
+
+Consumidores já delegam pesquisas e comparações de Black Friday ao ChatGPT Search, Perplexity e Google AI Mode. Veja como preparar os dados da sua loja.
+
+### Frete grátis supera preço baixo na decisão de compra: como otimizar seu checkout sem perder margem
+
+URL: https://preditiva.co/blog/frete-gratis-supera-preco-baixo-otimizacao-checkout-cro
+Publicado em: 2026-11-13
+
+Dados do estudo E-Consumidor 2027 revelam que o frete grátis superou o preço baixo como o principal fator decisivo no e-commerce brasileiro. No entanto, subsidiar entregas sem inteligência de dados corrói a margem de contribuição e aumenta o Custo de Aquisição de Clientes. Descubra como estruturar a engenharia de checkout, cotação multitransportadora e regras de ticket médio para converter mais.
+
 ### Estratégias de CRM para acelerar a segunda compra em até 30 dias
 
 URL: https://preditiva.co/blog/estrategia-crm-recompra-post-black-friday
