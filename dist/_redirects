@@ -109,6 +109,7 @@ https://preditivacosite.netlify.app/*  https://preditiva.co/:splat  301!
 /blog/black-friday-por-que-o-seu-e-commerce-nao-precisa-de-mais-trafego-mas-de-uma-estrutura-tecnica-de-recompra  /blog/black-friday-por-que-o-seu-e-commerce-nao-precisa-de-mais-trafego-mas-de-uma-estrutura-tecnica-de-recompra.html  200
 /blog/black-friday-2026-cronograma-completo-de-preparacao-tecnica  /blog/black-friday-2026-cronograma-completo-de-preparacao-tecnica.html  200
 /blog/comercio-agentico-black-friday-2026-agentes-de-ia-ecommerce  /blog/comercio-agentico-black-friday-2026-agentes-de-ia-ecommerce.html  200
+/blog/meta-ads-project-andromeda-regra-50-conversoes-ecommerce  /blog/meta-ads-project-andromeda-regra-50-conversoes-ecommerce.html  200
 
 # Posts publicados depois do último deploy: shell do app sem canonical fixo
 /blog/*  /app-shell.html  200

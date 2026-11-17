@@ -409,6 +409,15 @@ Resultados:
 
 ## Artigos do blog
 
+### Meta Ads encerra a era dos públicos: como o Project Andromeda e a regra das 50 conversões redefinem a mídia paga no e-commerce
+
+URL: https://preditiva.co/blog/meta-ads-project-andromeda-regra-50-conversoes-ecommerce
+Publicado em: 2026-11-17
+
+Com o Project Andromeda e o Advantage+ Shopping, o criativo virou a própria segmentação no Meta Ads. O algoritmo analisa o conteúdo visual e semântico para prever o comprador ideal, aposentando públicos de interesse. Para sustentar o ROAS e a fase de aprendizado, e-commerces precisam atingir 50 conversões semanais e integrar CAPI server-side sem ruídos.
+
+O Meta Ads aposentou a segmentação manual por públicos. Descubra como o algoritmo Andromeda e a regra das 50 conversões exigem engenharia de criativos e dados.
+
 ### Comércio Agêntico na Black Friday 2026: por que agentes de IA já decidem quem vende no seu nicho
 
 URL: https://preditiva.co/blog/comercio-agentico-black-friday-2026-agentes-de-ia-ecommerce
