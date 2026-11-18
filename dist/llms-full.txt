@@ -409,6 +409,15 @@ Resultados:
 
 ## Artigos do blog
 
+### Google November 2026 Core Update na Black November: como blindar o SEO e a margem do seu e-commerce
+
+URL: https://preditiva.co/blog/google-november-2026-core-update-black-friday-ecommerce-seo
+Publicado em: 2026-11-18
+
+Lançado em 10 de novembro de 2026 com rollout de até duas semanas, o Google November 2026 Core Update coincide com a reta final para a Black Friday (27/11). Alterar URLs ou conteúdo em pânico durante a atualização agrava perdas orgânicas e afeta o AI Mode. Lojas devem auditar indexação, Core Web Vitals, Schema Product e proteger SKUs curva A com mídia paga até a estabilização.
+
+O November 2026 Core Update do Google colide com a Black November. Veja o protocolo técnico para evitar erros de SEO, proteger SKUs e auditar sua loja.
+
 ### Meta Ads encerra a era dos públicos: como o Project Andromeda e a regra das 50 conversões redefinem a mídia paga no e-commerce
 
 URL: https://preditiva.co/blog/meta-ads-project-andromeda-regra-50-conversoes-ecommerce
