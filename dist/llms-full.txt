@@ -409,6 +409,15 @@ Resultados:
 
 ## Artigos do blog
 
+### Meta-análise de IA Search (32 estudos): o 'abismo de consenso' e o colapso da atribuição no e-commerce
+
+URL: https://preditiva.co/blog/meta-analise-ia-search-q4-2026-abismo-consenso-ecommerce
+Publicado em: 2026-11-19
+
+Síntese de 32 estudos do Q4 2026 publicada no Search Engine Land (18/11) mostra que 91% das URLs citadas por IAs aparecem em apenas um motor e o last-click já não enxerga o funil zero-click. Embora menor em volume, o tráfego vindo de IA pousa 3x mais em páginas de produto e converte até 64% mais na Shopify. Audite sua marca no Vision.
+
+Meta-análise com 32 estudos expõe o abismo de visibilidade entre ChatGPT, Perplexity e Google e revela como capturar vendas de alta conversão por IA.
+
 ### Google November 2026 Core Update na Black November: como blindar o SEO e a margem do seu e-commerce
 
 URL: https://preditiva.co/blog/google-november-2026-core-update-black-friday-ecommerce-seo
