@@ -40,6 +40,7 @@
 
 ## Blog
 
+- [Google unifica Google Tag e Tag Manager: o que muda no GA4, na mídia paga e na auditoria de dados até janeiro de 2027](https://preditiva.co/blog/google-unifica-google-tag-e-tag-manager-ga4-ecommerce-2027): Google unificou a Google Tag ao GTM, removeu o gtag config de novos snippets e marcou upgrade para janeiro de 2027. Veja o impacto no GA4 e Ads.
 - [Meta-análise de IA Search (32 estudos): o 'abismo de consenso' e o colapso da atribuição no e-commerce](https://preditiva.co/blog/meta-analise-ia-search-q4-2026-abismo-consenso-ecommerce): Meta-análise com 32 estudos expõe o abismo de visibilidade entre ChatGPT, Perplexity e Google e revela como capturar vendas de alta conversão por IA.
 - [Google November 2026 Core Update na Black November: como blindar o SEO e a margem do seu e-commerce](https://preditiva.co/blog/google-november-2026-core-update-black-friday-ecommerce-seo): O November 2026 Core Update do Google colide com a Black November. Veja o protocolo técnico para evitar erros de SEO, proteger SKUs e auditar sua loja.
 - [Meta Ads encerra a era dos públicos: como o Project Andromeda e a regra das 50 conversões redefinem a mídia paga no e-commerce](https://preditiva.co/blog/meta-ads-project-andromeda-regra-50-conversoes-ecommerce): O Meta Ads aposentou a segmentação manual por públicos. Descubra como o algoritmo Andromeda e a regra das 50 conversões exigem engenharia de criativos e dados.

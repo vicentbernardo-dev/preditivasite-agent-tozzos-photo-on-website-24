@@ -409,6 +409,15 @@ Resultados:
 
 ## Artigos do blog
 
+### Google unifica Google Tag e Tag Manager: o que muda no GA4, na mídia paga e na auditoria de dados até janeiro de 2027
+
+URL: https://preditiva.co/blog/google-unifica-google-tag-e-tag-manager-ga4-ecommerce-2027
+Publicado em: 2026-11-20
+
+Em novembro de 2026, o Google oficializou a unificação da Google Tag (gtag.js) com o Google Tag Manager: cada Google Tag vira um contêiner GTM com versionamento e permissões unificadas no Tag Assistant. Novos snippets removem o comando gtag config, e instalações não suportadas sofrerão upgrade automático em janeiro de 2027 — exigindo auditoria imediata de dados, GA4 e mídia paga.
+
+Google unificou a Google Tag ao GTM, removeu o gtag config de novos snippets e marcou upgrade para janeiro de 2027. Veja o impacto no GA4 e Ads.
+
 ### Meta-análise de IA Search (32 estudos): o 'abismo de consenso' e o colapso da atribuição no e-commerce
 
 URL: https://preditiva.co/blog/meta-analise-ia-search-q4-2026-abismo-consenso-ecommerce
